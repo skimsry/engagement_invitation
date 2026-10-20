@@ -1,113 +1,171 @@
 @import "tailwindcss";
 
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    --gold-primary: #d4af37;
+    --gold-dark: #996515;
+    --gold-deep: #78500c;
+    --gold-light: #fbeea0;
+    --gold-cream: #faf5ea;
+    --bg-dark: #12100e;
+    --bg-luxury: #faf7f2;
   }
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: #12100e;
+    color: #3d3126;
+    font-family: 'Kantumruy Pro', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100dvh;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
   }
 }
 
-body {
-  margin: 0;
+/* Khmer & Luxury English Typography */
+.font-moul {
+  font-family: 'Moul', cursive, serif;
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+.font-kantumruy {
+  font-family: 'Kantumruy Pro', sans-serif;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+.font-garamond {
+  font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
+.font-vibes {
+  font-family: 'Great Vibes', cursive;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.font-playfair {
+  font-family: 'Playfair Display', Georgia, serif;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Gold Text Gradients */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #b8860b 0%, #e6ca65 35%, #ffd700 50%, #d4af37 70%, #996515 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gold-bright {
+  background: linear-gradient(135deg, #fef08a 0%, #facc15 50%, #ca8a04 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-gold-gradient {
+  background: linear-gradient(135deg, #996515 0%, #d4af37 35%, #fbeea0 60%, #b8860b 100%);
+}
+
+.bg-gold-subtle {
+  background: linear-gradient(180deg, rgba(212, 175, 55, 0.08) 0%, rgba(250, 246, 240, 0.95) 100%);
+}
+
+.border-gold-gradient {
+  border-image: linear-gradient(to right, #b8860b, #ffd700, #b8860b) 1;
+}
+
+/* Custom Delicate Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1714;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #fbeea0;
+}
+
+/* Realistic Wax Seal Stamp */
+.wax-seal {
+  background: radial-gradient(circle at 35% 35%, #e11d48, #9f1239 65%, #4c0519 100%);
+  box-shadow: 
+    0 10px 25px -5px rgba(159, 18, 57, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 215, 0, 0.35);
+}
+
+.wax-seal-gold {
+  background: radial-gradient(circle at 35% 35%, #fef08a, #d4af37 50%, #854d0e 90%, #583101 100%);
+  box-shadow: 
+    0 10px 25px -5px rgba(212, 175, 55, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.7),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Animations */
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4)); }
+  50% { opacity: 1; transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.8)); }
+}
+
+@keyframes shimmerEffect {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes soundWave {
+  0%, 100% { height: 4px; }
+  50% { height: 18px; }
+}
+
+.animate-float {
+  animation: floatSlow 5s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.shimmer-overlay {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: translateX(-100%);
+  animation: shimmerEffect 3.5s infinite;
+}
+
+/* Audio wave bars */
+.wave-bar-1 { animation: soundWave 0.8s ease-in-out infinite alternate; }
+.wave-bar-2 { animation: soundWave 1.1s ease-in-out infinite alternate 0.2s; }
+.wave-bar-3 { animation: soundWave 0.7s ease-in-out infinite alternate 0.4s; }
+.wave-bar-4 { animation: soundWave 1.2s ease-in-out infinite alternate 0.1s; }
+
+/* Backdrop silk texture feel */
+.silk-pattern {
+  background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 0);
+  background-size: 24px 24px;
 }
