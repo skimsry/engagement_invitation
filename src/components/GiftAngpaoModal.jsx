@@ -5,7 +5,7 @@ import { KhmerLotus } from './KhmerOrnaments';
 export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
   const [copied, setCopied] = useState(false);
   const accountNumber = "001 234 567";
-  const accountName = "KIMSRY CHEA";
+  const accountName = "SAN KIMSAN";
   const bankName = "ABA Bank (KHQR)";
 
   if (!isOpen) return null;
