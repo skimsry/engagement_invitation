@@ -686,8 +686,8 @@ export default function App() {
                       type="button"
                       onClick={() => setGuestCount(count)}
                       className={`py-2 px-3 rounded-xl text-xs font-semibold border transition ${guestCount === count
-                          ? 'bg-[#b8860b] text-white border-[#b8860b] shadow'
-                          : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-50'
+                        ? 'bg-[#b8860b] text-white border-[#b8860b] shadow'
+                        : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-50'
                         }`}
                     >
                       {count} {lang === 'km' ? 'នាក់' : (count === '1' ? 'Guest' : 'Guests')}
