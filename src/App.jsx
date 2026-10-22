@@ -304,7 +304,7 @@ export default function App() {
     <div className="min-h-screen w-full bg-[#12100e] text-[#3d3126] flex flex-col items-center justify-start relative overflow-x-hidden">
 
       {/* Floating Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-2.5 flex items-center justify-between bg-black/50 backdrop-blur-md border-b border-[#d4af37]/25 text-white">
+      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-2.5 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <KhmerLotus className="w-8 h-8 text-[#ffd700]" />
           <span className={`${lang === 'km' ? 'font-moulpali text-xs sm:text-sm' : 'font-euphoria text-base sm:text-lg'} text-[#ffd700] tracking-wide`}>
