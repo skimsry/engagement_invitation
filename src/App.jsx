@@ -303,25 +303,25 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-[#12100e] text-[#3d3126] flex flex-col items-center justify-start relative overflow-x-hidden">
 
-      {/* Floating Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 pt-3 pb-6 flex items-center justify-between bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none">
-        {/* Left: Royal Brand Capsule */}
-        <div className="pointer-events-auto flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-[#d4af37]/35 shadow-sm drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-          <KhmerLotus className="w-6 h-6 shrink-0" />
-          <span className={`${lang === 'km' ? 'font-moulpali text-xs sm:text-sm' : 'font-euphoria text-base sm:text-lg'} text-[#fef08a] tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]`}>
+      {/* Floating Top Navigation Bar (Royal Teal #155E63) */}
+      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-3 flex items-center justify-between pointer-events-auto">
+        {/* Left: Rings Logo & Clear Title */}
+        <div className="flex items-center gap-2 select-none">
+          <KhmerLotus className="w-7 h-7 sm:w-8 sm:h-8 shrink-0" />
+          <span className={`${lang === 'km' ? 'font-moulpali text-xs sm:text-sm' : 'font-euphoria text-base sm:text-lg'} text-[#155E63] tracking-wide font-bold`}>
             {lang === 'km' ? 'ភ្ជាប់ពាក្យ' : 'Engagement'}
           </span>
         </div>
 
-        {/* Right: Harmonious Luxury Control Jewels */}
-        <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2">
+        {/* Right: Floating Minimalist Controls (#155E63) */}
+        <div className="flex items-center gap-2 sm:gap-3">
           {/* Audio Player Toggle */}
           <RomanticAudio isOpened={isOpened} />
 
           {/* Language Switcher */}
           <button
             onClick={() => setLang(lang === 'km' ? 'en' : 'km')}
-            className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm text-[11px] font-bold text-[#fef08a] hover:text-white transition active:scale-95 flex items-center justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+            className="px-2 py-0.5 rounded-full border border-[#155E63]/70 text-[11px] font-bold text-[#155E63] hover:text-[#0e3f42] hover:border-[#0e3f42] transition active:scale-95 focus:outline-none"
             title="Switch Language"
           >
             <span>{lang === 'km' ? 'EN' : 'ខ្មែរ'}</span>
@@ -330,19 +330,19 @@ export default function App() {
           {/* Full Screen Toggle */}
           <button
             onClick={toggleFullScreen}
-            className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm text-[#fef08a] hover:text-white transition active:scale-95 flex items-center justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+            className="p-1 text-[#155E63] hover:text-[#0e3f42] transition active:scale-90 focus:outline-none"
             title={isFullScreen ? "Exit Full Screen" : "Full Screen Mode"}
           >
-            {isFullScreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+            {isFullScreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
           </button>
 
           {/* Share Button */}
           <button
             onClick={handleNativeShare}
-            className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm text-[#fef08a] hover:text-white transition active:scale-95 flex items-center justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+            className="p-1 text-[#155E63] hover:text-[#0e3f42] transition active:scale-90 focus:outline-none"
             title="Share Invitation"
           >
-            <Share2 className="w-3.5 h-3.5" />
+            <Share2 className="w-5 h-5" />
           </button>
         </div>
       </header>

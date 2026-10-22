@@ -66,16 +66,16 @@ export default function RomanticAudio({ isOpened }) {
         onClick={toggleAudio}
         title={isPlaying ? `ផ្អាកចម្រៀង: ${songTitle}` : `ចាក់ចម្រៀង: ${songTitle}`}
         aria-label="Toggle Wedding Music"
-        className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm flex items-center justify-center text-[#fef08a] hover:text-white transition-all active:scale-95 cursor-pointer drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+        className="p-1 bg-transparent text-[#155E63] hover:text-[#0e3f42] transition-all active:scale-90 cursor-pointer focus:outline-none flex items-center justify-center"
       >
         {isPlaying ? (
-          <div className="flex items-end gap-[2px] h-3.5">
-            <span className="w-[2.5px] bg-[#ffd700] rounded-full mini-wave-1" />
-            <span className="w-[2.5px] bg-[#ffd700] rounded-full mini-wave-2" />
-            <span className="w-[2.5px] bg-[#ffd700] rounded-full mini-wave-3" />
+          <div className="flex items-end gap-[2.5px] h-4">
+            <span className="w-[3px] bg-[#155E63] rounded-full mini-wave-1" />
+            <span className="w-[3px] bg-[#155E63] rounded-full mini-wave-2" />
+            <span className="w-[3px] bg-[#155E63] rounded-full mini-wave-3" />
           </div>
         ) : (
-          <Music className="w-3.5 h-3.5 text-amber-200/80 group-hover:text-amber-200" />
+          <Music className="w-5 h-5 text-[#155E63] hover:text-[#0e3f42]" />
         )}
       </button>
     </>
