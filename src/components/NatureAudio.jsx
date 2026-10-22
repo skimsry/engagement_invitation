@@ -72,8 +72,20 @@ export default function NatureAudio({ isOpened, lang = 'km', onStarted }) {
       }
     }
 
-    // 3. Interaction fallback across touch, tap, and click gestures
-    const interactionEvents = ['pointerdown', 'touchstart', 'touchend', 'click', 'keydown', 'mousedown'];
+    // 3. Autoplay triggers across mouse movement, touch, scroll, and tap gestures
+    const interactionEvents = [
+      'mousemove',
+      'pointermove',
+      'touchstart',
+      'touchmove',
+      'touchend',
+      'pointerdown',
+      'mousedown',
+      'click',
+      'wheel',
+      'scroll',
+      'keydown'
+    ];
 
     const handleInteraction = () => {
       attemptPlay();
