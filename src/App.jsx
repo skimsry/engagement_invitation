@@ -393,7 +393,7 @@ export default function App() {
 
                     {/* Centered Content inside the Golden Frame Cartouche */}
                     <div className="absolute inset-0 flex items-center justify-center px-3.5">
-                      <span className="font-moulpali tracking-wide text-[11px] sm:text-[16.5px] text-[#2c1301] font-bold drop-shadow-[0_1px_1px_rgba(255,248,220,0.95)] select-none">
+                      <span className="font-moulpali tracking-wide text-[11px] sm:text-[16.5px] text-[#facc15] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.95)] select-none">
                         {lang === 'km' ? 'បើកធៀប' : 'Open Invitation'}
                       </span>
                     </div>
