@@ -382,7 +382,7 @@ export default function App() {
                   <button
                     onClick={handleOpenCard}
                     aria-label="Open Invitation"
-                    className="relative group/btn cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 w-[155px] sm:w-[180px] max-w-[65vw] focus:outline-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_14px_30px_rgba(212,175,55,0.65)]"
+                    className="relative group/btn cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 w-[165px] sm:w-[195px] max-w-[72vw] focus:outline-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_14px_30px_rgba(212,175,55,0.65)]"
                   >
                     {/* Golden Baroque Frame Asset */}
                     <img
@@ -392,15 +392,18 @@ export default function App() {
                     />
 
                     {/* Centered Content inside the Golden Frame Cartouche */}
-                    <div className="absolute inset-0 flex items-center justify-center px-3.5">
-                      <span className="font-moulpali tracking-wide text-[11px] sm:text-[16.5px] text-[#facc15] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.95)] select-none">
-                        {lang === 'km' ? 'បើកធៀប' : 'Open Invitation'}
-                      </span>
+                    <div className="absolute inset-0 flex items-center justify-center px-2.5 sm:px-4">
+                      <div className="flex items-center justify-center gap-1 sm:gap-1.5 select-none">
+
+                        <span className="font-moulpali tracking-tight sm:tracking-normal text-[9.5px] sm:text-[13px] text-[#EADDCA] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.95)] whitespace-nowrap">
+                          {lang === 'km' ? 'បើកសំបុត្រអញ្ជើញ' : 'Open Invitation'}
+                        </span>
+                      </div>
                     </div>
                   </button>
 
                   <p className="font-dangrek text-xs sm:text-sm text-[#fef08a] tracking-wide mt-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] flex items-center gap-1.5 animate-bounce">
-                    <span>{lang === 'km' ? 'ចុចខាងលើនេះដើម្បីបើកធៀប' : 'Tap above to open invitation'}</span>
+                    <span>{lang === 'km' ? 'ចុចខាងលើនេះដើម្បីបើកសំបុត្រអញ្ជើញ' : 'Tap above to open invitation'}</span>
                   </p>
                 </div>
               </div>
