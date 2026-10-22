@@ -25,6 +25,7 @@ import {
 
 import { KhmerLotus, KhmerDivider, KhmerCorner } from './components/KhmerOrnaments';
 import RomanticAudio from './components/RomanticAudio';
+import NatureAudio from './components/NatureAudio';
 import CountdownTimer from './components/CountdownTimer';
 import GiftAngpaoModal from './components/GiftAngpaoModal';
 import PhotoGallery from './components/PhotoGallery';
@@ -55,6 +56,13 @@ export default function App() {
     if (tg) {
       tg.ready();
       tg.expand();
+      if (typeof tg.requestFullscreen === 'function') {
+        try {
+          tg.requestFullscreen();
+        } catch (e) {
+          // ignore if not supported in older tg clients
+        }
+      }
       tg.setHeaderColor('#14120f');
       tg.setBackgroundColor('#14120f');
     }
@@ -119,6 +127,13 @@ export default function App() {
 
   const handleOpenCard = () => {
     setIsOpened(true);
+    if (window.Telegram?.WebApp?.requestFullscreen) {
+      try {
+        window.Telegram.WebApp.requestFullscreen();
+      } catch (e) {
+        // ignore
+      }
+    }
     // Gold & red luxury celebration confetti
     confetti({
       particleCount: 75,
@@ -266,35 +281,38 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Container: Full width, luxury card styled container */}
-      <main className="w-full max-w-xl min-h-screen pt-14 pb-24 px-3 sm:px-4 flex flex-col items-center">
+      {/* Main Container: Full screen on mobile, luxury centered card on PC */}
+      <main className={`w-full ${!isOpened ? 'min-h-[100dvh] pt-0 pb-0 px-0 sm:pt-14 sm:pb-24 sm:px-4 sm:max-w-xl' : 'max-w-xl min-h-screen pt-14 pb-24 px-0 sm:px-4'} flex flex-col items-center`}>
 
-        {/* SCREEN 1: Immersive GIF Cover with Natural Ambiance & Single Open Button */}
+        {/* SCREEN 1: Immersive Fullscreen Cover on Mobile / Luxury Card on PC with Single Open Button */}
         {!isOpened ? (
-          <div className="w-full flex-1 flex flex-col items-center justify-center py-4 sm:py-8 animate-fade-in relative min-h-[85vh]">
-            {/* Immersive Luxury Card showcasing the GIF */}
-            <div className="w-full max-w-md rounded-3xl overflow-hidden border-2 border-[#d4af37]/70 shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative flex flex-col items-center bg-[#171310] group">
+          <div className="w-full flex-1 flex flex-col items-center justify-center p-0 sm:py-8 animate-fade-in relative min-h-[100dvh] sm:min-h-[85vh]">
+            {/* Ambient Nature Sound Controller (Starts automatically after 1s) */}
+            <NatureAudio isOpened={isOpened} lang={lang} />
+
+            {/* Immersive Luxury Card: Edge-to-edge 100dvh on mobile, elegant card on PC */}
+            <div className="w-full h-[100dvh] sm:h-auto sm:max-w-md rounded-none sm:rounded-3xl overflow-hidden border-0 sm:border-2 border-[#d4af37]/70 shadow-none sm:shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative flex flex-col items-center bg-[#171310] group">
 
               {/* Corner Traditional Ornaments for royal aesthetic */}
-              <div className="absolute top-2.5 left-2.5 pointer-events-none opacity-60 z-20">
+              <div className="absolute top-16 sm:top-2.5 left-3 sm:left-2.5 pointer-events-none opacity-60 z-20">
                 <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
               </div>
-              <div className="absolute top-2.5 right-2.5 pointer-events-none opacity-60 rotate-90 z-20">
+              <div className="absolute top-16 sm:top-2.5 right-3 sm:right-2.5 pointer-events-none opacity-60 rotate-90 z-20">
                 <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
               </div>
-              <div className="absolute bottom-2.5 left-2.5 pointer-events-none opacity-60 -rotate-90 z-20">
+              <div className="absolute bottom-3 sm:bottom-2.5 left-3 sm:left-2.5 pointer-events-none opacity-60 -rotate-90 z-20">
                 <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
               </div>
-              <div className="absolute bottom-2.5 right-2.5 pointer-events-none opacity-60 rotate-180 z-20">
+              <div className="absolute bottom-3 sm:bottom-2.5 right-3 sm:right-2.5 pointer-events-none opacity-60 rotate-180 z-20">
                 <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
               </div>
 
-              {/* The GIF Image Display */}
-              <div className="w-full relative min-h-[460px] sm:min-h-[540px] flex items-center justify-center overflow-hidden bg-black/50">
+              {/* The GIF Image Display: Full 100dvh on mobile */}
+              <div className="w-full h-full min-h-[100dvh] sm:min-h-[540px] relative flex items-center justify-center overflow-hidden bg-black/50">
                 <img
                   src="/images/home-page.gif"
                   alt="Engagement Invitation Cover"
-                  className="w-full h-full object-cover min-h-[460px] sm:min-h-[540px] transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover min-h-[100dvh] sm:min-h-[540px] transition-transform duration-700 ease-out group-hover:scale-105"
                   onError={(e) => {
                     // Graceful fallback if gif is not yet copied to public/images
                     e.currentTarget.onerror = null;
@@ -302,17 +320,17 @@ export default function App() {
                   }}
                 />
 
-                {/* Subtle vignette and gradient overlay for readability and depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-black/35 pointer-events-none" />
+                {/* Warm natural temple ambiance gradient overlay for perfect contrast */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#140e08]/85 via-[#140e08]/25 to-transparent pointer-events-none" />
 
                 {/* ROYAL GOLDEN FRAME OPEN BUTTON */}
-                <div className="absolute bottom-5 sm:bottom-6 left-0 right-0 flex flex-col items-center justify-center px-4 z-30">
+                <div className="absolute bottom-8 sm:bottom-6 left-0 right-0 flex flex-col items-center justify-center px-4 z-30">
                   <button
                     onClick={handleOpenCard}
                     aria-label="Open Invitation"
-                    className="relative group/btn cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 w-[190px] sm:w-[220px] max-w-[75vw] focus:outline-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.85)] hover:drop-shadow-[0_14px_30px_rgba(212,175,55,0.7)]"
+                    className="relative group/btn cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 w-[155px] sm:w-[180px] max-w-[65vw] focus:outline-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_14px_30px_rgba(212,175,55,0.65)]"
                   >
-                    {/* Golden Baroque Frame Asset provided by user */}
+                    {/* Golden Baroque Frame Asset */}
                     <img
                       src="/images/open-card-frame.png"
                       alt="Golden Royal Frame"
@@ -320,16 +338,15 @@ export default function App() {
                     />
 
                     {/* Centered Content inside the Golden Frame Cartouche */}
-                    <div className="absolute inset-0 flex items-center justify-center px-4">
-                      <span className="font-moul tracking-wide text-[11px] sm:text-xs text-[#2e1402] font-bold drop-shadow-[0_1px_1px_rgba(255,255,255,0.8)] select-none">
+                    <div className="absolute inset-0 flex items-center justify-center px-3.5">
+                      <span className="font-moulpali tracking-wide text-[11px] sm:text-[16.5px] text-[#2c1301] font-bold drop-shadow-[0_1px_1px_rgba(255,248,220,0.95)] select-none">
                         {lang === 'km' ? 'បើកធៀប' : 'Open Invitation'}
                       </span>
                     </div>
                   </button>
 
-                  <p className="text-xs text-amber-200/90 font-medium tracking-wide mt-2 drop-shadow flex items-center gap-1.5 animate-bounce">
+                  <p className="font-dangrek text-xs sm:text-sm text-[#fef08a] tracking-wide mt-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] flex items-center gap-1.5 animate-bounce">
                     <span>{lang === 'km' ? 'ចុចខាងលើនេះដើម្បីបើកធៀប' : 'Tap above to open invitation'}</span>
-                    {/* <ArrowRight className="w-3.5 h-3.5 text-amber-400" /> */}
                   </p>
                 </div>
               </div>
@@ -339,10 +356,10 @@ export default function App() {
         ) : (
 
           /* SCREEN 2: Full Modern Cambodian Luxury Invitation */
-          <div ref={invitationRef} className="w-full space-y-6 animate-fade-in">
+          <div ref={invitationRef} className="w-full space-y-4 sm:space-y-6 animate-fade-in">
 
             {/* Top Luxury Banner & Couple Hero */}
-            <div className="w-full rounded-3xl bg-[#faf7f2] border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 relative overflow-hidden text-center text-[#3d3126]">
+            <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 relative overflow-hidden text-center text-[#3d3126]">
 
               {/* Corner Traditional Ornaments */}
               <div className="absolute top-2 left-2 pointer-events-none opacity-40">
@@ -461,7 +478,7 @@ export default function App() {
             </div>
 
             {/* Traditional Cambodian Engagement Agenda (កម្មវិធីមង្គល) */}
-            <div className="w-full rounded-3xl bg-[#faf7f2] border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
+            <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
               <div className="text-center space-y-1 mb-6">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
                   <Clock className="w-3.5 h-3.5" />
@@ -532,7 +549,7 @@ export default function App() {
             </div>
 
             {/* Venue & Interactive Navigation (ទីតាំងកម្មវិធី) */}
-            <div className="w-full rounded-3xl bg-[#faf7f2] border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
+            <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
               <div className="text-center space-y-1 mb-5">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
                   <MapPin className="w-3.5 h-3.5" />
@@ -585,12 +602,12 @@ export default function App() {
             </div>
 
             {/* Pre-wedding Photo Gallery */}
-            <div className="w-full rounded-3xl bg-[#faf7f2] border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
+            <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
               <PhotoGallery lang={lang} />
             </div>
 
             {/* Trending in Cambodia: Digital Angpao / Gift via KHQR Card Banner */}
-            <div className="w-full rounded-3xl bg-gradient-to-r from-[#2c1712] via-[#3a1d17] to-[#2c1712] border-2 border-[#d4af37]/70 shadow-2xl p-6 sm:p-8 text-center text-white relative overflow-hidden">
+            <div className="w-full rounded-none sm:rounded-3xl bg-gradient-to-r from-[#2c1712] via-[#3a1d17] to-[#2c1712] border-y sm:border-2 border-[#d4af37]/70 shadow-2xl p-6 sm:p-8 text-center text-white relative overflow-hidden">
               <div className="w-12 h-12 mx-auto rounded-full bg-gradient-to-br from-amber-400 to-amber-700 flex items-center justify-center mb-3 shadow-lg border border-amber-200/50">
                 <Gift className="w-6 h-6 text-amber-950" />
               </div>
@@ -614,7 +631,7 @@ export default function App() {
             </div>
 
             {/* Enhanced RSVP Form Section */}
-            <div ref={rsvpSectionRef} id="rsvp-section" className="w-full rounded-3xl bg-[#faf7f2] border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
+            <div ref={rsvpSectionRef} id="rsvp-section" className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
               <div className="text-center space-y-1 mb-5">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
                   <CheckCircle2 className="w-3.5 h-3.5" />
