@@ -3,6 +3,7 @@ import confetti from 'canvas-confetti';
 
 import Header from './components/Header';
 import InvitationCover from './components/InvitationCover';
+import InvitationOpening from './components/InvitationOpening';
 import HeroSection from './components/HeroSection';
 import EventSchedule from './components/EventSchedule';
 import VenueSection from './components/VenueSection';
@@ -19,6 +20,7 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMSWSdHf9ArnCzpB4C
 export default function App() {
   const [guest, setGuest] = useState({ id: '', name: 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី', rsvp: 'Pending', loaded: false });
   const [isOpened, setIsOpened] = useState(false);
+  const [isOpening, setIsOpening] = useState(false);
   const [rsvpStatus, setRsvpStatus] = useState('');
   const [guestCount, setGuestCount] = useState('1');
   const [message, setMessage] = useState('');
@@ -64,7 +66,7 @@ export default function App() {
     }
 
     if (!guestId) {
-      setGuest({ id: 'demo', name: 'ឯកឧត្តម លោកជំទាវ លោក លោកស្រី អ្នកនាងកញ្ញា', rsvp: 'Pending', loaded: true });
+      setGuest({ id: 'demo', name: '', rsvp: 'Pending', loaded: true });
       return;
     }
 
@@ -175,18 +177,24 @@ export default function App() {
   }, []);
 
   const handleOpenCard = () => {
-    setIsOpened(true);
     enterFullScreen();
+    window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+    setIsOpening(true);
+  };
+
+  const handleOpeningComplete = () => {
+    setIsOpening(false);
+    setIsOpened(true);
     confetti({
-      particleCount: 75,
-      spread: 80,
-      origin: { y: 0.65 },
+      particleCount: 85,
+      spread: 85,
+      origin: { y: 0.6 },
       colors: ['#ffd700', '#d4af37', '#e11d48', '#fef08a', '#ffffff']
     });
-    window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+    window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
     setTimeout(() => {
       invitationRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 200);
+    }, 150);
   };
 
   const handleSubmitRSVP = async (statusSelection) => {
@@ -283,6 +291,15 @@ export default function App() {
         toggleFullScreen={toggleFullScreen}
         onShare={handleNativeShare}
       />
+
+      {/* Cinematic Angkor Gate Opening Animation Overlay (Works only one time) */}
+      {isOpening && (
+        <InvitationOpening
+          guest={guest}
+          lang={lang}
+          onComplete={handleOpeningComplete}
+        />
+      )}
 
       {/* Main Container: Full screen on mobile, luxury centered card on PC */}
       <main className={`w-full ${!isOpened ? 'min-h-[100dvh] pt-0 pb-0 px-0 sm:pt-4 sm:pb-16 sm:px-4 sm:max-w-xl' : 'max-w-xl min-h-screen pt-4 pb-28 px-0 sm:px-4'} flex flex-col items-center`}>
