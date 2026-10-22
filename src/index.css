@@ -69,6 +69,18 @@
   font-family: 'Playfair Display', Georgia, serif;
 }
 
+@font-face {
+  font-family: 'Euphoria';
+  src: url('/fonts/euphorig.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-euphoria {
+  font-family: 'Euphoria', 'Great Vibes', cursive, serif;
+}
+
 /* Gold Text Gradients */
 .text-gold-gradient {
   background: linear-gradient(135deg, #b8860b 0%, #e6ca65 35%, #ffd700 50%, #d4af37 70%, #996515 100%);

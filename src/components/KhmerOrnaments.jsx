@@ -1,10 +1,10 @@
-export function KhmerLotus({ className = "w-8 h-8 text-[#d4af37]" }) {
+export function KhmerLotus({ className = "w-8 h-8", alt = "Engagement Rings" }) {
   return (
-    <svg className={className} viewBox="0 0 100 100" fill="currentColor">
-      <path d="M50 10 C45 35 30 45 10 50 C30 55 45 65 50 90 C55 65 70 55 90 50 C70 45 55 35 50 10 Z" opacity="0.85"/>
-      <circle cx="50" cy="50" r="10" fill="#fef08a" />
-      <path d="M50 25 C47 38 38 47 25 50 C38 53 47 62 50 75 C53 62 62 53 75 50 C62 47 53 38 50 25 Z" opacity="0.6"/>
-    </svg>
+    <img
+      src="/images/rings-logo.png"
+      alt={alt}
+      className={`object-contain inline-block shrink-0 select-none ${className}`}
+    />
   );
 }
 
