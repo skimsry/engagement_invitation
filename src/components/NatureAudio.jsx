@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Volume2, VolumeX, Sparkles } from 'lucide-react';
 
 /**
- * NatureAudio Component
- * Automatically turns on natural ambient background sound (/audio/nature-sound.mp3)
- * exactly 1 second after first loading, with interactive fallback for strict browser policies.
+ * NatureAudio Component (Invisible Background Sound Player)
+ * Plays the natural ambient background sound (/audio/nature-sound.mp3)
+ * automatically 1 second after first load, and triggers on mouse move / touch.
+ * Has no visual UI as requested by user.
  */
-export default function NatureAudio({ isOpened, lang = 'km', onStarted }) {
+export default function NatureAudio({ isOpened, onStarted }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const hasStartedRef = useRef(false);
@@ -46,8 +46,7 @@ export default function NatureAudio({ isOpened, lang = 'km', onStarted }) {
             if (onStarted) onStarted();
           })
           .catch(() => {
-            // Browser autoplay policy prevented unmuted playback.
-            // Interaction listeners remain ready for first user touch anywhere.
+            // Autoplay blocked without prior interaction; listeners remain ready
           });
       }
     };
@@ -64,7 +63,6 @@ export default function NatureAudio({ isOpened, lang = 'km', onStarted }) {
     };
 
     if (tg) {
-      // If Telegram WebApp is already active or expands
       try {
         tg.onEvent?.('viewportChanged', handleTgViewport);
       } catch (e) {
@@ -123,71 +121,18 @@ export default function NatureAudio({ isOpened, lang = 'km', onStarted }) {
     };
   }, [isOpened, onStarted]);
 
-  const toggleSound = (e) => {
-    e.stopPropagation();
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      audio.play().then(() => {
-        setIsPlaying(true);
-        hasStartedRef.current = true;
-      }).catch(console.warn);
-    }
-  };
-
   if (isOpened) return null;
 
-  const labelText = lang === 'km' ? 'សម្លេងផ្ទៃខាងក្រោយ' : 'Background Sound';
-
   return (
-    <div className="absolute top-16 sm:top-4 right-3 sm:right-4 z-30">
-      {/* Background Natural Audio track */}
-      <audio
-        ref={audioRef}
-        src="/audio/nature-sound.mp3"
-        preload="auto"
-        playsInline
-        loop
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-      />
-
-      <button
-        type="button"
-        onClick={toggleSound}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md border shadow-lg transition-all active:scale-95 text-xs font-medium cursor-pointer group ${
-          isPlaying
-            ? 'bg-black/70 hover:bg-black/85 border-[#d4af37]/80 text-[#fef08a] shadow-[0_0_15px_rgba(212,175,55,0.35)]'
-            : 'bg-black/60 hover:bg-black/80 border-[#d4af37]/50 text-[#fef08a]/90 hover:border-[#d4af37]'
-        }`}
-        title={
-          isPlaying
-            ? (lang === 'km' ? "បិទសម្លេងផ្ទៃខាងក្រោយ (Mute)" : "Mute Background Sound")
-            : (lang === 'km' ? "ចាក់សម្លេងផ្ទៃខាងក្រោយ (Play)" : "Play Background Sound")
-        }
-      >
-        {isPlaying ? (
-          <>
-            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-            <span className="text-[11px] text-amber-200 tracking-wide font-medium">{labelText}</span>
-            <div className="flex items-end gap-[2px] h-3 ml-0.5">
-              <span className="w-0.5 bg-[#ffd700] rounded-full wave-bar-1 h-2" />
-              <span className="w-0.5 bg-[#ffd700] rounded-full wave-bar-2 h-3" />
-              <span className="w-0.5 bg-[#ffd700] rounded-full wave-bar-3 h-1.5" />
-            </div>
-            <Volume2 className="w-3.5 h-3.5 text-amber-400" />
-          </>
-        ) : (
-          <>
-            <span className="text-[11px] text-stone-300 group-hover:text-amber-200 tracking-wide">{labelText}</span>
-            <VolumeX className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-300 animate-pulse" />
-          </>
-        )}
-      </button>
-    </div>
+    <audio
+      ref={audioRef}
+      src="/audio/nature-sound.mp3"
+      preload="auto"
+      playsInline
+      loop
+      onPlay={() => setIsPlaying(true)}
+      onPause={() => setIsPlaying(false)}
+      style={{ display: 'none' }}
+    />
   );
 }
