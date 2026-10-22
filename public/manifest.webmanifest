@@ -1,0 +1,17 @@
+{
+  "name": "សិរីមង្គល ពិធីភ្ជាប់ពាក្យ - Kimsan & Uysang",
+  "short_name": "ពិធីភ្ជាប់ពាក្យ",
+  "description": "លិខិតអញ្ជើញចូលរួមពិធីភ្ជាប់ពាក្យ សន គឹមសាន្ត & ង៉ូវ អ៊ុយស័ង",
+  "start_url": "/",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#14120f",
+  "theme_color": "#14120f",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

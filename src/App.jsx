@@ -108,17 +108,27 @@ export default function App() {
     const elem = document.documentElement;
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
       if (elem.requestFullscreen) {
-        elem.requestFullscreen().catch(() => { });
+        elem.requestFullscreen({ navigationUI: "hide" }).catch(() => {
+          elem.requestFullscreen().catch(() => { });
+        });
       } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
       } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
       }
     }
-    if (window.Telegram?.WebApp?.requestFullscreen) {
-      try {
-        window.Telegram.WebApp.requestFullscreen();
-      } catch (e) { }
+    if (window.Telegram?.WebApp) {
+      const tg = window.Telegram.WebApp;
+      if (typeof tg.requestFullscreen === 'function') {
+        try {
+          tg.requestFullscreen();
+        } catch (e) { }
+      }
+      if (typeof tg.expand === 'function') {
+        try {
+          tg.expand();
+        } catch (e) { }
+      }
     }
   };
 
