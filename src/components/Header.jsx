@@ -116,7 +116,7 @@ export default function Header({
       />
 
       {/* Radial Menu Container (Anchored at bottom-right) */}
-      <div className="fixed bottom-6 right-6 z-50 select-none">
+      <div className="fixed bottom-40 right-6 z-50 select-none">
 
         {/* Fan-Out Action Items with Staggered Delays */}
         <div className="relative">
