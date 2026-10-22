@@ -57,7 +57,7 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
               {/* Centered Content inside the Golden Frame Cartouche */}
               <div className="absolute inset-0 flex items-center justify-center px-2.5 sm:px-4">
                 <div className="flex items-center justify-center gap-1 sm:gap-1.5 select-none">
-                  <span className="font-moulpali tracking-tight sm:tracking-normal text-[9.5px] sm:text-[13px] text-[#9A702E] font-bold whitespace-nowrap animate-bounce">
+                  <span className="font-moulpali tracking-tight sm:tracking-normal text-[9.5px] sm:text-[13px] font-bold whitespace-nowrap animate-bounce inline-block bg-gradient-to-l from-[#9A702E] via-[#C8973E] to-[#6B4714] bg-clip-text text-transparent drop-shadow-[0_1px_1px_rgba(255,255,255,0.35)]">
                     {lang === 'km' ? 'បើកសំបុត្រអញ្ជើញ' : 'Open Invitation'}
                   </span>
                 </div>

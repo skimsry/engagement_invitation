@@ -162,10 +162,10 @@ export default function Header({
           }
           aria-expanded={isOpen}
           aria-label={isOpen ? 'Close Menu' : 'Open Navigation Menu'}
-          className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-tr from-[#996515] via-[#d4af37] to-[#fde047] text-stone-950 shadow-[0_8px_25px_rgba(212,175,55,0.5)] hover:shadow-[0_12px_32px_rgba(212,175,55,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none flex items-center justify-center cursor-pointer border-2 border-amber-100"
+          className="relative z-10 w-14 h-14 rounded-full bg-gradient-to-l from-[#9A702E] via-[#C8973E] to-[#6B4714] text-stone-950 shadow-[0_8px_25px_rgba(212,175,55,0.5)] hover:shadow-[0_12px_32px_rgba(212,175,55,0.7)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none flex items-center justify-center cursor-pointer border-2 border-amber-100"
         >
           {/* Rings logo that smoothly spins into an X when open */}
-          <div className="relative w-8 h-8 flex items-center justify-center pointer-events-none select-none">
+          <div className="relative w-10 h-10 flex items-center justify-center pointer-events-none select-none">
             {/* The Rings Image (visible when closed, spins & dissolves when open) */}
             <img
               src="/images/rings-logo.png"
