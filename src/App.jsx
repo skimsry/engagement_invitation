@@ -395,7 +395,7 @@ export default function App() {
                     <div className="absolute inset-0 flex items-center justify-center px-2.5 sm:px-4">
                       <div className="flex items-center justify-center gap-1 sm:gap-1.5 select-none">
 
-                        <span className="font-moulpali tracking-tight sm:tracking-normal text-[9.5px] sm:text-[13px] text-[#EADDCA] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.95)] whitespace-nowrap">
+                        <span className="font-moulpali tracking-tight sm:tracking-normal text-[9.5px] sm:text-[13px] text-[#FFFFE6] font-bold drop-shadow-[0_1px_3px_rgba(0,0,0,0.95)] whitespace-nowrap">
                           {lang === 'km' ? 'បើកសំបុត្រអញ្ជើញ' : 'Open Invitation'}
                         </span>
                       </div>
