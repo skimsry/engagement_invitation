@@ -26,16 +26,17 @@ export default function NatureAudio({ isOpened, onStarted }) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    audio.volume = 0.85;
+    audio.volume = 0.03; // Ultra-soft ambient whisper (3% volume)
     audio.loop = true;
 
-    let cleanupListeners = () => {};
+    let cleanupListeners = () => { };
 
     const attemptPlay = () => {
       if (hasStartedRef.current || isOpened) return;
       const el = audioRef.current;
       if (!el) return;
 
+      el.volume = 0.03;
       const promise = el.play();
       if (promise !== undefined) {
         promise
