@@ -308,7 +308,7 @@ export default function App() {
         <div className="flex items-center gap-2">
           <KhmerLotus className="w-8 h-8 text-[#ffd700]" />
           <span className={`${lang === 'km' ? 'font-moulpali text-xs sm:text-sm' : 'font-euphoria text-base sm:text-lg'} text-[#ffd700] tracking-wide`}>
-            {lang === 'km' ? 'សិរីមង្គលភ្ជាប់ពាក្យ' : 'Engagement'}
+            {lang === 'km' ? 'ភ្ជាប់ពាក្យ' : 'Engagement'}
           </span>
         </div>
 
