@@ -65,34 +65,17 @@ export default function RomanticAudio({ isOpened }) {
       <button
         onClick={toggleAudio}
         title={isPlaying ? `ផ្អាកចម្រៀង: ${songTitle}` : `ចាក់ចម្រៀង: ${songTitle}`}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-md border border-[#d4af37]/60 text-[#fef08a] shadow-lg transition-all active:scale-95 group cursor-pointer"
+        aria-label="Toggle Wedding Music"
+        className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm flex items-center justify-center text-[#fef08a] hover:text-white transition-all active:scale-95 cursor-pointer drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
       >
         {isPlaying ? (
-          <>
-            <div className="flex items-end gap-[3px] h-4">
-              <span className="w-1 bg-[#ffd700] rounded-full wave-bar-1" />
-              <span className="w-1 bg-[#ffd700] rounded-full wave-bar-2" />
-              <span className="w-1 bg-[#ffd700] rounded-full wave-bar-3" />
-              <span className="w-1 bg-[#ffd700] rounded-full wave-bar-4" />
-            </div>
-            <div className="flex flex-col text-left">
-              <span className="text-[11px] font-semibold tracking-wide text-amber-200 hidden sm:inline leading-none">
-                ភ្ជាប់និស្ស័យ
-              </span>
-              <span className="text-[9px] text-amber-300/70 hidden sm:inline leading-none mt-0.5">
-                OLICA ft. KZ
-              </span>
-            </div>
-            <Volume2 className="w-3.5 h-3.5 text-[#fef08a]" />
-          </>
+          <div className="flex items-end gap-[2px] h-3.5">
+            <span className="w-[2.5px] bg-[#ffd700] rounded-full mini-wave-1" />
+            <span className="w-[2.5px] bg-[#ffd700] rounded-full mini-wave-2" />
+            <span className="w-[2.5px] bg-[#ffd700] rounded-full mini-wave-3" />
+          </div>
         ) : (
-          <>
-            <Music className="w-3.5 h-3.5 text-stone-400 group-hover:text-amber-300" />
-            <span className="text-xs font-medium tracking-wide text-stone-300 group-hover:text-amber-200 hidden sm:inline">
-              ចាក់ចម្រៀង
-            </span>
-            <VolumeX className="w-3.5 h-3.5 text-stone-400" />
-          </>
+          <Music className="w-3.5 h-3.5 text-amber-200/80 group-hover:text-amber-200" />
         )}
       </button>
     </>

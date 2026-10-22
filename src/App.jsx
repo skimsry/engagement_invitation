@@ -304,22 +304,24 @@ export default function App() {
     <div className="min-h-screen w-full bg-[#12100e] text-[#3d3126] flex flex-col items-center justify-start relative overflow-x-hidden">
 
       {/* Floating Top Navigation Bar */}
-      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 py-2.5 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <KhmerLotus className="w-8 h-8 text-[#ffd700]" />
-          <span className={`${lang === 'km' ? 'font-moulpali text-xs sm:text-sm' : 'font-euphoria text-base sm:text-lg'} text-[#ffd700] tracking-wide`}>
+      <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-6 pt-3 pb-6 flex items-center justify-between bg-gradient-to-b from-black/85 via-black/40 to-transparent pointer-events-none">
+        {/* Left: Royal Brand Capsule */}
+        <div className="pointer-events-auto flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/40 backdrop-blur-md border border-[#d4af37]/35 shadow-sm drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+          <KhmerLotus className="w-6 h-6 shrink-0" />
+          <span className={`${lang === 'km' ? 'font-moulpali text-xs sm:text-sm' : 'font-euphoria text-base sm:text-lg'} text-[#fef08a] tracking-wide select-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]`}>
             {lang === 'km' ? 'ភ្ជាប់ពាក្យ' : 'Engagement'}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Right: Harmonious Luxury Control Jewels */}
+        <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2">
           {/* Audio Player Toggle */}
           <RomanticAudio isOpened={isOpened} />
 
           {/* Language Switcher */}
           <button
             onClick={() => setLang(lang === 'km' ? 'en' : 'km')}
-            className="px-2.5 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-[#d4af37]/40 text-xs font-semibold text-[#fef08a] transition active:scale-95 flex items-center gap-1"
+            className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm text-[11px] font-bold text-[#fef08a] hover:text-white transition active:scale-95 flex items-center justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
             title="Switch Language"
           >
             <span>{lang === 'km' ? 'EN' : 'ខ្មែរ'}</span>
@@ -328,19 +330,19 @@ export default function App() {
           {/* Full Screen Toggle */}
           <button
             onClick={toggleFullScreen}
-            className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-[#d4af37]/40 text-[#fef08a] transition active:scale-95"
+            className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm text-[#fef08a] hover:text-white transition active:scale-95 flex items-center justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
             title={isFullScreen ? "Exit Full Screen" : "Full Screen Mode"}
           >
-            {isFullScreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+            {isFullScreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
 
           {/* Share Button */}
           <button
             onClick={handleNativeShare}
-            className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 border border-[#d4af37]/40 text-[#fef08a] transition active:scale-95"
+            className="w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-[#d4af37]/40 shadow-sm text-[#fef08a] hover:text-white transition active:scale-95 flex items-center justify-center drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
             title="Share Invitation"
           >
-            <Share2 className="w-4 h-4" />
+            <Share2 className="w-3.5 h-3.5" />
           </button>
         </div>
       </header>
