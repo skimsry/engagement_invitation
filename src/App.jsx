@@ -104,36 +104,90 @@ export default function App() {
       });
   }, []);
 
-  // Listen for fullscreen state changes
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullScreen(Boolean(document.fullscreenElement));
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, []);
+  const enterFullScreen = () => {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(() => { });
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+    if (window.Telegram?.WebApp?.requestFullscreen) {
+      try {
+        window.Telegram.WebApp.requestFullscreen();
+      } catch (e) { }
+    }
+  };
+
+  const exitFullScreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(() => { });
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    if (window.Telegram?.WebApp?.exitFullscreen) {
+      try {
+        window.Telegram.WebApp.exitFullscreen();
+      } catch (e) { }
+    }
+  };
 
   const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => { });
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      enterFullScreen();
       setIsFullScreen(true);
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => { });
-      }
+      exitFullScreen();
       setIsFullScreen(false);
     }
   };
 
+  // Listen for fullscreen state changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullScreen(Boolean(document.fullscreenElement || document.webkitFullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
+  // Default loading is full screen
+  useEffect(() => {
+    // Attempt fullscreen immediately upon loading
+    enterFullScreen();
+
+    // Browsers enforce a user-gesture policy for HTML5 Fullscreen API;
+    // activate on first tap/click anywhere if blocked on initial mount
+    const onFirstInteraction = () => {
+      enterFullScreen();
+      window.removeEventListener('click', onFirstInteraction);
+      window.removeEventListener('touchstart', onFirstInteraction);
+      window.removeEventListener('pointerdown', onFirstInteraction);
+    };
+
+    window.addEventListener('click', onFirstInteraction, { once: true });
+    window.addEventListener('touchstart', onFirstInteraction, { once: true });
+    window.addEventListener('pointerdown', onFirstInteraction, { once: true });
+
+    return () => {
+      window.removeEventListener('click', onFirstInteraction);
+      window.removeEventListener('touchstart', onFirstInteraction);
+      window.removeEventListener('pointerdown', onFirstInteraction);
+    };
+  }, []);
+
   const handleOpenCard = () => {
     setIsOpened(true);
-    if (window.Telegram?.WebApp?.requestFullscreen) {
-      try {
-        window.Telegram.WebApp.requestFullscreen();
-      } catch (e) {
-        // ignore
-      }
-    }
+    enterFullScreen();
     // Gold & red luxury celebration confetti
     confetti({
       particleCount: 75,
@@ -227,7 +281,7 @@ export default function App() {
   const quickWishes = lang === 'km' ? [
     '💖 សូមជូនពរឱ្យស្រលាញ់គ្នាដល់ចាស់កោងខ្នង',
     '✨ រកស៊ីមានបាន ត្រជាក់ត្រជុំ សុភមង្គលពេញបរិបូរណ៌',
-    '🥂 ចូលរួមអបអរសាទរ និងជូនពរឱ្យមានសុខភាពល្អ',
+    '🥂 សូមចូលរួមអបអរសាទរ និងជូនពរឱ្យមានសុខភាពល្អ',
     '🎉 សូមឱ្យគ្រួសារថ្មីពោរពេញដោយភាពកក់ក្តៅជានិច្ច'
   ] : [
     '💖 Wishing you a lifetime of endless love & happiness!',
