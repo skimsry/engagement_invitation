@@ -250,7 +250,7 @@ export default function Header({
         Golden royal rings floating action button at bottom-right
       */}
       <div
-        className={`fixed bottom-6 right-5 sm:right-8 z-[70] select-none transition-all duration-300 ease-out ${isHidden ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
+        className={`mb-8 mx-8 fixed bottom-6 right-5 sm:right-8 z-[70] select-none transition-all duration-300 ease-out ${isHidden ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'
           }`}
       >
         <button
