@@ -53,7 +53,7 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
             <button
               onClick={onOpenCard}
               aria-label="Open Invitation"
-              className="relative group/btn cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 w-[165px] sm:w-[195px] max-w-[72vw] focus:outline-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_14px_30px_rgba(212,175,55,0.65)]"
+              className="relative group/btn cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 w-[170px] sm:w-[195px] max-w-[75vw] focus:outline-none drop-shadow-[0_10px_25px_rgba(0,0,0,0.8)] hover:drop-shadow-[0_14px_30px_rgba(212,175,55,0.65)]"
             >
               {/* Golden Baroque Frame Asset */}
               <img
@@ -67,9 +67,9 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
               />
 
               {/* Centered Content inside the Golden Frame Cartouche */}
-              <div className="absolute inset-0 flex items-center justify-center px-2.5 sm:px-4">
+              <div className="absolute inset-0 flex items-center justify-center px-2 sm:px-4">
                 <div className="flex items-center justify-center gap-1 sm:gap-1.5 select-none">
-                  <span className="font-moulpali tracking-tight sm:tracking-normal text-[9.5px] sm:text-[13px] font-bold whitespace-nowrap animate-bounce inline-block bg-gradient-to-l from-[#9A702E] via-[#C8973E] to-[#6B4714] bg-clip-text text-transparent drop-shadow-[0_1px_1px_rgba(255,255,255,0.35)]">
+                  <span className="font-moulpali tracking-tight sm:tracking-normal text-[11.5px] sm:text-[13.5px] font-bold whitespace-nowrap animate-bounce inline-block bg-gradient-to-l from-[#9A702E] via-[#C8973E] to-[#6B4714] bg-clip-text text-transparent drop-shadow-[0_1px_1px_rgba(255,255,255,0.35)]">
                     {lang === 'km' ? 'បើកសំបុត្រអញ្ជើញ' : 'Open Invitation'}
                   </span>
                 </div>
