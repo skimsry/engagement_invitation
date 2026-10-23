@@ -7,18 +7,18 @@ export default function PhotoGallery({ lang = "km" }) {
 
   const photos = [
     {
-      url: '/images/couple-traditional.webp',
-      titleKm: 'សម្លៀកបំពាក់ប្រពៃណីខ្មែរ',
-      titleEn: 'Royal Khmer Traditional Attire',
-      captionKm: 'ភាពថ្លៃថ្នូរ និងមោទនភាពនៃវប្បធម៌ខ្មែរ',
-      captionEn: 'Elegance of Cambodian Royal Heritage'
+      url: '/images/gallery-1.webp',
+      titleKm: 'ស្នាមញញឹមនៃក្តីស្រលាញ់',
+      titleEn: 'Sweet Moments Together',
+      captionKm: 'ពេលវេលាដ៏មានអត្ថន័យ និងពោរពេញដោយសុភមង្គល',
+      captionEn: 'Precious moments full of joy and love'
     },
     {
-      url: '/images/couple-modern.webp',
-      titleKm: 'មនោសញ្ចេតនាសម័យទំនើប',
-      titleEn: 'Modern Romantic Elegance',
-      captionKm: 'ក្តីស្រលាញ់ និងការសន្យារួមដំណើរជីវិត',
-      captionEn: 'Promise of Eternal Love'
+      url: '/images/gallery-2.webp',
+      titleKm: 'អនុស្សាវរីយ៍ដ៏កក់ក្តៅ',
+      titleEn: 'Cherished Memories',
+      captionKm: 'ក្តីស្រលាញ់ និងភាពកក់ក្តៅរួមដំណើរជីវិត',
+      captionEn: 'Walking hand in hand through life'
     }
   ];
 
@@ -29,7 +29,7 @@ export default function PhotoGallery({ lang = "km" }) {
       viewFull: 'ចុចដើម្បីមើលធំ'
     },
     en: {
-      sectionTitle: 'Pre-Wedding Gallery',
+      sectionTitle: 'Love Gallery',
       subtitle: 'Cherished moments capturing our love story',
       viewFull: 'Tap to view full'
     }
@@ -48,11 +48,11 @@ export default function PhotoGallery({ lang = "km" }) {
   return (
     <section className="w-full my-8 space-y-4">
       <div className="text-center space-y-1">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
+        <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
           <Camera className="w-3.5 h-3.5" />
           <span>{content.sectionTitle}</span>
         </div>
-        <h3 className="font-moul text-xl sm:text-2xl text-[#3d3126]">
+        <h3 className="mb-2 font-moulpali text-xl sm:text-2xl text-[#3d3126]">
           {content.sectionTitle}
         </h3>
         <p className="text-xs sm:text-sm text-[#8c7355]">

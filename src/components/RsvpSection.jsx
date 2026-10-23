@@ -24,12 +24,12 @@ const RsvpSection = forwardRef(function RsvpSection(
       className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]"
     >
       <div className="text-center space-y-1 mb-5">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
+        {/* <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
           <CheckCircle2 className="w-3.5 h-3.5" />
           <span>RSVP</span>
-        </div>
-        <h3 className="font-moul text-xl sm:text-2xl text-[#3d3126]">
-          {lang === 'km' ? 'ឆ្លើយតបការចូលរួម (RSVP)' : 'Confirm Your Attendance'}
+        </div> */}
+        <h3 className="mb-2 font-moulpali text-xl sm:text-2xl text-[#3d3126]">
+          {lang === 'km' ? 'ឆ្លើយតបការចូលរួម' : 'Confirm Your Attendance'}
         </h3>
         <p className="text-xs sm:text-sm text-[#8c7355]">
           {lang === 'km'
@@ -61,7 +61,7 @@ const RsvpSection = forwardRef(function RsvpSection(
           <div>
             <label className="block text-xs font-semibold text-[#5c493a] mb-2 flex items-center gap-1.5">
               <Users className="w-3.5 h-3.5 text-[#b8860b]" />
-              <span>{lang === 'km' ? 'ចំនួនអ្នកចូលរួម (Number of Guests)' : 'Number of Guests'}</span>
+              <span>{lang === 'km' ? 'ចំនួនអ្នកចូលរួម' : 'Number of Guests'}</span>
             </label>
             <div className="grid grid-cols-4 gap-2">
               {['1', '2', '3', '4+'].map((count) => (
@@ -69,11 +69,10 @@ const RsvpSection = forwardRef(function RsvpSection(
                   key={count}
                   type="button"
                   onClick={() => setGuestCount(count)}
-                  className={`py-2 px-3 rounded-xl text-xs font-semibold border transition ${
-                    guestCount === count
-                      ? 'bg-[#b8860b] text-white border-[#b8860b] shadow'
-                      : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-50'
-                  }`}
+                  className={`py-2 px-3 rounded-xl text-xs font-semibold border transition ${guestCount === count
+                    ? 'bg-[#b8860b] text-white border-[#b8860b] shadow'
+                    : 'bg-white text-stone-700 border-stone-200 hover:bg-stone-50'
+                    }`}
                 >
                   {count} {lang === 'km' ? 'នាក់' : count === '1' ? 'Guest' : 'Guests'}
                 </button>
@@ -85,7 +84,7 @@ const RsvpSection = forwardRef(function RsvpSection(
           <div>
             <label className="block text-xs font-semibold text-[#5c493a] mb-2 flex items-center gap-1.5">
               <Heart className="w-3.5 h-3.5 text-rose-500" />
-              <span>{lang === 'km' ? 'ជ្រើសរើសពាក្យជូនពររហ័ស (Quick Blessings)' : 'Quick Blessing Suggestions'}</span>
+              <span>{lang === 'km' ? 'ជ្រើសរើសពាក្យជូនពររហ័ស' : 'Quick Blessing Suggestions'}</span>
             </label>
             <div className="flex flex-wrap gap-1.5">
               {quickWishes.map((wish, idx) => (
@@ -115,33 +114,33 @@ const RsvpSection = forwardRef(function RsvpSection(
             />
           </div>
 
-          {/* Attendance Choice Buttons (3 Options: Attending, Declined, Maybe) */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+          {/* Attendance Choice Buttons (3 Options: Attending, Maybe, Declined) - Inline */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-2.5 pt-2">
             <button
               disabled={submitting}
               onClick={() => onSubmitRSVP('Attending')}
-              className="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-[#b8860b] hover:bg-[#996515] text-white text-xs sm:text-sm font-semibold shadow active:scale-95 transition disabled:opacity-50"
+              className="flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-1 sm:px-3 rounded-xl bg-[#b8860b] hover:bg-[#996515] text-white text-xs sm:text-sm font-semibold shadow active:scale-95 transition disabled:opacity-50"
             >
-              <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-              <span>{lang === 'km' ? 'ចូលរួម (Will Attend)' : 'Will Attend'}</span>
+              <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300 shrink-0" />
+              <span className="truncate">{lang === 'km' ? 'ចូលរួម' : 'Will Attend'}</span>
             </button>
 
             <button
               disabled={submitting}
               onClick={() => onSubmitRSVP('Maybe')}
-              className="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs sm:text-sm font-semibold border border-amber-300 shadow-sm active:scale-95 transition disabled:opacity-50"
+              className="flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-1 sm:px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs sm:text-sm font-semibold border border-amber-300 shadow-sm active:scale-95 transition disabled:opacity-50"
             >
-              <HelpCircle className="w-4 h-4 text-amber-600" />
-              <span>{lang === 'km' ? 'ប្រហែល (Maybe)' : 'Tentative'}</span>
+              <HelpCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 shrink-0" />
+              <span className="truncate">{lang === 'km' ? 'ប្រហែល' : 'Maybe'}</span>
             </button>
 
             <button
               disabled={submitting}
               onClick={() => onSubmitRSVP('Declined')}
-              className="flex items-center justify-center gap-2 py-3 px-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs sm:text-sm font-semibold active:scale-95 transition disabled:opacity-50"
+              className="flex items-center justify-center gap-1 sm:gap-2 py-2.5 sm:py-3 px-1 sm:px-3 rounded-xl bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs sm:text-sm font-semibold active:scale-95 transition disabled:opacity-50"
             >
-              <XCircle className="w-4 h-4 text-stone-500" />
-              <span>{lang === 'km' ? 'មិនអាច (Decline)' : 'Cannot Attend'}</span>
+              <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-stone-500 shrink-0" />
+              <span className="truncate">{lang === 'km' ? 'មិនអាច' : 'Cannot Attend'}</span>
             </button>
           </div>
 

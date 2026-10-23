@@ -42,11 +42,11 @@ export default function EventSchedule({ lang }) {
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
       <div className="text-center space-y-1 mb-6">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
+        <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
           <Clock className="w-3.5 h-3.5" />
           <span>{lang === 'km' ? 'ពេលវេលាកម្មវិធី' : 'Event Schedule'}</span>
         </div>
-        <h3 className="font-moul text-xl sm:text-2xl text-[#3d3126]">
+        <h3 className="mb-2 font-moulpali text-xl sm:text-2xl text-[#3d3126]">
           កម្មវិធីមង្គលភ្ជាប់ពាក្យ
         </h3>
         <p className="text-xs sm:text-sm text-[#8c7355]">
@@ -62,7 +62,7 @@ export default function EventSchedule({ lang }) {
               {item.time}
             </div>
             <div className="flex-1 space-y-0.5">
-              <h4 className="font-moul text-xs sm:text-sm text-[#3d3126]">
+              <h4 className="mb-2 font-dangrek text-xs sm:text-sm text-[#3d3126]">
                 {lang === 'km' ? item.titleKm : item.titleEn}
               </h4>
               <p className="text-xs text-[#78500c]">

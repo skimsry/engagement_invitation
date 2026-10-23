@@ -298,11 +298,11 @@ export default function App() {
   };
 
   const handleAddToCalendar = () => {
-    const title = encodeURIComponent("Engagement Ceremony: Kimsry & Soklin | សិរីមង្គល ពិធីភ្ជាប់ពាក្យ");
-    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីភ្ជាប់ពាក្យ សន គឹមសាន្ត & គង់ ឧស្សាហ៍ (San Kimsan & Kong Ussa)");
+    const title = encodeURIComponent("Engagement Ceremony: Kimsan & Uysang | សិរីមង្គល ពិធីភ្ជាប់ពាក្យ");
+    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីភ្ជាប់ពាក្យ សន គឹមសាន្ត & ង៉ូវ អ៊ុយស័ង (San Kimsan & Ngov Uysang)");
     const location = encodeURIComponent("The Premier Centre Sen Sok, Phnom Penh, Cambodia");
-    const start = "20261115T003000Z";
-    const end = "20261115T060000Z";
+    const start = "20261128T003000Z";
+    const end = "20261128T060000Z";
 
     const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
     window.open(googleCalUrl, '_blank');
@@ -335,10 +335,10 @@ export default function App() {
       )}
 
       {/* Main Container: Full screen on mobile, luxury centered card on PC */}
-      <main className={`w-full ${!isOpened ? 'min-h-[100dvh] pt-0 pb-0 px-0 sm:pt-4 sm:pb-16 sm:px-4 sm:max-w-xl' : 'max-w-xl min-h-screen pt-4 pb-28 px-0 sm:px-4'} flex flex-col items-center`}>
+      <main className={`w-full ${!isOpened && !isOpening ? 'min-h-[100dvh] pt-0 pb-0 px-0 sm:pt-4 sm:pb-16 sm:px-4 sm:max-w-xl' : 'max-w-xl min-h-screen pt-4 pb-28 px-0 sm:px-4'} flex flex-col items-center`}>
 
         {/* SCREEN 1: Immersive Fullscreen Cover on Mobile / Luxury Card on PC */}
-        {!isOpened ? (
+        {!isOpened && !isOpening ? (
           <InvitationCover
             isOpened={isOpened}
             lang={lang}
@@ -378,10 +378,10 @@ export default function App() {
               </div>
 
               {/* Digital Angpao / Gift via KHQR Card Banner */}
-              <GiftBanner
+              {/* <GiftBanner
                 lang={lang}
                 onOpenGiftModal={() => setShowGiftModal(true)}
-              />
+              /> */}
 
               {/* Enhanced RSVP Form Section */}
               <RsvpSection
@@ -400,7 +400,7 @@ export default function App() {
               />
 
               {/* Footer Blessing & Credits */}
-              <Footer />
+              <Footer lang={lang} />
             </div>
           </Suspense>
         )}
@@ -408,7 +408,7 @@ export default function App() {
       </main>
 
       {/* Floating Bottom Navigation Dock */}
-      {isOpened && (
+      {/* {isOpened && (
         <Suspense fallback={null}>
           <BottomNav
             lang={lang}
@@ -418,7 +418,7 @@ export default function App() {
             onShare={handleNativeShare}
           />
         </Suspense>
-      )}
+      )} */}
 
 
       {/* KHQR / ABA Digital Angpao Modal */}

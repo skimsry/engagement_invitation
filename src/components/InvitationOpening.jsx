@@ -190,17 +190,13 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
     document.body.classList.remove('hide-header-nav');
   };
 
-  // Exit transition to the full invitation details
+  // Exit transition directly to the full invitation details (skipping cover)
   const handleFinish = () => {
     if (completedRef.current) return;
     completedRef.current = true;
     onHideHeader?.(false);
     document.body.classList.remove('hide-header-nav');
-    setIsFadingOut(true);
-
-    setTimeout(() => {
-      onComplete?.();
-    }, 500); // 500ms smooth cross-fade into main invitation
+    onComplete?.();
   };
 
   return (
@@ -335,7 +331,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
 
               {/* Date & Location Badges */}
               {/* <p className="font-kantumruy text-xs text-[#faf5ea]/90 leading-tight">
-                {lang === 'km' ? 'អាទិត្យ ទី១៥ ខែវិច្ឆិកា ឆ្នាំ២០២៦' : 'Sunday, November 15, 2026'}
+                {lang === 'km' ? 'សៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦' : 'Saturday, November 28, 2026'}
               </p>
               <p className="font-kantumruy text-[11px] text-[#d4af37] mt-0.5">
                 The Premier Centre Sen Sok, Phnom Penh

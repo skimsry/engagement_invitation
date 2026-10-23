@@ -4,11 +4,11 @@ export default function VenueSection({ lang, copiedAddress, onCopyAddress }) {
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
       <div className="text-center space-y-1 mb-5">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
+        <div className="mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-[#b8860b] text-xs font-medium">
           <MapPin className="w-3.5 h-3.5" />
           <span>{lang === 'km' ? 'ទីតាំងកម្មវិធី' : 'Location & Venue'}</span>
         </div>
-        <h3 className="font-moul text-xl sm:text-2xl text-[#3d3126]">
+        <h3 className="mb-2 font-moulpali text-xl sm:text-2xl text-[#3d3126]">
           {lang === 'km' ? 'ទីតាំងប្រារព្ធពិធី' : 'Ceremony Venue'}
         </h3>
         <p className="text-sm font-semibold text-[#996515]">

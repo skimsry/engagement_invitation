@@ -1,4 +1,4 @@
-import { CalendarPlus } from 'lucide-react';
+import { CalendarPlus, Heart } from 'lucide-react';
 import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
 import CountdownTimer from './CountdownTimer';
 
@@ -14,10 +14,10 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
       </div>
 
       {/* Khmer Blessing Header */}
-      <p className="font-moul text-base sm:text-xl text-[#b8860b] mb-1">
+      <p className="mb-4 font-moulpali text-base sm:text-xl text-[#b8860b]">
         សិរីសួស្តី ជ័យមង្គល វិបុលសុខ
       </p>
-      <p className="font-moul text-sm sm:text-base text-[#78500c]">
+      <p className="mb-2 font-moulpali text-sm sm:text-base text-[#78500c]">
         ពិធីភ្ជាប់ពាក្យ
       </p>
       <p className="text-xs uppercase tracking-[0.2em] text-[#8c7355] mt-1 font-serif">
@@ -28,20 +28,25 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
 
       {/* Couple Hero Photo */}
       <div className="w-full max-w-sm mx-auto my-4 rounded-2xl overflow-hidden border-2 border-[#d4af37] shadow-xl relative aspect-[3/4]">
-        <picture>
-          <source srcSet="/images/couple-traditional.webp" type="image/webp" />
-          <img
-            src="/images/couple-traditional.jpg"
-            alt="San Kimsan and Kong Ussa"
-            className="w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
+        <img
+          src="/images/a1.webp"
+          alt="San Kimsan and Ngov Uysang"
+          className="w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="absolute bottom-3 left-0 right-0 text-center text-white px-3">
-          <p className="font-vibes text-2xl sm:text-3xl text-amber-200">Kimsan &amp; Ussa</p>
-          <p className="text-[11px] text-stone-200">សន គឹមសាន្ត &amp; គង់ ឧស្សាហ៍</p>
+          <p className="font-vibes text-2xl sm:text-3xl text-amber-200 flex items-center justify-center gap-1.5 sm:gap-2">
+            <span>Kimsan</span>
+            <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 animate-pulse drop-shadow-[0_2px_8px_rgba(244,63,94,0.7)] shrink-0" />
+            <span>Uysang</span>
+          </p>
+          <p className="text-[11px] text-stone-200 flex items-center justify-center gap-1.5 mt-0.5">
+            <span>សន គឹមសាន្ត</span>
+            <Heart className="w-2.5 h-2.5 text-rose-400 fill-rose-400 shrink-0" />
+            <span>ង៉ូវ អ៊ុយស័ង</span>
+          </p>
         </div>
       </div>
 
@@ -64,13 +69,13 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
       <KhmerDivider className="my-4" />
 
       {/* Traditional Cambodian Parents Section (មាតាបិតាទាំងសងខាង) */}
-      <div className="my-6">
+      {/* <div className="my-6">
         <p className="text-xs font-semibold uppercase tracking-wider text-[#8c7355] mb-4">
           {lang === 'km' ? '— មាតាបិតាទាំងសងខាង —' : '— With the Blessings of Our Parents —'}
-        </p>
+        </p> 
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
-          {/* Groom's Family */}
+         
           <div className="p-4 rounded-2xl bg-amber-50/70 border border-[#d4af37]/30 shadow-sm space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#b8860b]/15 text-[#b8860b]">
               មាតាបិតាខាងប្រុស / Groom's Parents
@@ -83,7 +88,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
             </div>
           </div>
 
-          {/* Bride's Family */}
+          
           <div className="p-4 rounded-2xl bg-amber-50/70 border border-[#d4af37]/30 shadow-sm space-y-1">
             <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-[#b8860b]/15 text-[#b8860b]">
               មាតាបិតាខាងស្រី / Bride's Parents
@@ -96,18 +101,18 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Auspicious Ceremony Date & Time */}
       <div className="my-6 p-4 rounded-2xl bg-gradient-to-r from-amber-100/60 via-amber-50 to-amber-100/60 border border-[#d4af37]/50 text-center space-y-1 shadow-sm">
-        <p className="text-xs uppercase tracking-widest text-[#8c7355] font-semibold">
+        <p className="mb-4 text-xs uppercase tracking-widest text-[#8c7355] font-semibold">
           {lang === 'km' ? 'កាលបរិច្ឆេទនៃពិធីមង្គល' : 'Auspicious Ceremony Date'}
         </p>
-        <p className="font-moul text-base sm:text-lg text-[#3d3126]">
-          ថ្ងៃអាទិត្យ ទី១៥ ខែវិច្ឆិកា ឆ្នាំ២០២៦
+        <p className="font-moulpali text-base sm:text-lg text-[#3d3126]">
+          ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦
         </p>
         <p className="text-xs sm:text-sm text-[#78500c] font-medium">
-          Sunday, November 15, 2026 • វេលាម៉ោង ០៧:៣០ ព្រឹក
+          Saturday, November 28, 2026 • វេលាម៉ោង ០៧:៣០ ព្រឹក
         </p>
       </div>
 
@@ -121,7 +126,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900 text-[#ffd700] hover:bg-stone-800 text-xs font-semibold border border-[#d4af37]/40 shadow transition active:scale-95"
         >
           <CalendarPlus className="w-4 h-4 text-amber-400" />
-          <span>{lang === 'km' ? 'កត់ត្រាក្នុងប្រតិទិន (Add to Calendar)' : 'Add to Calendar'}</span>
+          <span className="font-dangrek">{lang === 'km' ? 'កត់ត្រាក្នុងប្រតិទិន' : 'Add to Calendar'}</span>
         </button>
       </div>
     </div>
