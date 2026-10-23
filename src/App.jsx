@@ -55,6 +55,7 @@ export default function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showGiftModal, setShowGiftModal] = useState(false);
   const [copiedAddress, setCopiedAddress] = useState(false);
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
 
   const invitationRef = useRef(null);
   const rsvpSectionRef = useRef(null);
@@ -217,12 +218,14 @@ export default function App() {
     enterFullScreen();
     prefetchScreen2();
     window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
+    setIsHeaderHidden(true);
     setIsOpening(true);
   };
 
   const handleOpeningComplete = () => {
     setIsOpening(false);
     setIsOpened(true);
+    setIsHeaderHidden(false);
     fireConfetti({
       particleCount: 85,
       spread: 85,
@@ -327,6 +330,7 @@ export default function App() {
           guest={guest}
           lang={lang}
           onComplete={handleOpeningComplete}
+          onHideHeader={setIsHeaderHidden}
         />
       )}
 
@@ -434,6 +438,7 @@ export default function App() {
         isFullScreen={isFullScreen}
         toggleFullScreen={toggleFullScreen}
         onShare={handleNativeShare}
+        isHidden={isHeaderHidden}
       />
 
     </div>

@@ -9,7 +9,7 @@ import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
  *    and displays the regal invitation box with the guest's name and ceremony details.
  * 3. Guest can click the button to proceed to the full invitation, or skip directly.
  */
-export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
+export default function InvitationOpening({ guest, lang = 'km', onComplete, onHideHeader }) {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const videoRef = useRef(null);
@@ -19,22 +19,36 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
   const DURATION_MS = 9800;
 
   useEffect(() => {
+    // Hide Header during gate opening animation
+    onHideHeader?.(true);
+    document.body.classList.add('hide-header-nav');
+
     const timer = setTimeout(() => {
       setIsFinished(true); // Switch to final frame and show invitation box!
+      onHideHeader?.(false);
+      document.body.classList.remove('hide-header-nav');
     }, DURATION_MS);
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      onHideHeader?.(false);
+      document.body.classList.remove('hide-header-nav');
+    };
+  }, [onHideHeader]);
 
   // Quick skip directly to the final frame & invitation name box
   const handleSkipToFinal = () => {
     setIsFinished(true);
+    onHideHeader?.(false);
+    document.body.classList.remove('hide-header-nav');
   };
 
   // Exit transition to the full invitation details
   const handleFinish = () => {
     if (completedRef.current) return;
     completedRef.current = true;
+    onHideHeader?.(false);
+    document.body.classList.remove('hide-header-nav');
     setIsFadingOut(true);
 
     setTimeout(() => {

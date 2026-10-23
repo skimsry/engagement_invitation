@@ -201,3 +201,10 @@
   background-image: radial-gradient(rgba(212, 175, 55, 0.15) 1px, transparent 0);
   background-size: 24px 24px;
 }
+
+/* Hide header during opening animation */
+body.hide-header-nav .header-radial-menu {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: scale(0.75) !important;
+}

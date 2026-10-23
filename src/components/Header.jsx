@@ -8,9 +8,15 @@ export default function Header({
   isOpened,
   isFullScreen,
   toggleFullScreen,
-  onShare
+  onShare,
+  isHidden = false
 }) {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Close menu if hidden externally
+  useEffect(() => {
+    if (isHidden) setIsOpen(false);
+  }, [isHidden]);
 
   // Close radial menu on Escape key
   useEffect(() => {
@@ -111,12 +117,12 @@ export default function Header({
         role="button"
         tabIndex={isOpen ? 0 : -1}
         aria-label="Close Radial Menu"
-        className={`fixed inset-0 z-[65] bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-[65] bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 ${isOpen && !isHidden ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
       />
 
       {/* Radial Menu Container (Anchored at bottom-right, highest z-index across all screens) */}
-      <div className="fixed bottom-40 right-6 z-[70] select-none">
+      <div className={`header-radial-menu fixed bottom-40 right-6 z-[70] select-none transition-all duration-500 ease-out ${isHidden ? 'opacity-0 scale-75 pointer-events-none' : 'opacity-100 scale-100'}`}>
 
         {/* Fan-Out Action Items with Staggered Delays */}
         <div className="relative">
