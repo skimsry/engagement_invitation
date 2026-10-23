@@ -130,16 +130,25 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
 
 
         {/* CENTER CONTENT */}
-        <div className="relative z-30 w-full flex-1 flex flex-col items-center justify-center px-4 py-3 pb-24 sm:pb-20">
+        <div className="relative z-30 w-full flex-1 flex flex-col items-center justify-center px-4 py-3">
           {/* PHASE 2: INVITATION NAME BOX (Appears after DURATION_MS or on Skip) */}
           {isFinished ? (
-            <div className="w-full max-w-[340px] sm:max-w-[370px] p-4 sm:p-6 text-center animate-fade-in-up flex flex-col items-center">
+            <div className="w-full max-w-[340px] sm:max-w-[370px] p-5 sm:p-6 text-center animate-fade-in-up flex flex-col items-center">
+              {/* Royal Crown / Rings Emblem */}
+              {/* <div className="w-11 h-11 rounded-full bg-black/40 border border-[#d4af37]/60 flex items-center justify-center mb-2 shadow-inner">
+                <KhmerLotus className="w-6 h-6 text-[#d4af37]" />
+              </div> */}
+
               {/* Ceremony Header */}
-              <h2 className="font-moulpali text-xl sm:text-2xl leading-[1.7] py-2 min-h-[52px] flex items-center justify-center text-gold-bright drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+              {/* Ceremony Header */}
+              <h2 className="font-moulpali text-xl sm:text-2xl leading-[1.7] py-2.5 min-h-[56px] flex items-center justify-center text-gold-bright drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
                 {lang === 'km' ? 'សិរីមង្គល ពិធីភ្ជាប់ពាក្យ' : 'Engagement Ceremony'}
               </h2>
 
-              <p className={`flex items-center justify-center gap-2 text-amber-200 mt-0.5 ${lang === 'km'
+              {/* <p className="text-[10px] uppercase tracking-[0.2em] text-[#d4af37]/80 font-serif mt-0.5">
+                {lang === 'km' ? 'សន គឹមសាន្ត & គង់ ឧស្សាហ៍' : 'San Kimsan & Kong Ussa'}
+              </p> */}
+              <p className={`flex items-center justify-center gap-2 text-amber-200 mt-1 ${lang === 'km'
                 ? 'font-dangrek text-lg sm:text-xl tracking-wide'
                 : 'font-vibes text-2xl sm:text-3xl'
                 }`}>
@@ -148,7 +157,8 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
                 <span>{lang === 'km' ? 'អ៊ុយស័ង' : 'Uysang'}</span>
               </p>
 
-              <KhmerDivider className="my-2 w-full max-w-[240px]" />
+
+              <KhmerDivider className="my-2.5 w-full max-w-[240px]" />
 
               {/* Invitation Statement */}
               <p className="font-kantumruy text-sm text-[#faf5ea]/85">
@@ -175,32 +185,35 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
                   </p>
                 </div>
               </div>
+
+              {/* Date & Location Badges */}
+              {/* <p className="font-kantumruy text-xs text-[#faf5ea]/90 leading-tight">
+                {lang === 'km' ? 'អាទិត្យ ទី១៥ ខែវិច្ឆិកា ឆ្នាំ២០២៦' : 'Sunday, November 15, 2026'}
+              </p>
+              <p className="font-kantumruy text-[11px] text-[#d4af37] mt-0.5">
+                The Premier Centre Sen Sok, Phnom Penh
+              </p> */}
+
+              {/* Primary Action Button: Enter Full Invitation */}
+              <button
+                onClick={handleFinish}
+                className="mt-4 relative group cursor-pointer w-full py-2.5 px-5 rounded-full bg-gradient-to-r from-[#996515] via-[#ffd700] to-[#b8860b] text-[#140e08] font-bold shadow-[0_6px_20px_rgba(212,175,55,0.4)] hover:shadow-[0_8px_25px_rgba(212,175,55,0.7)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
+              >
+                <span className="font-dangrek text-xs sm:text-sm text-[#140e08] font-semibold tracking-wide animate-bounce">
+                  {lang === 'km' ? 'សូមចូលទស្សនាសំបុត្រអញ្ជើញ' : 'View Full Invitation'}
+                </span>
+                <svg
+                  className="w-4 h-4 text-[#140e08] transform group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </button>
             </div>
           ) : ""}
         </div>
-
-        {/* PRIMARY ACTION BUTTON (Positioned identically to 'បើកធៀប' button in InvitationCover) */}
-        {isFinished && (
-          <div className="absolute bottom-16 sm:bottom-14 left-0 right-0 flex flex-col items-center justify-center px-4 z-30 animate-fade-in-up">
-            <button
-              onClick={handleFinish}
-              aria-label="View Full Invitation"
-              className="relative group cursor-pointer w-[240px] sm:w-[270px] max-w-[75vw] py-2.5 sm:py-3 px-5 rounded-full bg-gradient-to-r from-[#996515] via-[#ffd700] to-[#b8860b] text-[#140e08] font-bold shadow-[0_8px_25px_rgba(212,175,55,0.45)] hover:shadow-[0_12px_32px_rgba(212,175,55,0.75)] hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              <span className="font-dangrek text-xs sm:text-sm text-[#140e08] font-semibold tracking-wide animate-bounce">
-                {lang === 'km' ? 'សូមចូលទស្សនាសំបុត្រអញ្ជើញ' : 'View Full Invitation'}
-              </span>
-              <svg
-                className="w-4 h-4 text-[#140e08] transform group-hover:translate-x-1 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </button>
-          </div>
-        )}
 
 
 
