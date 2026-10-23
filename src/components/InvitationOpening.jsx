@@ -1,48 +1,33 @@
 import { useState, useEffect, useRef } from 'react';
 import { Heart } from 'lucide-react';
-import { KhmerCorner, KhmerDivider, KhmerLotus } from './KhmerOrnaments';
+import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
 
 /**
  * InvitationOpening component
- * 1. Plays the majestic Angkor Wat gate opening animation (open.gif) for DURATION_MS = 9800ms.
- * 2. After loading / gate opening finishes, stays on the final frame (open_final_frame.png)
+ * 1. Plays the majestic Angkor Wat gate opening animation (open.mp4) for DURATION_MS = 9800ms.
+ * 2. After loading / gate opening finishes, stays on the final frame (open_final_frame.webp)
  *    and displays the regal invitation box with the guest's name and ceremony details.
- * 3. Guest can click the button to proceed to the full invitation.
+ * 3. Guest can click the button to proceed to the full invitation, or skip directly.
  */
 export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
   const [isFadingOut, setIsFadingOut] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
-  const [gifSrc, setGifSrc] = useState('');
+  const videoRef = useRef(null);
   const completedRef = useRef(false);
 
-  // Exact duration of open.gif (150 frames = 10,000ms)
+  // Exact duration of open animation
   const DURATION_MS = 9800;
 
   useEffect(() => {
-    // Append timestamp to ensure fresh playback from frame 0
-    const timestamp = Date.now();
-    setGifSrc(`/images/open.gif?t=${timestamp}`);
+    const timer = setTimeout(() => {
+      setIsFinished(true); // Switch to final frame and show invitation box!
+    }, DURATION_MS);
 
-    const startTime = Date.now();
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const currentProgress = Math.min(100, Math.round((elapsed / DURATION_MS) * 100));
-      setProgress(currentProgress);
-
-      if (elapsed >= DURATION_MS) {
-        clearInterval(interval);
-        setProgress(100);
-        setIsFinished(true); // Switch to final frame and show invitation box!
-      }
-    }, 100);
-
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
   }, []);
 
   // Quick skip directly to the final frame & invitation name box
   const handleSkipToFinal = () => {
-    setProgress(100);
     setIsFinished(true);
   };
 
@@ -65,21 +50,38 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
       {/* Container maintaining card/portrait frame */}
       <div className="relative w-full h-[100dvh] sm:h-auto sm:max-w-md sm:aspect-[9/16] overflow-hidden sm:rounded-3xl sm:border-2 sm:border-[#d4af37]/60 sm:shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col justify-between items-center bg-[#14100c]">
 
-        {/* Background Image: open.gif during opening, open_final_frame.png after finished */}
+        {/* Background Image/Video: open.mp4 during opening, open_final_frame.webp after finished */}
         {isFinished ? (
-          <img
-            src="/images/open_final_frame.png"
-            alt="Angkor Gate Opened"
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none animate-fade-in"
-          />
-        ) : (
-          gifSrc && (
+          <picture className="absolute inset-0 w-full h-full pointer-events-none select-none animate-fade-in">
+            <source srcSet="/images/open_final_frame.webp" type="image/webp" />
             <img
-              src={gifSrc}
+              src="/images/open_final_frame.png"
+              alt="Angkor Gate Opened"
+              className="w-full h-full object-cover"
+            />
+          </picture>
+        ) : (
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            playsInline
+            webkit-playsinline="true"
+            poster="/images/open-poster.webp"
+            className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
+            onEnded={() => {
+              setProgress(100);
+              setIsFinished(true);
+            }}
+          >
+            <source src="/images/open.mp4" type="video/mp4" />
+            <source src="/images/open.webp" type="image/webp" />
+            <img
+              src="/images/open_final_frame.webp"
               alt="Angkor Gate Opening"
               className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
             />
-          )
+          </video>
         )}
 
         {/* Ambient Gradient Overlays for contrast and luxury mood */}
@@ -99,6 +101,17 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
         <div className="absolute bottom-3 sm:bottom-2.5 right-3 sm:right-2.5 pointer-events-none opacity-70 rotate-180 z-20">
           <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
         </div>
+
+        {/* Quick Skip button during opening animation */}
+        {!isFinished && (
+          <button
+            onClick={handleSkipToFinal}
+            aria-label="Skip animation"
+            className="absolute top-4 right-4 z-40 px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-[#d4af37]/60 text-[#ffd700] text-xs font-semibold cursor-pointer active:scale-95 transition backdrop-blur-md shadow-lg"
+          >
+            {lang === 'km' ? 'រំលង ➔' : 'Skip ➔'}
+          </button>
+        )}
 
 
 
@@ -141,7 +154,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
               {/* BOX NAME OF INVITATION (Highlighted Guest Honorific with Portrait Plaque) */}
               <div
                 className="my-1.5 w-full max-w-[320px] sm:max-w-[350px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
-                style={{ backgroundImage: "url('/images/wedding-portrait-plaque.png')" }}
+                style={{ backgroundImage: "url('/images/wedding-portrait-plaque.webp')" }}
               >
                 {/* Guest name positioned inside the right-hand rectangular frame */}
                 <div

@@ -59,11 +59,10 @@ export default function RomanticAudio({
 
   return (
     <>
-      {/* Hidden audio element for high fidelity playback */}
       <audio
         ref={audioRef}
         src="/audio/wedding-song.mp3"
-        preload="auto"
+        preload="none"
       />
 
       <button

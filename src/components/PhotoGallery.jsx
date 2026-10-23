@@ -7,14 +7,14 @@ export default function PhotoGallery({ lang = "km" }) {
 
   const photos = [
     {
-      url: '/images/couple-traditional.jpg',
+      url: '/images/couple-traditional.webp',
       titleKm: 'សម្លៀកបំពាក់ប្រពៃណីខ្មែរ',
       titleEn: 'Royal Khmer Traditional Attire',
       captionKm: 'ភាពថ្លៃថ្នូរ និងមោទនភាពនៃវប្បធម៌ខ្មែរ',
       captionEn: 'Elegance of Cambodian Royal Heritage'
     },
     {
-      url: '/images/couple-modern.jpg',
+      url: '/images/couple-modern.webp',
       titleKm: 'មនោសញ្ចេតនាសម័យទំនើប',
       titleEn: 'Modern Romantic Elegance',
       captionKm: 'ក្តីស្រលាញ់ និងការសន្យារួមដំណើរជីវិត',

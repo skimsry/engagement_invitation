@@ -28,11 +28,16 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
 
       {/* Couple Hero Photo */}
       <div className="w-full max-w-sm mx-auto my-4 rounded-2xl overflow-hidden border-2 border-[#d4af37] shadow-xl relative aspect-[3/4]">
-        <img
-          src="/images/couple-traditional.jpg"
-          alt="San Kimsan and Kong Ussa"
-          className="w-full h-full object-cover"
-        />
+        <picture>
+          <source srcSet="/images/couple-traditional.webp" type="image/webp" />
+          <img
+            src="/images/couple-traditional.jpg"
+            alt="San Kimsan and Kong Ussa"
+            className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="absolute bottom-3 left-0 right-0 text-center text-white px-3">
           <p className="font-vibes text-2xl sm:text-3xl text-amber-200">Kimsan &amp; Ussa</p>

@@ -21,15 +21,23 @@
   <meta name="apple-mobile-web-app-title" content="ពិធីភ្ជាប់ពាក្យ" />
   <link rel="manifest" href="/manifest.webmanifest" />
 
-  <!-- Telegram Mini App SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Telegram Mini App SDK (Deferred to not block render) -->
+  <script defer src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Google Fonts Preconnect for fastest speed -->
+  <!-- Preload Critical LCP Hero Poster & Video for Instant Rendering -->
+  <link rel="preload" as="image" href="/images/home-page-poster.webp" fetchpriority="high" />
+  <link rel="preload" as="video" href="/images/home-page.mp4" type="video/mp4" />
+
+  <!-- Google Fonts Preconnect & Optimized Non-blocking Loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Dangrek&family=Great+Vibes&family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Koulen&family=Moul&family=Moulpali&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap"
-    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Dangrek&family=Great+Vibes&family=Kantumruy+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Moul&family=Moulpali&display=swap"
+    media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Dangrek&family=Great+Vibes&family=Kantumruy+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Moul&family=Moulpali&display=swap">
+  </noscript>
 </head>
 
 <body class="bg-[#14120f] text-[#3d3126] antialiased overflow-x-hidden selection:bg-[#d4af37]/30">

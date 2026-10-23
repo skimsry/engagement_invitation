@@ -24,18 +24,26 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
           <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
         </div>
 
-        {/* The GIF Image Display: Full 100dvh on mobile */}
+        {/* The Video / WebP Media Display: Full 100dvh on mobile */}
         <div className="w-full h-full min-h-[100dvh] sm:min-h-[540px] relative flex items-center justify-center overflow-hidden bg-black/50">
-          <img
-            src="/images/home-page.gif"
-            alt="Engagement Invitation Cover"
-            className="w-full h-full object-cover min-h-[100dvh] sm:min-h-[540px] transition-transform duration-700 ease-out group-hover:scale-105"
-            onError={(e) => {
-              // Graceful fallback if gif is not yet copied to public/images
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = "/images/couple-traditional.jpg";
-            }}
-          />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            webkit-playsinline="true"
+            poster="/images/home-page-poster.webp"
+            className="w-full h-full object-cover min-h-[100dvh] sm:min-h-[540px] transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
+          >
+            <source src="/images/home-page.mp4" type="video/mp4" />
+            <source src="/images/home-page.webp" type="image/webp" />
+            {/* Graceful image fallback */}
+            <img
+              src="/images/home-page-poster.webp"
+              alt="Engagement Invitation Cover"
+              className="w-full h-full object-cover min-h-[100dvh] sm:min-h-[540px]"
+            />
+          </video>
 
           {/* Warm natural temple ambiance gradient overlay for perfect contrast */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#140e08]/85 via-[#140e08]/25 to-transparent pointer-events-none" />
@@ -49,9 +57,13 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
             >
               {/* Golden Baroque Frame Asset */}
               <img
-                src="/images/open-card-frame.png"
+                src="/images/open-card-frame.webp"
                 alt="Golden Royal Frame"
                 className="w-full h-auto object-contain block pointer-events-none select-none transition-transform duration-300 group-hover/btn:brightness-105"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "/images/open-card-frame.png";
+                }}
               />
 
               {/* Centered Content inside the Golden Frame Cartouche */}

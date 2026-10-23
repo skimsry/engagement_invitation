@@ -1,18 +1,43 @@
-import { useEffect, useState, useRef } from 'react';
-import confetti from 'canvas-confetti';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 
 import Header from './components/Header';
 import InvitationCover from './components/InvitationCover';
 import InvitationOpening from './components/InvitationOpening';
-import HeroSection from './components/HeroSection';
-import EventSchedule from './components/EventSchedule';
-import VenueSection from './components/VenueSection';
-import PhotoGallery from './components/PhotoGallery';
-import GiftBanner from './components/GiftBanner';
-import RsvpSection from './components/RsvpSection';
-import Footer from './components/Footer';
-import BottomNav from './components/BottomNav';
-import GiftAngpaoModal from './components/GiftAngpaoModal';
+
+// Lazy loaded Screen 2 components for instant initial cover render
+const HeroSection = lazy(() => import('./components/HeroSection'));
+const EventSchedule = lazy(() => import('./components/EventSchedule'));
+const VenueSection = lazy(() => import('./components/VenueSection'));
+const PhotoGallery = lazy(() => import('./components/PhotoGallery'));
+const GiftBanner = lazy(() => import('./components/GiftBanner'));
+const RsvpSection = lazy(() => import('./components/RsvpSection'));
+const Footer = lazy(() => import('./components/Footer'));
+const BottomNav = lazy(() => import('./components/BottomNav'));
+const GiftAngpaoModal = lazy(() => import('./components/GiftAngpaoModal'));
+
+// Helper for dynamic confetti import
+const fireConfetti = async (options) => {
+  try {
+    const confetti = (await import('canvas-confetti')).default;
+    confetti(options);
+  } catch (err) {
+    // Graceful fallback if confetti fails
+  }
+};
+
+// Prefetch Screen 2 chunks on idle or when opening
+const prefetchScreen2 = () => {
+  import('./components/HeroSection');
+  import('./components/EventSchedule');
+  import('./components/VenueSection');
+  import('./components/PhotoGallery');
+  import('./components/GiftBanner');
+  import('./components/RsvpSection');
+  import('./components/Footer');
+  import('./components/BottomNav');
+  import('./components/GiftAngpaoModal');
+  import('canvas-confetti');
+};
 
 // Google Apps Script Web App URL from original implementation
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMSWSdHf9ArnCzpB4CIapF7UkcDCHyUfW6jm0U1Wn-HmrEeD2yTk2C-zrNvtsnwQJpQ/exec";
@@ -154,12 +179,24 @@ export default function App() {
     };
   }, []);
 
-  // Default loading is full screen
+  // Default loading is full screen and idle prefetch of Screen 2
   useEffect(() => {
     enterFullScreen();
 
+    // Prefetch heavy components during idle time
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(() => prefetchScreen2(), { timeout: 3500 });
+      return () => window.cancelIdleCallback(idleId);
+    } else {
+      const timer = setTimeout(() => prefetchScreen2(), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  useEffect(() => {
     const onFirstInteraction = () => {
       enterFullScreen();
+      prefetchScreen2();
       window.removeEventListener('click', onFirstInteraction);
       window.removeEventListener('touchstart', onFirstInteraction);
       window.removeEventListener('pointerdown', onFirstInteraction);
@@ -178,6 +215,7 @@ export default function App() {
 
   const handleOpenCard = () => {
     enterFullScreen();
+    prefetchScreen2();
     window.Telegram?.WebApp?.HapticFeedback?.impactOccurred('medium');
     setIsOpening(true);
   };
@@ -185,7 +223,7 @@ export default function App() {
   const handleOpeningComplete = () => {
     setIsOpening(false);
     setIsOpened(true);
-    confetti({
+    fireConfetti({
       particleCount: 85,
       spread: 85,
       origin: { y: 0.6 },
@@ -216,7 +254,7 @@ export default function App() {
 
       setSubmitted(true);
       if (statusSelection === 'Attending') {
-        confetti({
+        fireConfetti({
           particleCount: 120,
           spread: 90,
           origin: { y: 0.6 },
@@ -304,76 +342,89 @@ export default function App() {
           />
         ) : (
           /* SCREEN 2: Full Modern Cambodian Luxury Invitation */
-          <div ref={invitationRef} className="w-full space-y-4 sm:space-y-6 animate-fade-in">
-            {/* Top Luxury Banner & Couple Hero */}
-            <HeroSection
-              guest={guest}
-              lang={lang}
-              onAddToCalendar={handleAddToCalendar}
-            />
-
-            {/* Traditional Cambodian Engagement Agenda */}
-            <EventSchedule lang={lang} />
-
-            {/* Venue & Interactive Navigation */}
-            <VenueSection
-              lang={lang}
-              copiedAddress={copiedAddress}
-              onCopyAddress={handleCopyAddress}
-            />
-
-            {/* Pre-wedding Photo Gallery */}
-            <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
-              <PhotoGallery lang={lang} />
+          <Suspense fallback={
+            <div className="w-full min-h-[60vh] flex flex-col items-center justify-center p-8 space-y-4">
+              <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
+              <p className="font-moulpali text-sm text-[#ffd700] animate-pulse">
+                {lang === 'km' ? 'កំពុងដំណើរការ...' : 'Loading invitation...'}
+              </p>
             </div>
+          }>
+            <div ref={invitationRef} className="w-full space-y-4 sm:space-y-6 animate-fade-in">
+              {/* Top Luxury Banner & Couple Hero */}
+              <HeroSection
+                guest={guest}
+                lang={lang}
+                onAddToCalendar={handleAddToCalendar}
+              />
 
-            {/* Digital Angpao / Gift via KHQR Card Banner */}
-            <GiftBanner
-              lang={lang}
-              onOpenGiftModal={() => setShowGiftModal(true)}
-            />
+              {/* Traditional Cambodian Engagement Agenda */}
+              <EventSchedule lang={lang} />
 
-            {/* Enhanced RSVP Form Section */}
-            <RsvpSection
-              ref={rsvpSectionRef}
-              lang={lang}
-              submitted={submitted}
-              setSubmitted={setSubmitted}
-              rsvpStatus={rsvpStatus}
-              guestCount={guestCount}
-              setGuestCount={setGuestCount}
-              message={message}
-              setMessage={setMessage}
-              quickWishes={quickWishes}
-              submitting={submitting}
-              onSubmitRSVP={handleSubmitRSVP}
-            />
+              {/* Venue & Interactive Navigation */}
+              <VenueSection
+                lang={lang}
+                copiedAddress={copiedAddress}
+                onCopyAddress={handleCopyAddress}
+              />
 
-            {/* Footer Blessing & Credits */}
-            <Footer />
-          </div>
+              {/* Pre-wedding Photo Gallery */}
+              <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
+                <PhotoGallery lang={lang} />
+              </div>
+
+              {/* Digital Angpao / Gift via KHQR Card Banner */}
+              <GiftBanner
+                lang={lang}
+                onOpenGiftModal={() => setShowGiftModal(true)}
+              />
+
+              {/* Enhanced RSVP Form Section */}
+              <RsvpSection
+                ref={rsvpSectionRef}
+                lang={lang}
+                submitted={submitted}
+                setSubmitted={setSubmitted}
+                rsvpStatus={rsvpStatus}
+                guestCount={guestCount}
+                setGuestCount={setGuestCount}
+                message={message}
+                setMessage={setMessage}
+                quickWishes={quickWishes}
+                submitting={submitting}
+                onSubmitRSVP={handleSubmitRSVP}
+              />
+
+              {/* Footer Blessing & Credits */}
+              <Footer />
+            </div>
+          </Suspense>
         )}
 
       </main>
 
       {/* Floating Bottom Navigation Dock */}
       {isOpened && (
-        <BottomNav
-          lang={lang}
-          onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          onScrollToRsvp={() => rsvpSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}
-          onOpenGiftModal={() => setShowGiftModal(true)}
-          onShare={handleNativeShare}
-        />
+        <Suspense fallback={null}>
+          <BottomNav
+            lang={lang}
+            onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            onScrollToRsvp={() => rsvpSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}
+            onOpenGiftModal={() => setShowGiftModal(true)}
+            onShare={handleNativeShare}
+          />
+        </Suspense>
       )}
 
 
       {/* KHQR / ABA Digital Angpao Modal */}
-      <GiftAngpaoModal
-        isOpen={showGiftModal}
-        onClose={() => setShowGiftModal(false)}
-        lang={lang}
-      />
+      <Suspense fallback={null}>
+        <GiftAngpaoModal
+          isOpen={showGiftModal}
+          onClose={() => setShowGiftModal(false)}
+          lang={lang}
+        />
+      </Suspense>
 
       {/* Radial Menu Navigation Button (Always visible on all pages/screens) */}
       <Header
