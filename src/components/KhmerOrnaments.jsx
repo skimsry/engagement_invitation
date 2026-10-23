@@ -14,7 +14,7 @@ export function KhmerDivider({ className = "w-full my-4" }) {
       <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-[#d4af37]/60 to-[#d4af37]" />
       <div className="flex items-center gap-1.5 text-[#d4af37]">
         <span className="text-xs">❖</span>
-        <KhmerLotus className="w-5 h-5 text-[#b8860b]" />
+        <KhmerLotus className="w-8 h-8 text-[#b8860b]" />
         <span className="text-xs">❖</span>
       </div>
       <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-[#d4af37]/60 to-[#d4af37]" />

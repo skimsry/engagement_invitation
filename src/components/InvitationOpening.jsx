@@ -1,6 +1,153 @@
 import { useState, useEffect, useRef } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, ChevronsRight, Check } from 'lucide-react';
 import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
+
+/**
+ * Interactive Slide to Unlock / Enter Button
+ * Supports fluid touch dragging on mobile & mouse drag on desktop,
+ * with golden shimmer animations and haptic feedback.
+ */
+function SlideButton({ onSlideComplete, lang = 'km', className = '' }) {
+  const [dragX, setDragX] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const trackRef = useRef(null);
+  const startXRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const currentDragXRef = useRef(0);
+
+  const getMaxDistance = () => {
+    if (!trackRef.current) return 180;
+    const trackWidth = trackRef.current.clientWidth;
+    const thumbWidth = typeof window !== 'undefined' && window.innerWidth >= 640 ? 48 : 44;
+    return Math.max(0, trackWidth - thumbWidth - 8);
+  };
+
+  const handleDragStart = (clientX) => {
+    if (isCompleted) return;
+    startXRef.current = clientX - currentDragXRef.current;
+    isDraggingRef.current = true;
+    setIsDragging(true);
+  };
+
+  const handleDragMove = (clientX) => {
+    if (!isDraggingRef.current || isCompleted) return;
+    const maxDist = getMaxDistance();
+    const newX = Math.min(Math.max(0, clientX - startXRef.current), maxDist);
+    currentDragXRef.current = newX;
+    setDragX(newX);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDraggingRef.current || isCompleted) return;
+    isDraggingRef.current = false;
+    setIsDragging(false);
+    const maxDist = getMaxDistance();
+
+    if (currentDragXRef.current >= maxDist * 0.65) {
+      currentDragXRef.current = maxDist;
+      setDragX(maxDist);
+      setIsCompleted(true);
+      try {
+        navigator.vibrate?.([40, 30, 60]);
+      } catch {
+        // ignore
+      }
+      setTimeout(() => {
+        onSlideComplete?.();
+      }, 280);
+    } else {
+      currentDragXRef.current = 0;
+      setDragX(0);
+    }
+  };
+
+  const onTouchStart = (e) => handleDragStart(e.touches[0].clientX);
+  const onTouchMove = (e) => handleDragMove(e.touches[0].clientX);
+  const onTouchEnd = () => handleDragEnd();
+
+  const onMouseDown = (e) => {
+    handleDragStart(e.clientX);
+    const onWindowMouseMove = (ev) => handleDragMove(ev.clientX);
+    const onWindowMouseUp = () => {
+      handleDragEnd();
+      window.removeEventListener('mousemove', onWindowMouseMove);
+      window.removeEventListener('mouseup', onWindowMouseUp);
+    };
+    window.addEventListener('mousemove', onWindowMouseMove);
+    window.addEventListener('mouseup', onWindowMouseUp);
+  };
+
+  const handleClickFallback = () => {
+    if (isCompleted || isDragging) return;
+    const maxDist = getMaxDistance();
+    currentDragXRef.current = maxDist;
+    setDragX(maxDist);
+    setIsCompleted(true);
+    try {
+      navigator.vibrate?.([40, 30, 60]);
+    } catch {
+      // ignore
+    }
+    setTimeout(() => {
+      onSlideComplete?.();
+    }, 320);
+  };
+
+  const maxDist = getMaxDistance();
+  const progressRatio = maxDist > 0 ? Math.min(1, dragX / maxDist) : 0;
+
+  return (
+    <div
+      ref={trackRef}
+      onClick={handleClickFallback}
+      className={`relative w-full max-w-[280px] sm:max-w-[320px] h-[52px] sm:h-[56px] rounded-full bg-[#16110a]/90 border border-[#d4af37]/70 shadow-[0_8px_25px_rgba(0,0,0,0.8),inset_0_2px_4px_rgba(212,175,55,0.25)] backdrop-blur-md p-1 flex items-center select-none overflow-hidden cursor-pointer group ${className}`}
+      style={{ touchAction: 'none' }}
+    >
+      {/* Golden progress fill bar behind thumb */}
+      <div
+        className="absolute left-1 top-1 bottom-1 rounded-full bg-gradient-to-r from-[#996515]/60 via-[#d4af37]/75 to-[#ffd700]/90 pointer-events-none"
+        style={{
+          width: `${dragX + (typeof window !== 'undefined' && window.innerWidth >= 640 ? 48 : 44)}px`,
+          transition: isDragging ? 'none' : 'width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)',
+        }}
+      />
+
+      {/* Guide text & chevrons (fades out as thumb slides across) */}
+      <div
+        className="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-150 pl-12 pr-4 sm:pl-14 sm:pr-6"
+        style={{ opacity: Math.max(0, 1 - progressRatio * 1.5) }}
+      >
+        <span className="font-moulpali text-[11px] sm:text-[13px] font-semibold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#ffd700] via-[#fff3b0] to-[#ca8a04] drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] whitespace-nowrap flex items-center gap-1">
+          <span>{lang === 'km' ? 'សូមអូសចូលទស្សនាបន្ត' : 'Slide to View Invitation'}</span>
+          <ChevronsRight className="w-3.5 h-3.5 text-[#ffd700] animate-pulse inline-block" />
+        </span>
+      </div>
+
+      {/* Draggable slider thumb */}
+      <div
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+        onTouchCancel={onTouchEnd}
+        onMouseDown={onMouseDown}
+        style={{
+          transform: `translateX(${dragX}px)`,
+          transition: isDragging ? 'none' : 'transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1)',
+          touchAction: 'none',
+        }}
+        className="relative z-10 w-[44px] h-[44px] sm:w-[48px] sm:h-[48px] rounded-full bg-gradient-to-tr from-[#996515] via-[#ffd700] to-[#fff3b0] text-[#140e08] flex items-center justify-center shadow-[0_4px_16px_rgba(212,175,55,0.7)] cursor-grab active:cursor-grabbing hover:scale-105 transition-transform shrink-0"
+        aria-label="Slide to view invitation"
+      >
+        {isCompleted ? (
+          <Check className="w-5 h-5 text-[#140e08] stroke-[3] animate-scale-in" />
+        ) : (
+          <ChevronsRight className="w-5 h-5 text-[#140e08] stroke-[2.5] animate-pulse" />
+        )}
+      </div>
+    </div>
+  );
+}
 
 /**
  * InvitationOpening component
@@ -117,15 +264,15 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
         </div>
 
         {/* Quick Skip button during opening animation */}
-        {!isFinished && (
-          <button
-            onClick={handleSkipToFinal}
-            aria-label="Skip animation"
-            className="absolute top-4 right-4 z-40 px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-[#d4af37]/60 text-[#ffd700] text-xs font-semibold cursor-pointer active:scale-95 transition backdrop-blur-md shadow-lg"
-          >
-            {lang === 'km' ? 'រំលង ➔' : 'Skip ➔'}
-          </button>
-        )}
+        {/* {!isFinished && (
+              <button
+                onClick={handleSkipToFinal}
+                aria-label="Skip animation"
+                className="absolute top-4 right-4 z-40 px-3 py-1 rounded-full bg-black/60 hover:bg-black/80 border border-[#d4af37]/60 text-[#ffd700] text-xs font-semibold cursor-pointer active:scale-95 transition backdrop-blur-md shadow-lg"
+              >
+                {lang === 'km' ? 'រំលង ➔' : 'Skip ➔'}
+              </button>
+            )} */}
 
 
 
@@ -194,23 +341,12 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
                 The Premier Centre Sen Sok, Phnom Penh
               </p> */}
 
-              {/* Primary Action Button: Enter Full Invitation */}
-              <button
-                onClick={handleFinish}
-                className="mt-4 relative group cursor-pointer w-full py-2.5 px-5 rounded-full bg-gradient-to-r from-[#996515] via-[#ffd700] to-[#b8860b] text-[#140e08] font-bold shadow-[0_6px_20px_rgba(212,175,55,0.4)] hover:shadow-[0_8px_25px_rgba(212,175,55,0.7)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
-              >
-                <span className="font-dangrek text-xs sm:text-sm text-[#140e08] font-semibold tracking-wide animate-bounce">
-                  {lang === 'km' ? 'សូមចូលទស្សនាសំបុត្រអញ្ជើញ' : 'View Full Invitation'}
-                </span>
-                <svg
-                  className="w-4 h-4 text-[#140e08] transform group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
-              </button>
+              {/* Primary Action: Slide to View Full Invitation */}
+              <SlideButton
+                onSlideComplete={handleFinish}
+                lang={lang}
+                className="mt-48 min-[380px]:mt-28 sm:mt-36"
+              />
             </div>
           ) : ""}
         </div>
