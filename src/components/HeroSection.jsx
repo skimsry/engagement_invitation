@@ -14,7 +14,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
       </div>
 
       {/* Khmer Blessing Header */}
-      <p className="mb-4 font-moulpali text-base sm:text-xl text-[#b8860b]">
+      <p className="mb-4 mt-8 font-moulpali text-base sm:text-xl text-[#b8860b]">
         សិរីសួស្តី ជ័យមង្គល វិបុលសុខ
       </p>
       <p className="mb-2 font-moulpali text-sm sm:text-base text-[#78500c]">
@@ -55,8 +55,8 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
         <p className="text-xs sm:text-sm text-[#5c493a] leading-relaxed">
           យើងខ្ញុំមានសេចក្តីសោមនស្សរីករាយឥតឧបមា សូមគោរពអញ្ជើញ
         </p>
-        <div className="inline-block px-5 py-2.5 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/40 shadow-sm">
-          <p className="font-moul text-base sm:text-lg text-[#996515]">
+        <div className="inline-block px-5 py-2.5">
+          <p className="font-moulpali text-base sm:text-lg text-[#996515]">
             {guest.name}
           </p>
         </div>

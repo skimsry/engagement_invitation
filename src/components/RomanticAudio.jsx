@@ -29,7 +29,7 @@ export default function RomanticAudio({
     };
   }, []);
 
-  // When card is opened, trigger music playback smoothly
+  // When card is opened, trigger music playback smoothly; when closed, pause and rewind
   useEffect(() => {
     if (isOpened && audioRef.current) {
       const playPromise = audioRef.current.play();
@@ -42,6 +42,10 @@ export default function RomanticAudio({
             console.warn("Autoplay prevented by browser, waiting for user click:", err);
           });
       }
+    } else if (!isOpened && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
     }
   }, [isOpened]);
 

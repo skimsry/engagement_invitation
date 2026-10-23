@@ -308,6 +308,14 @@ export default function App() {
     window.open(googleCalUrl, '_blank');
   };
 
+  // Reset back to initial cover screen (first load)
+  const handleExitApp = () => {
+    setIsOpened(false);
+    setIsOpening(false);
+    setIsHeaderHidden(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   const quickWishes = lang === 'km' ? [
     '💖 សូមជូនពរឱ្យស្រលាញ់គ្នាដល់ចាស់កោងខ្នង',
     '✨ រកស៊ីមានបាន ត្រជាក់ត្រជុំ សុភមង្គលពេញបរិបូរណ៌',
@@ -438,6 +446,8 @@ export default function App() {
         isFullScreen={isFullScreen}
         toggleFullScreen={toggleFullScreen}
         onShare={handleNativeShare}
+        onExitApp={handleExitApp}
+        onOpenCard={handleOpenCard}
         isHidden={isHeaderHidden}
       />
 
