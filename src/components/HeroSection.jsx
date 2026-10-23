@@ -7,14 +7,14 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 relative overflow-hidden text-center text-[#3d3126]">
       {/* Corner Traditional Ornaments */}
       <div className="absolute top-2 left-2 pointer-events-none opacity-40">
-        <KhmerCorner className="w-9 h-9 text-[#b8860b]" />
+        <KhmerCorner className="w-36 h-36 text-[#b8860b]" />
       </div>
       <div className="absolute top-2 right-2 pointer-events-none opacity-40 rotate-90">
-        <KhmerCorner className="w-9 h-9 text-[#b8860b]" />
+        <KhmerCorner className="w-36 h-36 text-[#b8860b]" />
       </div>
 
       {/* Khmer Blessing Header */}
-      <p className="mb-4 mt-8 font-moulpali text-base sm:text-xl text-[#b8860b]">
+      <p className="mb-4 mt-16 font-moulpali text-base sm:text-xl text-[#b8860b]">
         សិរីសួស្តី ជ័យមង្គល វិបុលសុខ
       </p>
       <p className="mb-2 font-moulpali text-sm sm:text-base text-[#78500c]">

@@ -22,14 +22,17 @@ export function KhmerDivider({ className = "w-full my-4" }) {
   );
 }
 
-export function KhmerCorner({ className = "w-12 h-12 text-[#d4af37]" }) {
+export function KhmerCorner({ className = "w-12 h-12", alt = "Khmer Corner Ornament", ...props }) {
   return (
-    <svg className={className} viewBox="0 0 60 60" fill="none" stroke="currentColor">
-      <path d="M5 55 L5 15 C5 9.5 9.5 5 15 5 L55 5" strokeWidth="2" strokeLinecap="round" />
-      <path d="M12 55 L12 20 C12 15.6 15.6 12 20 12 L55 12" strokeWidth="1" opacity="0.6" strokeLinecap="round" />
-      <circle cx="20" cy="20" r="3" fill="currentColor" />
-      <path d="M5 5 L15 15" strokeWidth="1.5" />
-      <circle cx="8" cy="8" r="1.5" fill="currentColor" />
-    </svg>
+    <img
+      src="/images/khmer-corner.webp"
+      alt={alt}
+      width={140}
+      height={140}
+      loading="eager"
+      decoding="async"
+      className={`object-contain pointer-events-none select-none inline-block shrink-0 ${className}`}
+      {...props}
+    />
   );
 }

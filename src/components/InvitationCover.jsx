@@ -11,7 +11,7 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
       <div className="w-full h-[100dvh] sm:h-auto sm:max-w-md rounded-none sm:rounded-3xl overflow-hidden border-0 sm:border-2 border-[#d4af37]/70 shadow-none sm:shadow-[0_25px_60px_rgba(0,0,0,0.85)] relative flex flex-col items-center bg-[#171310] group">
 
         {/* Corner Traditional Ornaments for royal aesthetic */}
-        <div className="absolute top-3 sm:top-2.5 left-3 sm:left-2.5 pointer-events-none opacity-60 z-20">
+        {/* <div className="absolute top-3 sm:top-2.5 left-3 sm:left-2.5 pointer-events-none opacity-60 z-20">
           <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
         </div>
         <div className="absolute top-3 sm:top-2.5 right-3 sm:right-2.5 pointer-events-none opacity-60 rotate-90 z-20">
@@ -22,7 +22,7 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
         </div>
         <div className="absolute bottom-14 sm:bottom-12 right-3 sm:right-2.5 pointer-events-none opacity-60 rotate-180 z-20">
           <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
-        </div>
+        </div> */}
 
         {/* The Video / WebP Media Display: Full 100dvh on mobile */}
         <div className="w-full h-full min-h-[100dvh] sm:min-h-[540px] relative flex items-center justify-center overflow-hidden bg-black/50">

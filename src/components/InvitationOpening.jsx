@@ -246,7 +246,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
           }`} />
 
         {/* Corner Traditional Ornaments for royal aesthetic */}
-        <div className="absolute top-3 sm:top-2.5 left-3 sm:left-2.5 pointer-events-none opacity-70 z-20">
+        {/* <div className="absolute top-3 sm:top-2.5 left-3 sm:left-2.5 pointer-events-none opacity-70 z-20">
           <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
         </div>
         <div className="absolute top-3 sm:top-2.5 right-3 sm:right-2.5 pointer-events-none opacity-70 rotate-90 z-20">
@@ -257,7 +257,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
         </div>
         <div className="absolute bottom-3 sm:bottom-2.5 right-3 sm:right-2.5 pointer-events-none opacity-70 rotate-180 z-20">
           <KhmerCorner className="w-8 h-8 text-[#d4af37]" />
-        </div>
+        </div> */}
 
         {/* Quick Skip button during opening animation */}
         {/* {!isFinished && (
