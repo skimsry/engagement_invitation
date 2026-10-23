@@ -138,11 +138,25 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
                 {lang === 'km' ? 'សូមគោរពអញ្ជើញ' : 'Cordially Invites'}
               </p>
 
-              {/* BOX NAME OF INVITATION (Highlighted Guest Honorific) */}
-              <div className="my-2.5 w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#d4af37]/25 via-[#ffd700]/30 to-[#d4af37]/25 border border-[#d4af37]/70 shadow-[inset_0_1px_2px_rgba(255,255,255,0.25),0_4px_15px_rgba(0,0,0,0.6)]">
-                <p className="font-dangrek text-sm sm:text-base text-[#ffd700] tracking-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] break-words">
-                  {guest?.name}
-                </p>
+              {/* BOX NAME OF INVITATION (Highlighted Guest Honorific with Portrait Plaque) */}
+              <div
+                className="my-1.5 w-full max-w-[320px] sm:max-w-[350px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
+                style={{ backgroundImage: "url('/images/wedding-portrait-plaque.png')" }}
+              >
+                {/* Guest name positioned inside the right-hand rectangular frame */}
+                <div
+                  className="absolute flex items-center justify-center px-2 sm:px-3 text-center"
+                  style={{
+                    left: '40.5%',
+                    top: '31%',
+                    width: '53%',
+                    height: '26%',
+                  }}
+                >
+                  <p className="font-dangrek text-xs sm:text-sm font-bold tracking-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] break-words text-center bg-gradient-to-b from-[#fff59d] via-[#ffd700] to-[#ca8a04] bg-clip-text text-transparent line-clamp-2">
+                    {guest?.name}
+                  </p>
+                </div>
               </div>
 
               {/* Date & Location Badges */}
