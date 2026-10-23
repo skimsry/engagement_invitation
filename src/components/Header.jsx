@@ -111,12 +111,12 @@ export default function Header({
         role="button"
         tabIndex={isOpen ? 0 : -1}
         aria-label="Close Radial Menu"
-        className={`fixed inset-0 z-40 bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        className={`fixed inset-0 z-[65] bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
           }`}
       />
 
-      {/* Radial Menu Container (Anchored at bottom-right) */}
-      <div className="fixed bottom-40 right-6 z-50 select-none">
+      {/* Radial Menu Container (Anchored at bottom-right, highest z-index across all screens) */}
+      <div className="fixed bottom-40 right-6 z-[70] select-none">
 
         {/* Fan-Out Action Items with Staggered Delays */}
         <div className="relative">

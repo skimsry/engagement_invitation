@@ -282,15 +282,6 @@ export default function App() {
   return (
     <div className="min-h-screen w-full bg-[#12100e] text-[#3d3126] flex flex-col items-center justify-start relative overflow-x-hidden">
 
-      {/* Radial Menu Navigation at Top-Right */}
-      <Header
-        lang={lang}
-        setLang={setLang}
-        isOpened={isOpened}
-        isFullScreen={isFullScreen}
-        toggleFullScreen={toggleFullScreen}
-        onShare={handleNativeShare}
-      />
 
       {/* Cinematic Angkor Gate Opening Animation Overlay (Works only one time) */}
       {isOpening && (
@@ -382,6 +373,16 @@ export default function App() {
         isOpen={showGiftModal}
         onClose={() => setShowGiftModal(false)}
         lang={lang}
+      />
+
+      {/* Radial Menu Navigation Button (Always visible on all pages/screens) */}
+      <Header
+        lang={lang}
+        setLang={setLang}
+        isOpened={isOpened}
+        isFullScreen={isFullScreen}
+        toggleFullScreen={toggleFullScreen}
+        onShare={handleNativeShare}
       />
 
     </div>
