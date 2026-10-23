@@ -172,8 +172,8 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete }) {
                 onClick={handleFinish}
                 className="mt-4 relative group cursor-pointer w-full py-2.5 px-5 rounded-full bg-gradient-to-r from-[#996515] via-[#ffd700] to-[#b8860b] text-[#140e08] font-bold shadow-[0_6px_20px_rgba(212,175,55,0.4)] hover:shadow-[0_8px_25px_rgba(212,175,55,0.7)] hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2"
               >
-                <span className="font-dangrek text-xs sm:text-sm text-[#140e08] font-semibold tracking-wide">
-                  {lang === 'km' ? 'ចូលទស្សនាសំបុត្រអញ្ជើញ' : 'View Full Invitation'}
+                <span className="font-dangrek text-xs sm:text-sm text-[#140e08] font-semibold tracking-wide animate-bounce">
+                  {lang === 'km' ? 'សូមចូលទស្សនាសំបុត្រអញ្ជើញ' : 'View Full Invitation'}
                 </span>
                 <svg
                   className="w-4 h-4 text-[#140e08] transform group-hover:translate-x-1 transition-transform"
