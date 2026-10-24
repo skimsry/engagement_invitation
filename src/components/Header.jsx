@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Maximize2, Minimize2, Share2, ChevronUp, ChevronDown, LogOut } from 'lucide-react';
+import { X, Maximize2, Minimize2, Share2, ChevronUp, ChevronDown, LogOut, Users } from 'lucide-react';
 import RomanticAudio from './RomanticAudio';
 
 export default function Header({
@@ -13,6 +13,7 @@ export default function Header({
   onPrev,
   onExitApp,
   onOpenCard,
+  onNavigateCrud,
   isHidden = false
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -231,11 +232,24 @@ export default function Header({
             </div>
           </div>
 
-          {/* Section 3: Exit to First Load */}
-          <div className="pt-1 border-t border-[#d4af37]/25">
+          {/* Section 3: Admin & Guest List CRUD Route */}
+          <div className="pt-1 border-t border-[#d4af37]/25 flex flex-col gap-2">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                onNavigateCrud?.();
+              }}
+              className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-[#d4af37]/20 hover:bg-[#d4af37]/35 border border-[#d4af37]/60 text-[#fde047] text-xs font-bold transition active:scale-95 group shadow-sm"
+              title={lang === 'km' ? 'គ្រប់គ្រងបញ្ជីភ្ញៀវ ' : 'Guest List & Spreadsheet CRUD'}
+            >
+              <Users className="w-4 h-4 text-[#fde047] group-hover:scale-110 transition-transform" />
+              <span>{lang === 'km' ? 'បញ្ជីភ្ញៀវ' : 'Guest List '}</span>
+            </button>
+
+            {/* Exit to First Load */}
             <button
               onClick={handleExitApp}
-              className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/40 text-rose-300 hover:text-white text-xs font-semibold transition active:scale-95 group shadow-sm"
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/40 text-rose-300 hover:text-white text-xs font-semibold transition active:scale-95 group shadow-sm"
               title={lang === 'km' ? 'ចាកចេញទៅទំព័រដើម' : 'Exit to First Load'}
             >
               <LogOut className="w-4 h-4 group-hover:scale-110 transition-transform text-rose-400" />

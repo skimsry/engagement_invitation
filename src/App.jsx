@@ -14,6 +14,7 @@ const RsvpSection = lazy(() => import('./components/RsvpSection'));
 const Footer = lazy(() => import('./components/Footer'));
 const BottomNav = lazy(() => import('./components/BottomNav'));
 const GiftAngpaoModal = lazy(() => import('./components/GiftAngpaoModal'));
+const InvitationCrud = lazy(() => import('./components/InvitationCrud'));
 
 // Helper for dynamic confetti import
 const fireConfetti = async (options) => {
@@ -39,10 +40,28 @@ const prefetchScreen2 = () => {
   import('canvas-confetti');
 };
 
+// Check if URL matches CRUD route
+const checkIsCrudRoute = () => {
+  if (typeof window === 'undefined') return false;
+  const path = window.location.pathname.toLowerCase();
+  const hash = window.location.hash.toLowerCase();
+  const search = window.location.search.toLowerCase();
+  return (
+    path === '/crud' || path.startsWith('/crud/') ||
+    path === '/admin' || path.startsWith('/admin/') ||
+    path === '/invitations' || path.startsWith('/invitations/') ||
+    hash === '#crud' || hash === '#/crud' || hash === '#/admin' ||
+    search.includes('route=crud') || search.includes('page=crud') || search.includes('admin=true')
+  );
+};
+
 // Google Apps Script Web App URL from original implementation
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMSWSdHf9ArnCzpB4CIapF7UkcDCHyUfW6jm0U1Wn-HmrEeD2yTk2C-zrNvtsnwQJpQ/exec";
 
 export default function App() {
+  const [currentRoute, setCurrentRoute] = useState(() => {
+    return checkIsCrudRoute() ? 'crud' : 'invitation';
+  });
   const [guest, setGuest] = useState({ id: '', name: 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី', rsvp: 'Pending', loaded: false });
   const [isOpened, setIsOpened] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
@@ -59,6 +78,39 @@ export default function App() {
 
   const invitationRef = useRef(null);
   const rsvpSectionRef = useRef(null);
+
+  // Helper to switch routes
+  const navigateTo = (route) => {
+    if (route === 'crud') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('route', 'crud');
+      window.history.pushState({}, '', url.toString());
+      setCurrentRoute('crud');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    } else {
+      const url = new URL(window.location.href);
+      url.searchParams.delete('route');
+      url.searchParams.delete('page');
+      url.searchParams.delete('admin');
+      const newPath = (window.location.pathname.includes('/crud') || window.location.pathname.includes('/admin')) ? '/' : window.location.pathname;
+      window.history.pushState({}, '', newPath + (url.search ? url.search : ''));
+      setCurrentRoute('invitation');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  };
+
+  // Listen to popstate and hashchange for browser navigation
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCurrentRoute(checkIsCrudRoute() ? 'crud' : 'invitation');
+    };
+    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('hashchange', handleRouteChange);
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('hashchange', handleRouteChange);
+    };
+  }, []);
 
   // Initialize Telegram Mini App & parse URL query params
   useEffect(() => {
@@ -328,6 +380,24 @@ export default function App() {
     '🎉 So happy for both of you!'
   ];
 
+  if (currentRoute === 'crud') {
+    return (
+      <Suspense fallback={
+        <div className="min-h-screen w-full bg-[#12100e] flex flex-col items-center justify-center p-8 space-y-4">
+          <div className="w-10 h-10 border-2 border-[#d4af37] border-t-transparent rounded-full animate-spin" />
+          <p className="font-moulpali text-sm text-[#ffd700] animate-pulse">
+            {lang === 'km' ? 'កំពុងដំណើរការ...' : 'Loading CRUD management...'}
+          </p>
+        </div>
+      }>
+        <InvitationCrud
+          onBackToInvitation={() => navigateTo('invitation')}
+          lang={lang}
+        />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="min-h-screen w-full bg-[#12100e] text-[#3d3126] flex flex-col items-center justify-start relative overflow-x-hidden">
 
@@ -415,20 +485,6 @@ export default function App() {
 
       </main>
 
-      {/* Floating Bottom Navigation Dock */}
-      {/* {isOpened && (
-        <Suspense fallback={null}>
-          <BottomNav
-            lang={lang}
-            onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            onScrollToRsvp={() => rsvpSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}
-            onOpenGiftModal={() => setShowGiftModal(true)}
-            onShare={handleNativeShare}
-          />
-        </Suspense>
-      )} */}
-
-
       {/* KHQR / ABA Digital Angpao Modal */}
       <Suspense fallback={null}>
         <GiftAngpaoModal
@@ -448,6 +504,7 @@ export default function App() {
         onShare={handleNativeShare}
         onExitApp={handleExitApp}
         onOpenCard={handleOpenCard}
+        onNavigateCrud={() => navigateTo('crud')}
         isHidden={isHeaderHidden}
       />
 
