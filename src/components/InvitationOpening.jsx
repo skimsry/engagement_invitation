@@ -341,7 +341,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
               <SlideButton
                 onSlideComplete={handleFinish}
                 lang={lang}
-                className="mt-48 min-[380px]:mt-28 sm:mt-36"
+                className="mt-24 min-[380px]:mt-28 sm:mt-36"
               />
             </div>
           ) : ""}
