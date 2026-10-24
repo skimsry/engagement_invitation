@@ -257,7 +257,7 @@ export default function Header({
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-label={isOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
-          className="relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#996515] via-[#d4af37] to-[#fde047] text-stone-950 shadow-[0_8px_25px_rgba(212,175,55,0.55)] hover:shadow-[0_12px_32px_rgba(212,175,55,0.75)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none flex items-center justify-center cursor-pointer border-2 border-amber-100"
+          className="relative w-14 h-14 rounded-full bg-gradient-to-tr from-[#9A702E] via-[#C8973E] to-[#6B4714] text-stone-950 shadow-[0_8px_25px_rgba(212,175,55,0.55)] hover:shadow-[0_12px_32px_rgba(212,175,55,0.75)] hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none flex items-center justify-center cursor-pointer border-2 border-amber-100"
         >
           <div className="relative w-8 h-8 flex items-center justify-center pointer-events-none select-none">
             {/* The Rings Image (visible when closed, spins & dissolves when open) */}
