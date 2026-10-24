@@ -18,7 +18,7 @@ export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
 
   const content = {
     km: {
-      title: 'ស្រោមសំបុត្រ ឬ ទឹកប្រាក់ចងដៃ',
+      title: 'ចំណងដៃឌីជីថល',
       subtitle: 'វត្តមានរបស់អស់លោកអ្នក ជាកិត្តិយសដ៏ធំធេងបំផុតសម្រាប់យើងខ្ញុំ។ ប្រសិនបើលោកអ្នកមានបំណងចងដៃ ឬជូនពរជាទឹកប្រាក់ សូមប្រើប្រាស់ KHQR ខាងក្រោម៖',
       scanLabel: 'ស្កេនទូទាត់តាម KHQR គ្រប់ធនាគារ',
       accName: 'ឈ្មោះគណនី',

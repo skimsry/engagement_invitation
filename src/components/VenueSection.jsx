@@ -1,4 +1,4 @@
-import { MapPin, Compass, Check, Copy } from 'lucide-react';
+import { MapPin, Check, Copy } from 'lucide-react';
 
 export default function VenueSection({ lang, copiedAddress, onCopyAddress }) {
   return (
@@ -19,26 +19,16 @@ export default function VenueSection({ lang, copiedAddress, onCopyAddress }) {
         </p>
       </div>
 
-      {/* Navigation Action Buttons (Google Maps & Waze - Very common in Cambodia!) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-md mx-auto my-4">
+      {/* Navigation Action Button (Google Maps) */}
+      <div className="flex justify-center max-w-xs mx-auto my-4">
         <a
           href="https://maps.google.com/?q=The+Premier+Centre+Sen+Sok+Phnom+Penh"
           target="_blank"
           rel="noreferrer"
-          className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#b8860b] hover:bg-[#996515] text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition"
+          className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-gradient-to-r from-[#996515]/60 via-[#d4af37]/75 to-[#ffd700]/90 hover:brightness-105 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition"
         >
           <MapPin className="w-4 h-4 text-amber-200" />
           <span>Google Maps</span>
-        </a>
-
-        <a
-          href="https://waze.com/ul?q=The+Premier+Centre+Sen+Sok"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-sky-700 hover:bg-sky-800 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition"
-        >
-          <Compass className="w-4 h-4 text-sky-200" />
-          <span>Waze Navigation</span>
         </a>
       </div>
 
