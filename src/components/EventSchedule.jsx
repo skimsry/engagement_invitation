@@ -46,8 +46,8 @@ export default function EventSchedule({ lang }) {
           <Clock className="w-3.5 h-3.5" />
           <span>{lang === 'km' ? 'ពេលវេលាកម្មវិធី' : 'Event Schedule'}</span>
         </div>
-        <h3 className="mb-2 font-moulpali text-xl sm:text-2xl text-[#3d3126]">
-          កម្មវិធីមង្គលភ្ជាប់ពាក្យ
+        <h3 className={`mb-2 ${lang === 'km' ? 'font-moulpali' : 'font-serif font-bold'} text-xl sm:text-2xl text-[#3d3126]`}>
+          {lang === 'km' ? 'កម្មវិធីមង្គលភ្ជាប់ពាក្យ' : 'Engagement Ceremony Program'}
         </h3>
         <p className="text-xs sm:text-sm text-[#8c7355]">
           {lang === 'km' ? 'កាលវិភាគលម្អិតនៃពិធីមង្គល' : 'Ceremony Agenda & Timeline'}

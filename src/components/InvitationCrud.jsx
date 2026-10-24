@@ -58,6 +58,29 @@ export const formatKhmerCopyText = (link) => {
   return `💐 សូមគោរពអញ្ជើញ ក្នុងចូលរួមពិធីភ្ជាប់ពាក្យ 💍\nយើងខ្ញុំមានកិត្តិយសសូមគោរពអញ្ជើញ ឯកឧត្តម លោកជំទាវ លោក លោកស្រី អ្នកនាង កញ្ញា ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស អបអរសាទរក្នុងពិធីភ្ជាប់ពាក្យរបស់យើងខ្ញុំ។ វត្តមាន និងពរជ័យរបស់លោកអ្នក គឺជាកិត្តិយស និងជាក្តីរីករាយដ៏ធំធេងសម្រាប់យើងខ្ញុំ។ ❤️\nសូមចុចតំណភ្ជាប់ខាងក្រោម ដើម្បីទស្សនាលិខិតអញ្ជើញ៖\n🔗 ${link}`;
 };
 
+// Engagement Ring SVG Icon
+export function RingIcon({ className = "w-5 h-5 text-[#d4af37]", ...props }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      {...props}
+    >
+      {/* Diamond Gem setting */}
+      <path d="M9 3h6l2 3-5 4-5-4 2-3z" fill="currentColor" fillOpacity="0.25" />
+      <path d="M7 6h10" />
+      <path d="M12 3v7" />
+      {/* Ring Band */}
+      <circle cx="12" cy="14.5" r="6.5" />
+    </svg>
+  );
+}
+
 export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
   const [scriptUrl, setScriptUrl] = useState(() => {
     return localStorage.getItem(STORAGE_KEY_SCRIPT_URL) || DEFAULT_SCRIPT_URL;
@@ -549,7 +572,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
 
             <div>
               <h1 className="font-moulpali text-lg sm:text-2xl text-[#f3e5ab] flex items-center gap-2">
-                <span>{lang === 'km' ? 'គ្រប់គ្រងបញ្ជីសំបុត្រអញ្ជើញ' : 'Invitation Management'}</span>
+                <span>{lang === 'km' ? 'គ្រប់គ្រងបញ្ជី' : 'Invitation Management'}</span>
               </h1>
               {/* <p className="text-xs text-stone-400">
                 {lang === 'km' ? 'តភ្ជាប់ Google Spreadsheet & បង្កើត Link អញ្ជើញភ្ញៀវ' : 'Google Spreadsheet CRUD & Shareable Invitation Links'}
@@ -806,7 +829,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                   <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-stone-800">
                     <div className="flex items-center gap-2.5 flex-wrap">
                       {/* 6-Digit ID Badge */}
-                      <span className="font-mono text-xs font-bold px-2.5 py-1 rounded-lg bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047]">
+                      <span className=" text-xs font-bold px-2.5 py-1 rounded-lg bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047]">
                         #{guest.id}
                       </span>
 
@@ -891,7 +914,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                       </div>
 
                       {/* Raw Link Input with Copy button */}
-                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 font-mono">
+                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 ">
                         <span className="truncate flex-1">{tgLink}</span>
                         <button
                           onClick={() => handleCopy(tgLink, `raw_tg_${guest.id}`)}
@@ -965,7 +988,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                       </div>
 
                       {/* Raw Link Input with Copy button */}
-                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 font-mono">
+                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 ">
                         <span className="truncate flex-1">{webLink}</span>
                         <button
                           onClick={() => handleCopy(webLink, `raw_web_${guest.id}`)}
@@ -1034,8 +1057,8 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
         <div className="fixed inset-0 z-[120] bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="w-full max-w-lg bg-[#181512] border border-[#d4af37]/50 rounded-3xl p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-2 border-b border-stone-800">
-              <h3 className="font-moul text-base sm:text-lg text-[#f3e5ab] flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-[#d4af37]" />
+              <h3 className="font-moulpali text-base sm:text-lg text-[#f3e5ab] flex items-center gap-2">
+                <RingIcon className="w-5 h-5 text-[#d4af37]" />
                 <span>
                   {editingGuest
                     ? (lang === 'km' ? 'កែប្រែព័ត៌មានភ្ញៀវ' : 'Edit Invitation')
@@ -1065,7 +1088,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                       <span>{lang === 'km' ? 'បង្កើតលេខថ្មី' : 'Generate New ID'}</span>
                     </button>
                   ) : (
-                    <span className="text-[11px] text-stone-500 flex items-center gap-1 font-mono">
+                    <span className="text-[11px] text-stone-500 flex items-center gap-1 ">
                       <Lock className="w-3 h-3 text-stone-500" />
                       <span>{lang === 'km' ? 'មិនអាចកែប្រែ ID បានទេ' : 'ID Locked'}</span>
                     </span>
@@ -1080,7 +1103,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                     value={formData.id}
                     onChange={(e) => setFormData({ ...formData, id: e.target.value.replace(/\D/g, '') })}
                     className={`w-full bg-[#12100e] border ${editingGuest ? 'border-stone-800 text-stone-400 cursor-not-allowed select-none' : 'border-[#d4af37]/40 text-[#fde047]'
-                      } focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-sm font-mono font-bold tracking-widest focus:outline-none`}
+                      } focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-sm  font-bold tracking-widest focus:outline-none`}
                     placeholder="482915"
                   />
                 </div>
@@ -1130,7 +1153,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                       <Lock className="w-3.5 h-3.5 text-[#d4af37]" />
                       <span>{lang === 'km' ? 'ព័ត៌មានឆ្លើយតបពីភ្ញៀវ (មើលតែប៉ុណ្ណោះ / View Only)' : 'Guest RSVP Response (View Only)'}</span>
                     </div>
-                    <span className="text-[10px] text-stone-500 font-mono bg-stone-900 px-2 py-0.5 rounded border border-stone-800">🔒 មិនអាចកែប្រែបាន</span>
+                    <span className="text-[10px] text-stone-500  bg-stone-900 px-2 py-0.5 rounded border border-stone-800">🔒 មិនអាចកែប្រែបាន</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -1138,7 +1161,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px] text-stone-400 font-medium">
                         <span>{lang === 'km' ? 'ស្ថានភាពឆ្លើយតប' : 'RSVP Status'}</span>
-                        <span className="text-[10px] text-stone-500 font-mono">🔒 មើលតែប៉ុណ្ណោះ</span>
+                        <span className="text-[10px] text-stone-500 ">🔒 មើលតែប៉ុណ្ណោះ</span>
                       </div>
                       <div className="px-3.5 py-2.5 rounded-xl bg-black/60 border border-stone-800 select-none flex items-center gap-2">
                         {editingGuest.rsvp === 'Attending' ? (
@@ -1169,7 +1192,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                     <div className="space-y-1">
                       <div className="flex items-center justify-between text-[11px] text-stone-400 font-medium">
                         <span>{lang === 'km' ? 'ចំនួនកៅអី/ភ្ញៀវ' : 'Guest Count'}</span>
-                        <span className="text-[10px] text-stone-500 font-mono">🔒 មើលតែប៉ុណ្ណោះ</span>
+                        <span className="text-[10px] text-stone-500 ">🔒 មើលតែប៉ុណ្ណោះ</span>
                       </div>
                       <div className="px-3.5 py-2.5 rounded-xl bg-black/60 border border-stone-800 text-stone-200 select-none font-bold flex items-center gap-2">
                         <Users className="w-4 h-4 text-[#d4af37]" />
@@ -1182,7 +1205,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                   <div className="space-y-1 text-xs">
                     <div className="flex items-center justify-between text-[11px] text-stone-400 font-medium">
                       <span>{lang === 'km' ? 'ពាក្យជូនពរ ឬ សារពីភ្ញៀវ' : 'Blessing Message from Guest'}</span>
-                      <span className="text-[10px] text-stone-500 font-mono">🔒 មើលតែប៉ុណ្ណោះ</span>
+                      <span className="text-[10px] text-stone-500 ">🔒 មើលតែប៉ុណ្ណោះ</span>
                     </div>
                     <div className="p-3.5 rounded-xl bg-black/60 border border-stone-800 text-stone-300 text-xs italic leading-relaxed min-h-[50px] select-none">
                       {editingGuest.message ? (
@@ -1213,7 +1236,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                   <span className="text-sm">ℹ️</span>
                   <span>
                     {lang === 'km'
-                      ? 'ស្ថានភាព RSVP, ចំនួនកៅអី និងពាក្យជូនពរ នឹងទទួលបានពីភ្ញៀវផ្ទាល់នៅពេលពួកគាត់ឆ្លើយតបតាមរយៈ Link សំបុត្រអញ្ជើញ។'
+                      ? 'ស្ថានភាព, ចំនួនកៅអី និងពាក្យជូនពរ នឹងទទួលបានពីភ្ញៀវផ្ទាល់នៅពេលពួកគាត់ឆ្លើយតបតាមរយៈ Link សំបុត្រអញ្ជើញ។'
                       : 'RSVP status, guest count, and blessings will be received directly from the guest when they confirm attendance.'}
                   </span>
                 </div>
@@ -1222,13 +1245,13 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
               {/* Auto Links Preview in Modal */}
               <div className="bg-black/30 border border-stone-800 rounded-xl p-3 space-y-2 text-xs text-stone-400">
                 <div className="flex items-center gap-1.5 text-stone-300 font-semibold">
-                  <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" />
+                  {/* <Sparkles className="w-3.5 h-3.5 text-[#d4af37]" /> */}
                   <span>{lang === 'km' ? 'តំណភ្ជាប់ដែលបង្កើតដោយស្វ័យប្រវត្តិ:' : 'Auto-generated Links:'}</span>
                 </div>
-                <div className="truncate font-mono text-[11px] text-[#2AABEE]">
+                <div className="truncate  text-[11px] text-[#2AABEE]">
                   Telegram: https://t.me/engagement_invitation_bot/invite?startapp={formData.id}
                 </div>
-                <div className="truncate font-mono text-[11px] text-[#fde047]">
+                <div className="truncate  text-[11px] text-[#fde047]">
                   Web: https://engagement-invitation.sornkimsry96.workers.dev/?guest={formData.id}
                 </div>
               </div>
@@ -1307,7 +1330,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                   ? 'ទិន្នន័យត្រូវបានកត់ត្រាទុកក្នុង App រួចរាល់ ប៉ុន្តែ Google Spreadsheet ឆ្លើយតបថា៖'
                   : 'Invitation recorded in app, but Google Spreadsheet replied:'}
               </p>
-              <div className="p-2.5 rounded-xl bg-black/60 border border-stone-800 text-rose-300 font-mono text-xs text-center mt-2">
+              <div className="p-2.5 rounded-xl bg-black/60 border border-stone-800 text-rose-300  text-xs text-center mt-2">
                 "{syncAlert.reason}"
               </div>
             </div>
@@ -1364,7 +1387,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 bg-white/5 border border-stone-800 rounded-xl">
                 <div>
                   <span className="font-semibold text-stone-200 block">Google Spreadsheet របស់អ្នក:</span>
-                  <span className="font-mono text-[11px] text-stone-400">1Dywg4dhXeyF-21qwhA1PAQqeV-VgPOC8NiUtwNzd0QM</span>
+                  <span className=" text-[11px] text-stone-400">1Dywg4dhXeyF-21qwhA1PAQqeV-VgPOC8NiUtwNzd0QM</span>
                 </div>
                 <a
                   href="https://docs.google.com/spreadsheets/d/1Dywg4dhXeyF-21qwhA1PAQqeV-VgPOC8NiUtwNzd0QM"
@@ -1439,7 +1462,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                     setScriptUrl(newUrl);
                     localStorage.setItem(STORAGE_KEY_SCRIPT_URL, newUrl);
                   }}
-                  className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl p-2.5 font-mono text-[11px] text-amber-200 focus:outline-none"
+                  className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl p-2.5  text-[11px] text-amber-200 focus:outline-none"
                 />
               </div>
 
