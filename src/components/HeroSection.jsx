@@ -55,7 +55,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="absolute bottom-3 left-0 right-0 text-center text-white px-3">
-          <p className="font-vibes text-2xl sm:text-3xl text-amber-200 flex items-center justify-center gap-1.5 sm:gap-2">
+          <p className="font-moulpali text-2xl sm:text-3xl text-amber-200 flex items-center justify-center gap-1.5 sm:gap-2">
             <span>{couple?.groom?.firstNameEn || 'Kimsan'}</span>
             <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 animate-pulse drop-shadow-[0_2px_8px_rgba(244,63,94,0.7)] shrink-0" />
             <span>{couple?.bride?.firstNameEn || 'Uysang'}</span>
