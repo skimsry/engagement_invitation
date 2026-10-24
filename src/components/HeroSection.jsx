@@ -45,7 +45,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
           <p className="text-[11px] text-stone-200 flex items-center justify-center gap-1.5 mt-0.5">
             <span>សន គឹមសាន្ត</span>
             <Heart className="w-2.5 h-2.5 text-rose-400 fill-rose-400 shrink-0" />
-            <span>ង៉ូវ អ៊ុយស័ង</span>
+            <span>ង៉ោ អូយសាំង</span>
           </p>
         </div>
       </div>

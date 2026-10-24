@@ -297,7 +297,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
                 }`}>
                 <span>{lang === 'km' ? 'គឹមសាន្ត' : 'Kimsan'}</span>
                 <Heart className="w-8 h-8 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 animate-pulse drop-shadow-[0_2px_8px_rgba(244,63,94,0.65)] shrink-0 mx-1" />
-                <span>{lang === 'km' ? 'អ៊ុយស័ង' : 'Uysang'}</span>
+                <span>{lang === 'km' ? 'អូយសាំង' : 'Uysang'}</span>
               </p>
 
 

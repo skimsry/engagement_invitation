@@ -166,7 +166,7 @@ export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
           onClick={handleCopy}
           className={`w-full py-3 px-4 rounded-xl font-medium text-sm transition-all flex items-center justify-center gap-2 shadow-md mt-3 active:scale-98 ${copied
             ? 'bg-emerald-600 text-white font-bold'
-            : 'bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 text-white font-bold hover:brightness-105 shadow-amber-500/20'
+            : 'hover:brightness-105 bg-gradient-to-r from-[#996515]/60 via-[#d4af37]/75 to-[#ffd700]/90 text-white font-bold hover:brightness-105 shadow-amber-500/20'
             }`}
         >
           {copied ? (
