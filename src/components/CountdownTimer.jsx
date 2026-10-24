@@ -46,12 +46,12 @@ export default function CountdownTimer({ targetDate = "2026-11-28T07:30:00+07:00
   ];
 
   return (
-    <div className="w-full my-6 p-4 rounded-2xl bg-gradient-to-b from-[#251d15] to-[#17130e] border border-[#d4af37]/40 shadow-xl text-center relative overflow-hidden">
+    <div className="w-full my-4 p-4 rounded-2xl bg-gradient-to-r from-amber-100/60 via-amber-50 to-amber-100/60 border border-[#d4af37]/50 shadow-sm text-center relative overflow-hidden">
       {/* Subtle gold glow background */}
-      <div className="absolute -top-12 -left-12 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none" />
-      <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-[#d4af37]/10 rounded-full blur-2xl pointer-events-none" />
+      <div className="absolute -top-10 -left-10 w-28 h-28 bg-[#d4af37]/10 rounded-full blur-xl pointer-events-none" />
+      <div className="absolute -bottom-10 -right-10 w-28 h-28 bg-[#d4af37]/10 rounded-full blur-xl pointer-events-none" />
 
-      <p className="font-dangrek text-xs uppercase tracking-widest text-[#d4af37] font-semibold mb-3">
+      <p className="font-moulpali text-xs sm:text-sm text-[#78500c] mb-3">
         ⏳ {labels.title}
       </p>
 
@@ -59,12 +59,12 @@ export default function CountdownTimer({ targetDate = "2026-11-28T07:30:00+07:00
         {timeUnits.map((item, idx) => (
           <div
             key={idx}
-            className="flex flex-col items-center justify-center p-2 sm:p-2.5 rounded-xl bg-black/40 border border-[#d4af37]/30 shadow-inner backdrop-blur-sm"
+            className="flex flex-col items-center justify-center p-2 sm:p-2.5 rounded-xl bg-white border border-[#d4af37]/40 shadow-sm"
           >
-            <span className="mb-2text-xl sm:text-2xl font-bold font-serif text-[#ffd700] tracking-tight">
+            <span className="text-xl sm:text-2xl font-bold font-serif text-[#78500c] tracking-tight">
               {String(item.value).padStart(2, '0')}
             </span>
-            <span className="text-[10px] sm:text-xs text-[#e6ca65] mt-0.5">
+            <span className="text-[10px] sm:text-xs text-[#8c7355] font-medium mt-0.5">
               {item.label}
             </span>
           </div>

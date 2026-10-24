@@ -123,10 +123,10 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
       <div className="flex justify-center mt-3">
         <button
           onClick={onAddToCalendar}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-stone-900 text-[#ffd700] hover:bg-stone-800 text-xs font-semibold border border-[#d4af37]/40 shadow transition active:scale-95"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#996515]/60 via-[#d4af37]/75 to-[#ffd700]/90 text-white font-bold text-xs sm:text-sm shadow-md hover:brightness-105 active:scale-95 transition"
         >
-          <CalendarPlus className="w-4 h-4 text-amber-400" />
-          <span className="font-dangrek">{lang === 'km' ? 'កត់ត្រាក្នុងប្រតិទិន' : 'Add to Calendar'}</span>
+          <CalendarPlus className="w-4 h-4 text-white" />
+          <span className="font-moulpali">{lang === 'km' ? 'កត់ត្រាក្នុងប្រតិទិន' : 'Add to Calendar'}</span>
         </button>
       </div>
     </div>

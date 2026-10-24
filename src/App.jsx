@@ -386,10 +386,10 @@ export default function App() {
               </div>
 
               {/* Digital Angpao / Gift via KHQR Card Banner */}
-              {/* <GiftBanner
+              <GiftBanner
                 lang={lang}
                 onOpenGiftModal={() => setShowGiftModal(true)}
-              /> */}
+              />
 
               {/* Enhanced RSVP Form Section */}
               <RsvpSection
