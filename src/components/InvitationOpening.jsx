@@ -287,15 +287,10 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
 
 
         {/* CENTER CONTENT */}
-        <div className="relative z-30 w-full flex-1 flex flex-col items-center justify-center px-4 py-3">
+        <div className="relative z-30 w-full flex-1 flex flex-col items-center justify-center px-2 sm:px-4 py-3">
           {/* PHASE 2: INVITATION NAME BOX (Appears after DURATION_MS or on Skip) */}
           {isFinished ? (
-            <div className="w-full max-w-[340px] sm:max-w-[370px] p-5 sm:p-6 text-center animate-fade-in-up flex flex-col items-center">
-              {/* Royal Crown / Rings Emblem */}
-              {/* <div className="w-11 h-11 rounded-full bg-black/40 border border-[#d4af37]/60 flex items-center justify-center mb-2 shadow-inner">
-                <KhmerLotus className="w-6 h-6 text-[#d4af37]" />
-              </div> */}
-
+            <div className="w-full max-w-[440px] sm:max-w-[490px] px-1 sm:px-2 py-4 text-center animate-fade-in-up flex flex-col items-center">
               {/* Ceremony Header */}
               {/* Ceremony Header */}
               <h2 className="font-moulpali text-xl sm:text-2xl leading-[1.7] py-2.5 min-h-[56px] flex items-center justify-center text-gold-bright drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
@@ -324,7 +319,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
 
               {/* BOX NAME OF INVITATION (Highlighted Guest Honorific with Portrait Plaque) */}
               <div
-                className="my-1.5 w-full max-w-[320px] sm:max-w-[350px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
+                className="my-1.5 w-full max-w-[410px] min-[420px]:max-w-[440px] sm:max-w-[475px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
                 style={{ backgroundImage: `url('${cover?.portraitPlaqueImage || '/images/wedding-portrait-plaque.webp'}')` }}
               >
                 {/* Guest name positioned inside the right-hand rectangular frame */}
@@ -337,7 +332,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
                     height: '26%',
                   }}
                 >
-                  <p className="font-dangrek text-xs sm:text-sm font-bold tracking-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] break-words text-center bg-gradient-to-b from-[#fff59d] via-[#ffd700] to-[#ca8a04] bg-clip-text text-transparent line-clamp-2">
+                  <p className="font-dangrek text-sm sm:text-base md:text-lg font-bold tracking-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] break-words text-center bg-gradient-to-b from-[#fff59d] via-[#ffd700] to-[#ca8a04] bg-clip-text text-transparent line-clamp-2">
                     {guest?.name}
                   </p>
                 </div>
