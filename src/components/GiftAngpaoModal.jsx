@@ -5,7 +5,7 @@ import { KhmerLotus, KhmerCorner, KhmerDivider } from './KhmerOrnaments';
 export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
   const [copied, setCopied] = useState(false);
   const accountNumber = "001 234 567";
-  const accountName = "SAN KIMSAN";
+  const accountName = "SORN KIMSAN";
   const bankName = "ABA Bank (KHQR)";
 
   if (!isOpen) return null;
@@ -22,7 +22,7 @@ export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
       subtitle: 'វត្តមានរបស់អស់លោកអ្នក ជាកិត្តិយសដ៏ធំធេងបំផុតសម្រាប់យើងខ្ញុំ។ ប្រសិនបើលោកអ្នកមានបំណងចងដៃ ឬជូនពរជាទឹកប្រាក់ សូមប្រើប្រាស់ KHQR ខាងក្រោម៖',
       scanLabel: 'ស្កេនទូទាត់តាម KHQR គ្រប់ធនាគារ',
       accName: 'ឈ្មោះគណនី',
-      accNum: 'លេខគណនី',
+      accNum: 'លេខគណនី ABA',
       copy: 'ចម្លងលេខគណនី',
       copied: 'បានចម្លងរួចរាល់!',
       close: 'បិទ',

@@ -299,7 +299,7 @@ export default function App() {
 
   const handleAddToCalendar = () => {
     const title = encodeURIComponent("Engagement Ceremony: Kimsan & Uysang | សិរីមង្គល ពិធីភ្ជាប់ពាក្យ");
-    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីភ្ជាប់ពាក្យ សន គឹមសាន្ត & ង៉ូវ អ៊ុយស័ង (San Kimsan & Ngov Uysang)");
+    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីភ្ជាប់ពាក្យ សន គឹមសាន្ត & ង៉ូវ អ៊ុយស័ង (SORN KIMSAN & Ngov Uysang)");
     const location = encodeURIComponent("The Premier Centre Sen Sok, Phnom Penh, Cambodia");
     const start = "20261128T003000Z";
     const end = "20261128T060000Z";

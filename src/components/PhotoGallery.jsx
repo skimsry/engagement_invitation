@@ -105,13 +105,6 @@ export default function PhotoGallery({ lang = "km" }) {
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 animate-fade-in"
         >
           <button
-            onClick={() => setSelectedPhotoIndex(null)}
-            className="absolute top-5 right-5 z-10 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition active:scale-95"
-          >
-            <X className="w-6 h-6" />
-          </button>
-
-          <button
             onClick={handlePrev}
             className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition active:scale-95 z-10"
           >
@@ -127,9 +120,18 @@ export default function PhotoGallery({ lang = "km" }) {
 
           <div
             onClick={(e) => e.stopPropagation()}
-            className="max-w-md w-full max-h-[85vh] flex flex-col items-center"
+            className="max-w-md w-full max-h-[85vh] flex flex-col items-center relative"
           >
             <div className="relative rounded-2xl overflow-hidden border-2 border-amber-400/60 shadow-2xl">
+              {/* Close Button on Edge of Image */}
+              <button
+                onClick={() => setSelectedPhotoIndex(null)}
+                aria-label="Close"
+                className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/60 hover:bg-black/85 text-white/90 hover:text-white transition active:scale-95 backdrop-blur-md border border-white/20 shadow-lg cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
               <img
                 src={photos[selectedPhotoIndex].url}
                 alt="Enlarged pre-wedding photo"

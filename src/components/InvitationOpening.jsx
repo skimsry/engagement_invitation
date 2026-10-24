@@ -289,7 +289,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
               </h2>
 
               {/* <p className="text-[10px] uppercase tracking-[0.2em] text-[#d4af37]/80 font-serif mt-0.5">
-                {lang === 'km' ? 'សន គឹមសាន្ត & គង់ ឧស្សាហ៍' : 'San Kimsan & Kong Ussa'}
+                {lang === 'km' ? 'សន គឹមសាន្ត & គង់ ឧស្សាហ៍' : 'SORN KIMSAN & Kong Ussa'}
               </p> */}
               <p className={`flex items-center justify-center gap-2 text-amber-200 mt-1 ${lang === 'km'
                 ? 'font-dangrek text-lg sm:text-xl tracking-wide'

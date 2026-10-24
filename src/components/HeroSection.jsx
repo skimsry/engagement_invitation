@@ -30,7 +30,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
       <div className="w-full max-w-sm mx-auto my-4 rounded-2xl overflow-hidden border-2 border-[#d4af37] shadow-xl relative aspect-[3/4]">
         <img
           src="/images/a1.webp"
-          alt="San Kimsan and Ngov Uysang"
+          alt="SORN KIMSAN and Ngov Uysang"
           className="w-full h-full object-cover"
           loading="lazy"
           decoding="async"
