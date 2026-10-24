@@ -1,8 +1,26 @@
+import { useState, useEffect } from 'react';
 import { CalendarPlus, Heart } from 'lucide-react';
 import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
 import CountdownTimer from './CountdownTimer';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
 export default function HeroSection({ guest, lang, onAddToCalendar }) {
+  const [config, setConfig] = useState(() => getStoredWeddingConfig());
+
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setConfig(e.detail);
+      }
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
+
+  const couple = config?.couple;
+  const eventDate = config?.eventDate;
+  const cover = config?.cover;
+
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 relative overflow-hidden text-center text-[#3d3126]">
       {/* Corner Traditional Ornaments */}
@@ -29,8 +47,8 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
       {/* Couple Hero Photo */}
       <div className="w-full max-w-sm mx-auto my-4 rounded-2xl overflow-hidden border-2 border-[#d4af37] shadow-xl relative aspect-[3/4]">
         <img
-          src="/images/a1.webp"
-          alt="SORN KIMSAN and Ngov Uysang"
+          src={cover?.heroImage || "/images/a1.webp"}
+          alt={`${couple?.groom?.firstNameEn || 'Kimsan'} and ${couple?.bride?.firstNameEn || 'Uysang'}`}
           className="w-full h-full object-cover"
           loading="lazy"
           decoding="async"
@@ -38,14 +56,14 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
         <div className="absolute bottom-3 left-0 right-0 text-center text-white px-3">
           <p className="font-vibes text-2xl sm:text-3xl text-amber-200 flex items-center justify-center gap-1.5 sm:gap-2">
-            <span>Kimsan</span>
+            <span>{couple?.groom?.firstNameEn || 'Kimsan'}</span>
             <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 animate-pulse drop-shadow-[0_2px_8px_rgba(244,63,94,0.7)] shrink-0" />
-            <span>Uysang</span>
+            <span>{couple?.bride?.firstNameEn || 'Uysang'}</span>
           </p>
           <p className="text-[11px] text-stone-200 flex items-center justify-center gap-1.5 mt-0.5">
-            <span>សន គឹមសាន្ត</span>
+            <span>{couple?.groom?.lastNameKm ? `${couple.groom.lastNameKm} ${couple.groom.firstNameKm}` : 'សន គឹមសាន្ត'}</span>
             <Heart className="w-2.5 h-2.5 text-rose-400 fill-rose-400 shrink-0" />
-            <span>ង៉ោ អូយសាំង</span>
+            <span>{couple?.bride?.lastNameKm ? `${couple.bride.lastNameKm} ${couple.bride.firstNameKm}` : 'ង៉ោ អូយសាំង'}</span>
           </p>
         </div>
       </div>
@@ -109,15 +127,15 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
           {lang === 'km' ? 'កាលបរិច្ឆេទនៃពិធីមង្គល' : 'Auspicious Ceremony Date'}
         </p>
         <p className="font-moulpali text-base sm:text-lg text-[#3d3126]">
-          ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦
+          {eventDate?.dateTextKm || eventDate?.displayKm || 'ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦'}
         </p>
         <p className="text-xs sm:text-sm text-[#78500c] font-medium">
-          Saturday, November 28, 2026 • វេលាម៉ោង ០៧:៣០ ព្រឹក
+          {eventDate?.dateTextEn || eventDate?.displayEn || 'Saturday, November 28, 2026 • វេលាម៉ោង ០៧:៣០ ព្រឹក'}
         </p>
       </div>
 
       {/* Live Countdown Timer */}
-      <CountdownTimer lang={lang} />
+      <CountdownTimer targetDate={eventDate?.dateTime || "2026-11-28T07:30:00+07:00"} lang={lang} />
 
       {/* Add to Calendar Button */}
       <div className="flex justify-center mt-3">

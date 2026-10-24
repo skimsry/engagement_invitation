@@ -1,26 +1,44 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Camera, Maximize2, X, ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import { KhmerDivider } from './KhmerOrnaments';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
-export default function PhotoGallery({ lang = "km" }) {
+const DEFAULT_PHOTOS = [
+  {
+    url: '/images/gallery-1.webp',
+    titleKm: 'ស្នាមញញឹមនៃក្តីស្រលាញ់',
+    titleEn: 'Sweet Moments Together',
+    captionKm: 'ពេលវេលាដ៏មានអត្ថន័យ និងពោរពេញដោយសុភមង្គល',
+    captionEn: 'Precious moments full of joy and love'
+  },
+  {
+    url: '/images/gallery-2.webp',
+    titleKm: 'អនុស្សាវរីយ៍ដ៏កក់ក្តៅ',
+    titleEn: 'Cherished Memories',
+    captionKm: 'ក្តីស្រលាញ់ និងភាពកក់ក្តៅរួមដំណើរជីវិត',
+    captionEn: 'Walking hand in hand through life'
+  }
+];
+
+export default function PhotoGallery({ lang = "km", photos: customPhotos }) {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(null);
+  const [photos, setPhotos] = useState(() => customPhotos || getStoredWeddingConfig().gallery || DEFAULT_PHOTOS);
 
-  const photos = [
-    {
-      url: '/images/gallery-1.webp',
-      titleKm: 'ស្នាមញញឹមនៃក្តីស្រលាញ់',
-      titleEn: 'Sweet Moments Together',
-      captionKm: 'ពេលវេលាដ៏មានអត្ថន័យ និងពោរពេញដោយសុភមង្គល',
-      captionEn: 'Precious moments full of joy and love'
-    },
-    {
-      url: '/images/gallery-2.webp',
-      titleKm: 'អនុស្សាវរីយ៍ដ៏កក់ក្តៅ',
-      titleEn: 'Cherished Memories',
-      captionKm: 'ក្តីស្រលាញ់ និងភាពកក់ក្តៅរួមដំណើរជីវិត',
-      captionEn: 'Walking hand in hand through life'
+  useEffect(() => {
+    if (customPhotos) {
+      setPhotos(customPhotos);
     }
-  ];
+  }, [customPhotos]);
+
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail?.gallery) {
+        setPhotos(e.detail.gallery);
+      }
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
 
   const content = {
     km: {

@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
-const SCHEDULE_ITEMS = [
+const DEFAULT_SCHEDULE_ITEMS = [
   {
     time: '07:00 AM',
     titleKm: 'ពិធីជួបជុំភ្ញៀវកិត្តិយស',
@@ -38,7 +40,25 @@ const SCHEDULE_ITEMS = [
   }
 ];
 
-export default function EventSchedule({ lang }) {
+export default function EventSchedule({ lang, scheduleItems }) {
+  const [items, setItems] = useState(() => scheduleItems || getStoredWeddingConfig().schedule || DEFAULT_SCHEDULE_ITEMS);
+
+  useEffect(() => {
+    if (scheduleItems) {
+      setItems(scheduleItems);
+    }
+  }, [scheduleItems]);
+
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail?.schedule) {
+        setItems(e.detail.schedule);
+      }
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
+
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
       <div className="text-center space-y-1 mb-6">
@@ -56,7 +76,7 @@ export default function EventSchedule({ lang }) {
 
       {/* Timeline Items */}
       <div className="space-y-4 max-w-md mx-auto">
-        {SCHEDULE_ITEMS.map((item, idx) => (
+        {items.map((item, idx) => (
           <div key={idx} className="flex items-start gap-3.5 p-3.5 rounded-2xl bg-white border border-[#d4af37]/30 shadow-sm">
             <div className="px-2.5 py-1.5 rounded-xl bg-[#b8860b]/15 border border-[#b8860b]/30 text-[#b8860b] font-serif font-bold text-xs shrink-0 mt-0.5">
               {item.time}

@@ -1,6 +1,30 @@
+import { useState, useEffect } from 'react';
 import { MapPin, Check, Copy } from 'lucide-react';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
-export default function VenueSection({ lang, copiedAddress, onCopyAddress }) {
+export default function VenueSection({ lang, venue, copiedAddress, onCopyAddress }) {
+  const [venueData, setVenueData] = useState(() => venue || getStoredWeddingConfig().venue);
+
+  useEffect(() => {
+    if (venue) {
+      setVenueData(venue);
+    }
+  }, [venue]);
+
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail?.venue) {
+        setVenueData(e.detail.venue);
+      }
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
+
+  const venueName = lang === 'km' ? venueData.venueNameKm : venueData.venueNameEn;
+  const address = lang === 'km' ? venueData.addressKm : venueData.addressEn;
+  const mapsUrl = venueData.googleMapsUrl || "https://maps.google.com/?q=The+Premier+Centre+Sen+Sok+Phnom+Penh";
+
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">
       <div className="text-center space-y-1 mb-5">
@@ -12,17 +36,17 @@ export default function VenueSection({ lang, copiedAddress, onCopyAddress }) {
           {lang === 'km' ? 'ទីតាំងប្រារព្ធពិធី' : 'Ceremony Venue'}
         </h3>
         <p className="text-sm font-semibold text-[#996515]">
-          The Premier Centre Sen Sok (ដឹ ព្រេមៀ សែនសុខ)
+          {venueName}
         </p>
         <p className="text-xs text-stone-500">
-          Phnom Penh, Kingdom of Cambodia
+          {address}
         </p>
       </div>
 
       {/* Navigation Action Button (Google Maps) */}
       <div className="flex justify-center max-w-xs mx-auto my-4">
         <a
-          href="https://maps.google.com/?q=The+Premier+Centre+Sen+Sok+Phnom+Penh"
+          href={mapsUrl}
           target="_blank"
           rel="noreferrer"
           className="w-full flex items-center justify-center gap-2 py-3 px-6 rounded-xl bg-gradient-to-r from-[#996515]/60 via-[#d4af37]/75 to-[#ffd700]/90 hover:brightness-105 text-white text-xs sm:text-sm font-semibold shadow-md active:scale-95 transition"

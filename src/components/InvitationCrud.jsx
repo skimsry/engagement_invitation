@@ -29,6 +29,8 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { GOOGLE_APPS_SCRIPT_CODE } from './googleAppsScriptSource';
+import WeddingConfigCrud from './WeddingConfigCrud';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
 const DEFAULT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzLMSWSdHf9ArnCzpB4CIapF7UkcDCHyUfW6jm0U1Wn-HmrEeD2yTk2C-zrNvtsnwQJpQ/exec";
 const STORAGE_KEY_GUESTS = "engagement_invitations_cache_v1";
@@ -37,7 +39,7 @@ const ADMIN_PASSWORD = "123!@#kims@n";
 const STORAGE_KEY_AUTH = "engagement_crud_admin_auth";
 
 // Generates a 6-digit random number string
-export const generate6DigitId = (existingIds = []) => {
+const generate6DigitId = (existingIds = []) => {
   const idsSet = new Set(existingIds.map(String));
   let newId = '';
   let attempts = 0;
@@ -49,17 +51,17 @@ export const generate6DigitId = (existingIds = []) => {
 };
 
 // Formats the English copy text with the specified link
-export const formatEnglishCopyText = (link) => {
+const formatEnglishCopyText = (link) => {
   return `💐 Engagement Ceremony Invitation 💍\nWe are delighted to invite you to celebrate our engagement ceremony. Your presence and blessings would mean so much to us. ❤️\nPlease click the link below to view our invitation:\n🔗 ${link}`;
 };
 
 // Formats the Khmer copy text with the specified link
-export const formatKhmerCopyText = (link) => {
+const formatKhmerCopyText = (link) => {
   return `💐 សូមគោរពអញ្ជើញ ក្នុងចូលរួមពិធីភ្ជាប់ពាក្យ 💍\nយើងខ្ញុំមានកិត្តិយសសូមគោរពអញ្ជើញ ឯកឧត្តម លោកជំទាវ លោក លោកស្រី អ្នកនាង កញ្ញា ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស អបអរសាទរក្នុងពិធីភ្ជាប់ពាក្យរបស់យើងខ្ញុំ។ វត្តមាន និងពរជ័យរបស់លោកអ្នក គឺជាកិត្តិយស និងជាក្តីរីករាយដ៏ធំធេងសម្រាប់យើងខ្ញុំ។ ❤️\nសូមចុចតំណភ្ជាប់ខាងក្រោម ដើម្បីទស្សនាលិខិតអញ្ជើញ៖\n🔗 ${link}`;
 };
 
 // Engagement Ring SVG Icon
-export function RingIcon({ className = "w-5 h-5 text-[#d4af37]", ...props }) {
+function RingIcon({ className = "w-5 h-5 text-[#d4af37]", ...props }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -85,6 +87,8 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
   const [scriptUrl, setScriptUrl] = useState(() => {
     return localStorage.getItem(STORAGE_KEY_SCRIPT_URL) || DEFAULT_SCRIPT_URL;
   });
+  const [adminTab, setAdminTab] = useState('guests'); // 'guests' | 'wedding_config'
+  const [weddingConfig, setWeddingConfig] = useState(() => getStoredWeddingConfig());
 
   const [guests, setGuests] = useState(() => {
     try {
@@ -202,7 +206,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
         }));
         setGuests(loaded);
         setSheetStatus('connected');
-        showToast(lang === 'km' ? 'ទាញទិន្នន័យពី Google Sheets ជោគជ័យ!' : 'Synced from Google Sheets!');
+        showToast(lang === 'km' ? 'ទាញទិន្នន័យពីម៉ាស៊ីនមេជោគជ័យ!' : 'Synced from Server!');
       } else {
         // If data returns error or missing id, the script is legacy
         setSheetStatus('legacy');
@@ -572,7 +576,7 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
 
             <div>
               <h1 className="font-moulpali text-lg sm:text-2xl text-[#f3e5ab] flex items-center gap-2">
-                <span>{lang === 'km' ? 'គ្រប់គ្រងបញ្ជី' : 'Invitation Management'}</span>
+                <span>{lang === 'km' ? 'គ្រប់គ្រងប្រព័ន្ធ' : 'Invitation Management'}</span>
               </h1>
               {/* <p className="text-xs text-stone-400">
                 {lang === 'km' ? 'តភ្ជាប់ Google Spreadsheet & បង្កើត Link អញ្ជើញភ្ញៀវ' : 'Google Spreadsheet CRUD & Shareable Invitation Links'}
@@ -581,33 +585,37 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white transition active:scale-95 text-xs flex items-center gap-1.5"
-              title="Google Sheet Settings"
-            >
-              <Settings className="w-4 h-4 text-[#d4af37]" />
-              <span className="hidden sm:inline">Settings</span>
-            </button>
+            {adminTab === 'guests' && (
+              <>
+                <button
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white transition active:scale-95 text-xs flex items-center gap-1.5"
+                  title="Google Sheet Settings"
+                >
+                  <Settings className="w-4 h-4 text-[#d4af37]" />
+                  <span className="hidden sm:inline">Settings</span>
+                </button>
 
-            <button
-              onClick={fetchGuestsFromSheet}
-              disabled={loading}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white transition active:scale-95 text-xs flex items-center gap-1.5 disabled:opacity-50"
-              title="Refresh from Sheet"
-            >
-              <RefreshCw className={`w-4 h-4 text-[#d4af37] ${loading ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">{lang === 'km' ? 'ទាញទិន្នន័យ' : 'Refresh'}</span>
-            </button>
+                <button
+                  onClick={fetchGuestsFromSheet}
+                  disabled={loading}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white transition active:scale-95 text-xs flex items-center gap-1.5 disabled:opacity-50"
+                  title="Refresh from Sheet"
+                >
+                  <RefreshCw className={`w-4 h-4 text-[#d4af37] ${loading ? 'animate-spin' : ''}`} />
+                  <span className="hidden sm:inline">{lang === 'km' ? 'ទាញទិន្នន័យ' : 'Refresh'}</span>
+                </button>
 
-            <button
-              onClick={handleExportCSV}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white transition active:scale-95 text-xs flex items-center gap-1.5"
-              title="Export CSV"
-            >
-              <Download className="w-4 h-4 text-emerald-400" />
-              <span className="hidden sm:inline">CSV</span>
-            </button>
+                <button
+                  onClick={handleExportCSV}
+                  className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white transition active:scale-95 text-xs flex items-center gap-1.5"
+                  title="Export CSV"
+                >
+                  <Download className="w-4 h-4 text-emerald-400" />
+                  <span className="hidden sm:inline">CSV</span>
+                </button>
+              </>
+            )}
 
             <button
               onClick={handleLogout}
@@ -618,436 +626,482 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
               <span className="hidden md:inline">{lang === 'km' ? 'ចាកចេញ' : 'Logout'}</span>
             </button>
 
-            <button
-              onClick={handleOpenCreate}
-              className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#996515] via-[#b8860b] to-[#d4af37] text-stone-950 font-bold text-xs sm:text-sm shadow-[0_4px_20px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 transition flex items-center gap-1.5"
-            >
-              <Plus className="w-4 h-4 stroke-[3]" />
-              <span>{lang === 'km' ? 'បង្កើតធៀបថ្មី' : 'Add Guest'}</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Sync Status Alert Banner if Google Apps Script is not deployed or legacy */}
-        {sheetStatus === 'legacy' && (
-          <div className="bg-amber-950/40 border-2 border-amber-500/60 rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_4px_25px_rgba(245,158,11,0.2)]">
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-6 h-6 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
-              <div className="space-y-1">
-                <h4 className="font-moul text-xs sm:text-sm text-amber-200">
-                  {lang === 'km' ? '⚠️ Google Apps Script ត្រូវការ Update Code ថ្មី' : '⚠️ Action Required: Update Google Apps Script'}
-                </h4>
-                <p className="text-xs text-stone-300 leading-relaxed max-w-2xl">
-                  {lang === 'km'
-                    ? 'អ្នកមិនទាន់ឃើញ Record ថ្មីក្នុង Google Spreadsheet ដោយសារ Apps Script លើ Google កំពុងរត់ Version ចាស់ (ឆ្លើយតប Guest not found)។ សូម Update កូដ Code.gs ថ្មីជា New Version ដើម្បីឱ្យទិន្នន័យ Sync ដោយស្វ័យប្រវត្តិ!'
-                    : 'Records are not appearing in Google Sheets because the current Apps Script on Google is running an older deployment. Please update Code.gs in Apps Script as a "New version".'}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:brightness-110 text-stone-950 font-bold text-xs shrink-0 shadow active:scale-95 transition flex items-center gap-1.5"
-            >
-              <span>{lang === 'km' ? 'របៀប Update Code.gs' : 'Deploy Instructions'}</span>
-            </button>
-          </div>
-        )}
-
-        {/* Sync Status Banner if Connected */}
-        {sheetStatus === 'connected' && (
-          <div className="bg-emerald-950/30 border border-emerald-500/40 rounded-2xl px-4 py-2.5 flex items-center justify-between gap-2 text-xs text-emerald-300">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>{lang === 'km' ? '🟢 Google Spreadsheet បានភ្ជាប់ជោគជ័យ (CRUD Ready)' : '🟢 Google Spreadsheet Connected (CRUD Ready)'}</span>
-            </div>
-            <a
-              href="https://docs.google.com/spreadsheets/d/1Dywg4dhXeyF-21qwhA1PAQqeV-VgPOC8NiUtwNzd0QM"
-              target="_blank"
-              rel="noreferrer"
-              className="underline text-[11px] text-emerald-400 hover:text-emerald-200 flex items-center gap-1"
-            >
-              <span>View Sheet</span>
-              <ExternalLink className="w-3 h-3" />
-            </a>
-          </div>
-        )}
-
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 sm:gap-3">
-          <div
-            onClick={() => setStatusFilter('ALL')}
-            className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'ALL'
-              ? 'bg-[#d4af37]/15 border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
-              : 'bg-[#181512] border-stone-800 hover:border-stone-700'
-              }`}
-          >
-            <div className="flex items-center justify-between text-xs text-stone-400 mb-1">
-              <span>{lang === 'km' ? 'សរុបទាំងអស់' : 'Total Guests'}</span>
-              <Users className="w-4 h-4 text-[#d4af37]" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-[#f3e5ab]">{stats.total}</div>
-          </div>
-
-          <div
-            onClick={() => setStatusFilter('Attending')}
-            className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'Attending'
-              ? 'bg-emerald-950/40 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
-              : 'bg-[#181512] border-stone-800 hover:border-stone-700'
-              }`}
-          >
-            <div className="flex items-center justify-between text-xs text-emerald-400 mb-1">
-              <span>{lang === 'km' ? 'ចូលរួម' : 'Attending'}</span>
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-emerald-300">{stats.attending}</div>
-          </div>
-
-          <div
-            onClick={() => setStatusFilter('Maybe')}
-            className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'Maybe'
-              ? 'bg-amber-950/40 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]'
-              : 'bg-[#181512] border-stone-800 hover:border-stone-700'
-              }`}
-          >
-            <div className="flex items-center justify-between text-xs text-amber-400 mb-1">
-              <span>{lang === 'km' ? 'ប្រហែល' : 'Maybe'}</span>
-              <HelpCircle className="w-4 h-4 text-amber-400" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-amber-300">{stats.maybe}</div>
-          </div>
-
-          <div
-            onClick={() => setStatusFilter('Declined')}
-            className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'Declined'
-              ? 'bg-rose-950/40 border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
-              : 'bg-[#181512] border-stone-800 hover:border-stone-700'
-              }`}
-          >
-            <div className="flex items-center justify-between text-xs text-rose-400 mb-1">
-              <span>{lang === 'km' ? 'មិនអាចចូលរួម' : 'Declined'}</span>
-              <XCircle className="w-4 h-4 text-rose-400" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-rose-300">{stats.declined}</div>
-          </div>
-
-          <div
-            onClick={() => setStatusFilter('Pending')}
-            className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition col-span-2 sm:col-span-1 ${statusFilter === 'Pending'
-              ? 'bg-stone-800/60 border-stone-400 shadow-[0_0_15px_rgba(168,162,158,0.2)]'
-              : 'bg-[#181512] border-stone-800 hover:border-stone-700'
-              }`}
-          >
-            <div className="flex items-center justify-between text-xs text-stone-400 mb-1">
-              <span>{lang === 'km' ? 'រង់ចាំឆ្លើយ' : 'Pending'}</span>
-              <Clock className="w-4 h-4 text-stone-400" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-stone-300">{stats.pending}</div>
-          </div>
-        </div>
-
-        {/* Search & Filter Toolbar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#181512] border border-stone-800 p-3 sm:p-4 rounded-2xl">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={lang === 'km' ? 'ស្វែងរកតាមឈ្មោះ ឬ លេខ ID (ឧ. 482915)...' : 'Search by name or 6-digit ID (e.g. 482915)...'}
-              className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-stone-200 focus:outline-none"
-            />
-            {searchQuery && (
+            {adminTab === 'guests' && (
               <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white"
+                onClick={handleOpenCreate}
+                className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#996515] via-[#b8860b] to-[#d4af37] text-stone-950 font-bold text-xs sm:text-sm shadow-[0_4px_20px_rgba(212,175,55,0.4)] hover:brightness-110 active:scale-95 transition flex items-center gap-1.5"
               >
-                <X className="w-3.5 h-3.5" />
+                <Plus className="w-4 h-4 stroke-[3]" />
+                <span>{lang === 'km' ? 'បង្កើតធៀបថ្មី' : 'Add Guest'}</span>
               </button>
             )}
           </div>
-
-          {/* Quick Filter Buttons */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
-            {['ALL', 'Attending', 'Maybe', 'Declined', 'Pending'].map((st) => (
-              <button
-                key={st}
-                onClick={() => setStatusFilter(st)}
-                className={`py-1.5 px-3 rounded-xl text-xs font-semibold whitespace-nowrap transition ${statusFilter === st
-                  ? 'bg-[#d4af37] text-stone-950 shadow'
-                  : 'bg-white/5 text-stone-400 hover:bg-white/10 hover:text-stone-200'
-                  }`}
-              >
-                {st === 'ALL' ? (lang === 'km' ? 'ទាំងអស់' : 'All') :
-                  st === 'Attending' ? (lang === 'km' ? 'ចូលរួម' : 'Attending') :
-                    st === 'Maybe' ? (lang === 'km' ? 'ប្រហែល' : 'Maybe') :
-                      st === 'Declined' ? (lang === 'km' ? 'មិនចូលរួម' : 'Declined') :
-                        (lang === 'km' ? 'រង់ចាំ' : 'Pending')}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* Invitations List / Cards */}
-        {filteredGuests.length === 0 ? (
-          <div className="bg-[#181512] border border-dashed border-stone-800 rounded-3xl p-12 text-center space-y-4">
-            <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-[#d4af37]/30 flex items-center justify-center mx-auto text-[#d4af37]">
-              <Users className="w-7 h-7" />
-            </div>
-            <p className="font-semibold text-stone-300">
-              {lang === 'km' ? 'រកមិនឃើញសំបុត្រអញ្ជើញទេ' : 'No invitations found'}
-            </p>
-            <p className="text-xs text-stone-500 max-w-sm mx-auto">
-              {lang === 'km'
-                ? 'មិនមានទិន្នន័យត្រូវនឹងការស្វែងរក ឬអ្នកមិនទាន់បានបង្កើតសំបុត្រអញ្ជើញនៅឡើយ។'
-                : 'No records match your filter, or no invitations have been added yet.'}
-            </p>
-            <button
-              onClick={handleOpenCreate}
-              className="py-2 px-4 rounded-xl bg-[#d4af37] text-stone-950 font-bold text-xs inline-flex items-center gap-1.5 shadow"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>{lang === 'km' ? 'បង្កើតសំបុត្រដំបូង' : 'Create First Invitation'}</span>
-            </button>
-          </div>
+        {/* Main Tab Switcher: Guests List vs Wedding Event Details CMS */}
+        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-[#1c1815] border border-[#d4af37]/40 shadow-xl">
+          <button
+            onClick={() => setAdminTab('guests')}
+            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 cursor-pointer ${adminTab === 'guests'
+              ? 'bg-gradient-to-r from-[#996515] via-[#b8860b] to-[#d4af37] text-stone-950 font-bold shadow-[0_4px_15px_rgba(212,175,55,0.35)]'
+              : 'text-stone-300 hover:text-white hover:bg-white/5'
+              }`}
+          >
+            <Users className="w-4 h-4" />
+            <span className="font-moulpali text-xs sm:text-sm">
+              {lang === 'km' ? 'បញ្ជីភ្ញៀវ' : 'Guest List & RSVP'}
+            </span>
+            <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${adminTab === 'guests' ? 'bg-black/25 text-stone-950' : 'bg-white/10 text-stone-300'
+              }`}>
+              {guests.length}
+            </span>
+          </button>
+
+          <button
+            onClick={() => setAdminTab('wedding_config')}
+            className={`flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center justify-center gap-2 cursor-pointer ${adminTab === 'wedding_config'
+              ? 'bg-gradient-to-r from-[#996515] via-[#b8860b] to-[#d4af37] text-stone-950 font-bold shadow-[0_4px_15px_rgba(212,175,55,0.35)]'
+              : 'text-stone-300 hover:text-white hover:bg-white/5'
+              }`}
+          >
+            <RingIcon className="w-4 h-4" />
+            <span className="font-moulpali text-xs sm:text-sm">
+              {lang === 'km' ? 'ព័ត៌មានមង្គលការ' : 'Wedding Details CMS'}
+            </span>
+          </button>
+        </div>
+
+        {adminTab === 'wedding_config' ? (
+          <WeddingConfigCrud
+            config={weddingConfig}
+            onUpdateConfig={setWeddingConfig}
+            lang={lang}
+            onBack={() => setAdminTab('guests')}
+          />
         ) : (
-          <div className="space-y-4">
-            {filteredGuests.map((guest) => {
-              const tgLink = guest.telegram_link || `https://t.me/engagement_invitation_bot/invite?startapp=${guest.id}`;
-              const webLink = guest.web_link || `https://engagement-invitation.sornkimsry96.workers.dev/?guest=${guest.id}`;
-
-              const enTgText = formatEnglishCopyText(tgLink);
-              const khTgText = formatKhmerCopyText(tgLink);
-              const enWebText = formatEnglishCopyText(webLink);
-              const khWebText = formatKhmerCopyText(webLink);
-
-              return (
-                <div
-                  key={guest.id}
-                  className="bg-[#181512] border border-[#d4af37]/25 hover:border-[#d4af37]/50 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl transition space-y-4"
-                >
-                  {/* Card Header: ID, Name, RSVP Status, Edit/Delete */}
-                  <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-stone-800">
-                    <div className="flex items-center gap-2.5 flex-wrap">
-                      {/* 6-Digit ID Badge */}
-                      <span className=" text-xs font-bold px-2.5 py-1 rounded-lg bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047]">
-                        #{guest.id}
-                      </span>
-
-                      {/* Guest Honorific / Name */}
-                      <h2 className="font-moul text-base sm:text-lg text-[#f3e5ab]">
-                        {guest.name}
-                      </h2>
-
-                      {/* RSVP Badge */}
-                      {guest.rsvp === 'Attending' && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
-                          <CheckCircle2 className="w-3 h-3" />
-                          <span>{lang === 'km' ? 'ចូលរួម' : 'Attending'} ({guest.guestCount || '1'})</span>
-                        </span>
-                      )}
-                      {guest.rsvp === 'Maybe' && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-950/60 text-amber-300 border border-amber-500/40">
-                          <HelpCircle className="w-3 h-3" />
-                          <span>{lang === 'km' ? 'ប្រហែល' : 'Maybe'}</span>
-                        </span>
-                      )}
-                      {guest.rsvp === 'Declined' && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-950/60 text-rose-300 border border-rose-500/40">
-                          <XCircle className="w-3 h-3" />
-                          <span>{lang === 'km' ? 'មិនអាច' : 'Declined'}</span>
-                        </span>
-                      )}
-                      {(!guest.rsvp || guest.rsvp === 'Pending') && (
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-stone-800/80 text-stone-400 border border-stone-700">
-                          <Clock className="w-3 h-3" />
-                          <span>{lang === 'km' ? 'រង់ចាំឆ្លើយ' : 'Pending'}</span>
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Edit and Delete Actions */}
-                    <div className="flex items-center gap-1.5 ml-auto">
-                      <button
-                        onClick={() => handleOpenEdit(guest)}
-                        className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-stone-700/80 transition active:scale-95"
-                        title={lang === 'km' ? 'កែប្រែ' : 'Edit'}
-                      >
-                        <Edit3 className="w-4 h-4 text-amber-400" />
-                      </button>
-                      <button
-                        onClick={() => setGuestToDelete(guest)}
-                        className="p-2 rounded-xl bg-white/5 hover:bg-rose-950/40 text-stone-300 hover:text-rose-300 border border-stone-700/80 transition active:scale-95"
-                        title={lang === 'km' ? 'លុប' : 'Delete'}
-                      >
-                        <Trash2 className="w-4 h-4 text-rose-400" />
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Guest Message / Blessings (if any) */}
-                  {guest.message && (
-                    <div className="text-xs bg-[#12100e] border border-amber-500/20 rounded-xl p-3 text-amber-200/90 italic flex items-start gap-2">
-                      <span className="not-italic text-sm">💬</span>
-                      <span>"{guest.message}"</span>
-                    </div>
-                  )}
-
-                  {/* LINKS & COPY ACTIONS SECTION */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
-
-                    {/* 1. TELEGRAM BOT LINK CARD */}
-                    <div className="bg-[#12100e] border border-[#2AABEE]/30 rounded-2xl p-3.5 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-[#2AABEE]">
-                          <Send className="w-4 h-4" />
-                          <span>Telegram Mini App Link</span>
-                        </div>
-                        <a
-                          href={tgLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[11px] text-stone-400 hover:text-[#2AABEE] flex items-center gap-1 underline"
-                        >
-                          <span>Open</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-
-                      {/* Raw Link Input with Copy button */}
-                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 ">
-                        <span className="truncate flex-1">{tgLink}</span>
-                        <button
-                          onClick={() => handleCopy(tgLink, `raw_tg_${guest.id}`)}
-                          className="p-1 rounded-md hover:bg-white/10 text-stone-300 hover:text-white"
-                          title="Copy raw link only"
-                        >
-                          {copiedKey === `raw_tg_${guest.id}` ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
-                      </div>
-
-                      {/* Copy Invitation Message Buttons */}
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          onClick={() => handleCopy(enTgText, `tg_en_${guest.id}`)}
-                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-blue-950/40 hover:bg-blue-900/60 border border-blue-500/40 text-blue-200 text-xs font-semibold active:scale-95 transition"
-                          title="Copy English Invitation Text with Telegram Link"
-                        >
-                          {copiedKey === `tg_en_${guest.id}` ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-emerald-300">Copied!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-blue-400" />
-                              <span>Copy EN (TG)</span>
-                            </>
-                          )}
-                        </button>
-
-                        <button
-                          onClick={() => handleCopy(khTgText, `tg_kh_${guest.id}`)}
-                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 text-amber-200 text-xs font-semibold active:scale-95 transition"
-                          title="Copy Khmer Invitation Text with Telegram Link"
-                        >
-                          {copiedKey === `tg_kh_${guest.id}` ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-emerald-300">បានចម្លង!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-amber-400" />
-                              <span>ចម្លងខ្មែរ (TG)</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* 2. WEB LINK CARD */}
-                    <div className="bg-[#12100e] border border-[#d4af37]/35 rounded-2xl p-3.5 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1.5 text-xs font-bold text-[#f3e5ab]">
-                          <Globe className="w-4 h-4 text-[#d4af37]" />
-                          <span>Direct Web Link (Cloudflare / Browser)</span>
-                        </div>
-                        <a
-                          href={webLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-[11px] text-stone-400 hover:text-[#f3e5ab] flex items-center gap-1 underline"
-                        >
-                          <span>Preview</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-
-                      {/* Raw Link Input with Copy button */}
-                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 ">
-                        <span className="truncate flex-1">{webLink}</span>
-                        <button
-                          onClick={() => handleCopy(webLink, `raw_web_${guest.id}`)}
-                          className="p-1 rounded-md hover:bg-white/10 text-stone-300 hover:text-white"
-                          title="Copy raw link only"
-                        >
-                          {copiedKey === `raw_web_${guest.id}` ? (
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
-                      </div>
-
-                      {/* Copy Invitation Message Buttons */}
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          onClick={() => handleCopy(enWebText, `web_en_${guest.id}`)}
-                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-stone-900 hover:bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047] text-xs font-semibold active:scale-95 transition"
-                          title="Copy English Invitation Text with Web Link"
-                        >
-                          {copiedKey === `web_en_${guest.id}` ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="text-emerald-300">Copied!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-[#fde047]" />
-                              <span>Copy EN (Web)</span>
-                            </>
-                          )}
-                        </button>
-
-                        <button
-                          onClick={() => handleCopy(khWebText, `web_kh_${guest.id}`)}
-                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-gradient-to-r from-[#996515] to-[#d4af37] text-stone-950 text-xs font-bold shadow-md hover:brightness-110 active:scale-95 transition"
-                          title="Copy Khmer Invitation Text with Web Link"
-                        >
-                          {copiedKey === `web_kh_${guest.id}` ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-stone-950" />
-                              <span>បានចម្លង!</span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-stone-950" />
-                              <span>ចម្លងខ្មែរ (Web)</span>
-                            </>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-
+          <>
+            {/* Sync Status Alert Banner if Google Apps Script is not deployed or legacy */}
+            {sheetStatus === 'legacy' && (
+              <div className="bg-amber-950/40 border-2 border-amber-500/60 rounded-2xl sm:rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-[0_4px_25px_rgba(245,158,11,0.2)]">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-6 h-6 text-amber-400 shrink-0 mt-0.5 animate-pulse" />
+                  <div className="space-y-1">
+                    <h4 className="font-moul text-xs sm:text-sm text-amber-200">
+                      {lang === 'km' ? '⚠️ Google Apps Script ត្រូវការ Update Code ថ្មី' : '⚠️ Action Required: Update Google Apps Script'}
+                    </h4>
+                    <p className="text-xs text-stone-300 leading-relaxed max-w-2xl">
+                      {lang === 'km'
+                        ? 'អ្នកមិនទាន់ឃើញ Record ថ្មីក្នុង Google Spreadsheet ដោយសារ Apps Script លើ Google កំពុងរត់ Version ចាស់ (ឆ្លើយតប Guest not found)។ សូម Update កូដ Code.gs ថ្មីជា New Version ដើម្បីឱ្យទិន្នន័យ Sync ដោយស្វ័យប្រវត្តិ!'
+                        : 'Records are not appearing in Google Sheets because the current Apps Script on Google is running an older deployment. Please update Code.gs in Apps Script as a "New version".'}
+                    </p>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+                <button
+                  onClick={() => setIsSettingsOpen(true)}
+                  className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 hover:brightness-110 text-stone-950 font-bold text-xs shrink-0 shadow active:scale-95 transition flex items-center gap-1.5"
+                >
+                  <span>{lang === 'km' ? 'របៀប Update Code.gs' : 'Deploy Instructions'}</span>
+                </button>
+              </div>
+            )}
+
+            {/* Sync Status Banner if Connected */}
+            {sheetStatus === 'connected' && (
+              <div className="bg-emerald-950/30 border border-emerald-500/40 rounded-2xl px-4 py-2.5 flex items-center justify-between gap-2 text-xs text-emerald-300">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>{lang === 'km' ? '🟢 Google Spreadsheet បានភ្ជាប់ជោគជ័យ (CRUD Ready)' : '🟢 Google Spreadsheet Connected (CRUD Ready)'}</span>
+                </div>
+                <a
+                  href="https://docs.google.com/spreadsheets/d/1Dywg4dhXeyF-21qwhA1PAQqeV-VgPOC8NiUtwNzd0QM"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline text-[11px] text-emerald-400 hover:text-emerald-200 flex items-center gap-1"
+                >
+                  <span>View Sheet</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+            )}
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 sm:gap-3">
+              <div
+                onClick={() => setStatusFilter('ALL')}
+                className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'ALL'
+                  ? 'bg-[#d4af37]/15 border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
+                  : 'bg-[#181512] border-stone-800 hover:border-stone-700'
+                  }`}
+              >
+                <div className="flex items-center justify-between text-xs text-stone-400 mb-1">
+                  <span>{lang === 'km' ? 'សរុបទាំងអស់' : 'Total Guests'}</span>
+                  <Users className="w-4 h-4 text-[#d4af37]" />
+                </div>
+                <div className="text-xl sm:text-2xl font-bold text-[#f3e5ab]">{stats.total}</div>
+              </div>
+
+              <div
+                onClick={() => setStatusFilter('Attending')}
+                className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'Attending'
+                  ? 'bg-emerald-950/40 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                  : 'bg-[#181512] border-stone-800 hover:border-stone-700'
+                  }`}
+              >
+                <div className="flex items-center justify-between text-xs text-emerald-400 mb-1">
+                  <span>{lang === 'km' ? 'ចូលរួម' : 'Attending'}</span>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                </div>
+                <div className="text-xl sm:text-2xl font-bold text-emerald-300">{stats.attending}</div>
+              </div>
+
+              <div
+                onClick={() => setStatusFilter('Maybe')}
+                className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'Maybe'
+                  ? 'bg-amber-950/40 border-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.2)]'
+                  : 'bg-[#181512] border-stone-800 hover:border-stone-700'
+                  }`}
+              >
+                <div className="flex items-center justify-between text-xs text-amber-400 mb-1">
+                  <span>{lang === 'km' ? 'ប្រហែល' : 'Maybe'}</span>
+                  <HelpCircle className="w-4 h-4 text-amber-400" />
+                </div>
+                <div className="text-xl sm:text-2xl font-bold text-amber-300">{stats.maybe}</div>
+              </div>
+
+              <div
+                onClick={() => setStatusFilter('Declined')}
+                className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition ${statusFilter === 'Declined'
+                  ? 'bg-rose-950/40 border-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.2)]'
+                  : 'bg-[#181512] border-stone-800 hover:border-stone-700'
+                  }`}
+              >
+                <div className="flex items-center justify-between text-xs text-rose-400 mb-1">
+                  <span>{lang === 'km' ? 'មិនអាចចូលរួម' : 'Declined'}</span>
+                  <XCircle className="w-4 h-4 text-rose-400" />
+                </div>
+                <div className="text-xl sm:text-2xl font-bold text-rose-300">{stats.declined}</div>
+              </div>
+
+              <div
+                onClick={() => setStatusFilter('Pending')}
+                className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition col-span-2 sm:col-span-1 ${statusFilter === 'Pending'
+                  ? 'bg-stone-800/60 border-stone-400 shadow-[0_0_15px_rgba(168,162,158,0.2)]'
+                  : 'bg-[#181512] border-stone-800 hover:border-stone-700'
+                  }`}
+              >
+                <div className="flex items-center justify-between text-xs text-stone-400 mb-1">
+                  <span>{lang === 'km' ? 'រង់ចាំឆ្លើយ' : 'Pending'}</span>
+                  <Clock className="w-4 h-4 text-stone-400" />
+                </div>
+                <div className="text-xl sm:text-2xl font-bold text-stone-300">{stats.pending}</div>
+              </div>
+            </div>
+
+            {/* Search & Filter Toolbar */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#181512] border border-stone-800 p-3 sm:p-4 rounded-2xl">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={lang === 'km' ? 'ស្វែងរកតាមឈ្មោះ ឬ លេខ ID (ឧ. 482915)...' : 'Search by name or 6-digit ID (e.g. 482915)...'}
+                  className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-stone-200 focus:outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Quick Filter Buttons */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0">
+                {['ALL', 'Attending', 'Maybe', 'Declined', 'Pending'].map((st) => (
+                  <button
+                    key={st}
+                    onClick={() => setStatusFilter(st)}
+                    className={`py-1.5 px-3 rounded-xl text-xs font-semibold whitespace-nowrap transition ${statusFilter === st
+                      ? 'bg-[#d4af37] text-stone-950 shadow'
+                      : 'bg-white/5 text-stone-400 hover:bg-white/10 hover:text-stone-200'
+                      }`}
+                  >
+                    {st === 'ALL' ? (lang === 'km' ? 'ទាំងអស់' : 'All') :
+                      st === 'Attending' ? (lang === 'km' ? 'ចូលរួម' : 'Attending') :
+                        st === 'Maybe' ? (lang === 'km' ? 'ប្រហែល' : 'Maybe') :
+                          st === 'Declined' ? (lang === 'km' ? 'មិនចូលរួម' : 'Declined') :
+                            (lang === 'km' ? 'រង់ចាំ' : 'Pending')}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Invitations List / Cards */}
+            {filteredGuests.length === 0 ? (
+              <div className="bg-[#181512] border border-dashed border-stone-800 rounded-3xl p-12 text-center space-y-4">
+                <div className="w-14 h-14 rounded-full bg-amber-500/10 border border-[#d4af37]/30 flex items-center justify-center mx-auto text-[#d4af37]">
+                  <Users className="w-7 h-7" />
+                </div>
+                <p className="font-semibold text-stone-300">
+                  {lang === 'km' ? 'រកមិនឃើញសំបុត្រអញ្ជើញទេ' : 'No invitations found'}
+                </p>
+                <p className="text-xs text-stone-500 max-w-sm mx-auto">
+                  {lang === 'km'
+                    ? 'មិនមានទិន្នន័យត្រូវនឹងការស្វែងរក ឬអ្នកមិនទាន់បានបង្កើតសំបុត្រអញ្ជើញនៅឡើយ។'
+                    : 'No records match your filter, or no invitations have been added yet.'}
+                </p>
+                <button
+                  onClick={handleOpenCreate}
+                  className="py-2 px-4 rounded-xl bg-[#d4af37] text-stone-950 font-bold text-xs inline-flex items-center gap-1.5 shadow"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>{lang === 'km' ? 'បង្កើតសំបុត្រដំបូង' : 'Create First Invitation'}</span>
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {filteredGuests.map((guest) => {
+                  const tgLink = guest.telegram_link || `https://t.me/engagement_invitation_bot/invite?startapp=${guest.id}`;
+                  const webLink = guest.web_link || `https://engagement-invitation.sornkimsry96.workers.dev/?guest=${guest.id}`;
+
+                  const enTgText = formatEnglishCopyText(tgLink);
+                  const khTgText = formatKhmerCopyText(tgLink);
+                  const enWebText = formatEnglishCopyText(webLink);
+                  const khWebText = formatKhmerCopyText(webLink);
+
+                  return (
+                    <div
+                      key={guest.id}
+                      className="bg-[#181512] border border-[#d4af37]/25 hover:border-[#d4af37]/50 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-xl transition space-y-4"
+                    >
+                      {/* Card Header: ID, Name, RSVP Status, Edit/Delete */}
+                      <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3 border-b border-stone-800">
+                        <div className="flex items-center gap-2.5 flex-wrap">
+                          {/* 6-Digit ID Badge */}
+                          <span className=" text-xs font-bold px-2.5 py-1 rounded-lg bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047]">
+                            #{guest.id}
+                          </span>
+
+                          {/* Guest Honorific / Name */}
+                          <h2 className="font-moul text-base sm:text-lg text-[#f3e5ab]">
+                            {guest.name}
+                          </h2>
+
+                          {/* RSVP Badge */}
+                          {guest.rsvp === 'Attending' && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/40">
+                              <CheckCircle2 className="w-3 h-3" />
+                              <span>{lang === 'km' ? 'ចូលរួម' : 'Attending'} ({guest.guestCount || '1'})</span>
+                            </span>
+                          )}
+                          {guest.rsvp === 'Maybe' && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-950/60 text-amber-300 border border-amber-500/40">
+                              <HelpCircle className="w-3 h-3" />
+                              <span>{lang === 'km' ? 'ប្រហែល' : 'Maybe'}</span>
+                            </span>
+                          )}
+                          {guest.rsvp === 'Declined' && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-rose-950/60 text-rose-300 border border-rose-500/40">
+                              <XCircle className="w-3 h-3" />
+                              <span>{lang === 'km' ? 'មិនអាច' : 'Declined'}</span>
+                            </span>
+                          )}
+                          {(!guest.rsvp || guest.rsvp === 'Pending') && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-stone-800/80 text-stone-400 border border-stone-700">
+                              <Clock className="w-3 h-3" />
+                              <span>{lang === 'km' ? 'រង់ចាំឆ្លើយ' : 'Pending'}</span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Edit and Delete Actions */}
+                        <div className="flex items-center gap-1.5 ml-auto">
+                          <button
+                            onClick={() => handleOpenEdit(guest)}
+                            className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white border border-stone-700/80 transition active:scale-95"
+                            title={lang === 'km' ? 'កែប្រែ' : 'Edit'}
+                          >
+                            <Edit3 className="w-4 h-4 text-amber-400" />
+                          </button>
+                          <button
+                            onClick={() => setGuestToDelete(guest)}
+                            className="p-2 rounded-xl bg-white/5 hover:bg-rose-950/40 text-stone-300 hover:text-rose-300 border border-stone-700/80 transition active:scale-95"
+                            title={lang === 'km' ? 'លុប' : 'Delete'}
+                          >
+                            <Trash2 className="w-4 h-4 text-rose-400" />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Guest Message / Blessings (if any) */}
+                      {guest.message && (
+                        <div className="text-xs bg-[#12100e] border border-amber-500/20 rounded-xl p-3 text-amber-200/90 italic flex items-start gap-2">
+                          <span className="not-italic text-sm">💬</span>
+                          <span>"{guest.message}"</span>
+                        </div>
+                      )}
+
+                      {/* LINKS & COPY ACTIONS SECTION */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+
+                        {/* 1. TELEGRAM BOT LINK CARD */}
+                        <div className="bg-[#12100e] border border-[#2AABEE]/30 rounded-2xl p-3.5 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-[#2AABEE]">
+                              <Send className="w-4 h-4" />
+                              <span>Telegram Mini App Link</span>
+                            </div>
+                            <a
+                              href={tgLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[11px] text-stone-400 hover:text-[#2AABEE] flex items-center gap-1 underline"
+                            >
+                              <span>Open</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+
+                          {/* Raw Link Input with Copy button */}
+                          <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 ">
+                            <span className="truncate flex-1">{tgLink}</span>
+                            <button
+                              onClick={() => handleCopy(tgLink, `raw_tg_${guest.id}`)}
+                              className="p-1 rounded-md hover:bg-white/10 text-stone-300 hover:text-white"
+                              title="Copy raw link only"
+                            >
+                              {copiedKey === `raw_tg_${guest.id}` ? (
+                                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              ) : (
+                                <Copy className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          </div>
+
+                          {/* Copy Invitation Message Buttons */}
+                          <div className="grid grid-cols-2 gap-2 pt-1">
+                            <button
+                              onClick={() => handleCopy(enTgText, `tg_en_${guest.id}`)}
+                              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-blue-950/40 hover:bg-blue-900/60 border border-blue-500/40 text-blue-200 text-xs font-semibold active:scale-95 transition"
+                              title="Copy English Invitation Text with Telegram Link"
+                            >
+                              {copiedKey === `tg_en_${guest.id}` ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                  <span className="text-emerald-300">Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5 text-blue-400" />
+                                  <span>Copy EN (TG)</span>
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={() => handleCopy(khTgText, `tg_kh_${guest.id}`)}
+                              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 text-amber-200 text-xs font-semibold active:scale-95 transition"
+                              title="Copy Khmer Invitation Text with Telegram Link"
+                            >
+                              {copiedKey === `tg_kh_${guest.id}` ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                  <span className="text-emerald-300">បានចម្លង!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5 text-amber-400" />
+                                  <span>ចម្លងខ្មែរ (TG)</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* 2. WEB LINK CARD */}
+                        <div className="bg-[#12100e] border border-[#d4af37]/35 rounded-2xl p-3.5 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-xs font-bold text-[#f3e5ab]">
+                              <Globe className="w-4 h-4 text-[#d4af37]" />
+                              <span>Direct Web Link (Cloudflare / Browser)</span>
+                            </div>
+                            <a
+                              href={webLink}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-[11px] text-stone-400 hover:text-[#f3e5ab] flex items-center gap-1 underline"
+                            >
+                              <span>Preview</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          </div>
+
+                          {/* Raw Link Input with Copy button */}
+                          <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400 ">
+                            <span className="truncate flex-1">{webLink}</span>
+                            <button
+                              onClick={() => handleCopy(webLink, `raw_web_${guest.id}`)}
+                              className="p-1 rounded-md hover:bg-white/10 text-stone-300 hover:text-white"
+                              title="Copy raw link only"
+                            >
+                              {copiedKey === `raw_web_${guest.id}` ? (
+                                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              ) : (
+                                <Copy className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          </div>
+
+                          {/* Copy Invitation Message Buttons */}
+                          <div className="grid grid-cols-2 gap-2 pt-1">
+                            <button
+                              onClick={() => handleCopy(enWebText, `web_en_${guest.id}`)}
+                              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-stone-900 hover:bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047] text-xs font-semibold active:scale-95 transition"
+                              title="Copy English Invitation Text with Web Link"
+                            >
+                              {copiedKey === `web_en_${guest.id}` ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                  <span className="text-emerald-300">Copied!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5 text-[#fde047]" />
+                                  <span>Copy EN (Web)</span>
+                                </>
+                              )}
+                            </button>
+
+                            <button
+                              onClick={() => handleCopy(khWebText, `web_kh_${guest.id}`)}
+                              className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-gradient-to-r from-[#996515] to-[#d4af37] text-stone-950 text-xs font-bold shadow-md hover:brightness-110 active:scale-95 transition"
+                              title="Copy Khmer Invitation Text with Web Link"
+                            >
+                              {copiedKey === `web_kh_${guest.id}` ? (
+                                <>
+                                  <Check className="w-3.5 h-3.5 text-stone-950" />
+                                  <span>បានចម្លង!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Copy className="w-3.5 h-3.5 text-stone-950" />
+                                  <span>ចម្លងខ្មែរ (Web)</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
 
       </div>

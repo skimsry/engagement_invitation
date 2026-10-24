@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Heart, ChevronsRight, Check } from 'lucide-react';
 import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
 /**
  * Interactive Slide to Unlock / Enter Button
@@ -157,10 +158,24 @@ function SlideButton({ onSlideComplete, lang = 'km', className = '' }) {
  * 3. Guest can click the button to proceed to the full invitation, or skip directly.
  */
 export default function InvitationOpening({ guest, lang = 'km', onComplete, onHideHeader }) {
+  const [config, setConfig] = useState(() => getStoredWeddingConfig());
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const videoRef = useRef(null);
   const completedRef = useRef(false);
+
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setConfig(e.detail);
+      }
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
+
+  const couple = config?.couple;
+  const cover = config?.cover;
 
   // Exact duration of open animation
   const DURATION_MS = 9800;
@@ -210,9 +225,8 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
         {/* Background Image/Video: open.mp4 during opening, open_final_frame.webp after finished */}
         {isFinished ? (
           <picture className="absolute inset-0 w-full h-full pointer-events-none select-none animate-fade-in">
-            <source srcSet="/images/open_final_frame.webp" type="image/webp" />
             <img
-              src="/images/open_final_frame.png"
+              src={cover?.openingCoverImage || "/images/open_final_frame.webp"}
               alt="Angkor Gate Opened"
               className="w-full h-full object-cover"
             />
@@ -295,9 +309,9 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
                 ? 'font-dangrek text-lg sm:text-xl tracking-wide'
                 : 'font-vibes text-2xl sm:text-3xl'
                 }`}>
-                <span>{lang === 'km' ? 'គឹមសាន្ត' : 'Kimsan'}</span>
+                <span>{lang === 'km' ? (couple?.groom?.firstNameKm || 'គឹមសាន្ត') : (couple?.groom?.firstNameEn || 'Kimsan')}</span>
                 <Heart className="w-8 h-8 sm:w-5 sm:h-5 text-rose-500 fill-rose-500 animate-pulse drop-shadow-[0_2px_8px_rgba(244,63,94,0.65)] shrink-0 mx-1" />
-                <span>{lang === 'km' ? 'អូយសាំង' : 'Uysang'}</span>
+                <span>{lang === 'km' ? (couple?.bride?.firstNameKm || 'អូយសាំង') : (couple?.bride?.firstNameEn || 'Uysang')}</span>
               </p>
 
 
@@ -311,7 +325,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
               {/* BOX NAME OF INVITATION (Highlighted Guest Honorific with Portrait Plaque) */}
               <div
                 className="my-1.5 w-full max-w-[320px] sm:max-w-[350px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
-                style={{ backgroundImage: "url('/images/wedding-portrait-plaque.webp')" }}
+                style={{ backgroundImage: `url('${cover?.portraitPlaqueImage || '/images/wedding-portrait-plaque.webp'}')` }}
               >
                 {/* Guest name positioned inside the right-hand rectangular frame */}
                 <div

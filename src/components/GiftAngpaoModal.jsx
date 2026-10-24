@@ -1,12 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Copy, Check, QrCode } from 'lucide-react';
 import { KhmerLotus, KhmerCorner, KhmerDivider } from './KhmerOrnaments';
+import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
-export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
+export default function GiftAngpaoModal({ isOpen, onClose, lang = "km", angpao: customAngpao }) {
   const [copied, setCopied] = useState(false);
-  const accountNumber = "001 234 567";
-  const accountName = "SORN KIMSAN";
-  const bankName = "ABA Bank (KHQR)";
+  const [angpao, setAngpao] = useState(() => customAngpao || getStoredWeddingConfig().angpao);
+
+  useEffect(() => {
+    if (customAngpao) {
+      setAngpao(customAngpao);
+    }
+  }, [customAngpao]);
+
+  useEffect(() => {
+    const handleUpdate = (e) => {
+      if (e.detail?.angpao) {
+        setAngpao(e.detail.angpao);
+      }
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
+
+  const accountNumber = angpao?.accountNumber || "001 234 567";
+  const accountName = angpao?.accountName || "SORN KIMSAN";
+  const bankName = angpao?.bankName || "ABA Bank (KHQR)";
+  const qrCodeImage = angpao?.qrCodeImage || "";
 
   if (!isOpen) return null;
 
@@ -96,9 +116,15 @@ export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
             <QrCode className="w-4 h-4 text-stone-400" />
           </div>
 
-          {/* QR Code Graphic (SVG High-Res Representation) */}
-          <div className="w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-stone-50 border border-stone-200 rounded-xl p-2.5 flex flex-col items-center justify-center shadow-inner relative group">
-            {/* Cambodian KHQR stylized QR code */}
+          {/* QR Code Graphic (SVG High-Res Representation or Custom Image) */}
+          <div className="w-44 h-44 sm:w-48 sm:h-48 mx-auto bg-stone-50 border border-stone-200 rounded-xl p-2.5 flex flex-col items-center justify-center shadow-inner relative group overflow-hidden">
+            {qrCodeImage ? (
+              <img
+                src={qrCodeImage}
+                alt="Angpao QR Code"
+                className="w-full h-full object-contain rounded-lg"
+              />
+            ) : (
             <svg viewBox="0 0 100 100" className="w-full h-full text-stone-900" fill="currentColor">
               {/* Corner position markers */}
               <rect x="5" y="5" width="28" height="28" rx="4" fill="currentColor" />
@@ -131,6 +157,7 @@ export default function GiftAngpaoModal({ isOpen, onClose, lang = "km" }) {
               <circle cx="50" cy="50" r="11" fill="white" stroke="#d4af37" strokeWidth="2" />
               <circle cx="50" cy="50" r="6" fill="#d32f2f" />
             </svg>
+            )}
             <div className="absolute inset-0 bg-amber-500/0 hover:bg-amber-500/10 rounded-xl transition cursor-pointer flex items-center justify-center">
               <span className="text-[10px] bg-black/75 text-amber-200 px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition shadow">
                 KHQR Scan
