@@ -23,7 +23,7 @@ function getOrCreateSheet() {
   let sheet = ss.getSheets()[0];
   
   // If sheet is completely empty, create default headers
-  if (sheet.getLastRowNum() === 0) {
+  if (sheet.getLastRow() === 0) {
     sheet.appendRow([
       "id",
       "name",
