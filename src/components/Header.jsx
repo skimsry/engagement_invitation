@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Maximize2, Minimize2, Share2, ChevronUp, ChevronDown, LogOut, Users } from 'lucide-react';
+import { X, Maximize2, Minimize2, Share2, ChevronUp, ChevronDown, LogOut, Users, Power, Home } from 'lucide-react';
 import RomanticAudio from './RomanticAudio';
 
 export default function Header({
@@ -12,6 +12,7 @@ export default function Header({
   onNext,
   onPrev,
   onExitApp,
+  onCloseApp,
   onOpenCard,
   onNavigateCrud,
   isHidden = false
@@ -84,6 +85,54 @@ export default function Header({
       return;
     }
     window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
+  // Handle Exit from App (Browser tab or Telegram Mini App / Bot)
+  const handleCloseApp = () => {
+    setIsOpen(false);
+    if (onCloseApp) {
+      onCloseApp();
+    }
+
+    // 1. If running inside Telegram Mini App / Telegram Bot
+    if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+      try {
+        const tg = window.Telegram.WebApp;
+        tg.HapticFeedback?.notificationOccurred?.('warning');
+        if (typeof tg.close === 'function') {
+          tg.close();
+          return;
+        }
+      } catch (e) {
+        console.warn('Telegram close failed:', e);
+      }
+    }
+
+    // 2. If running in regular Web Browser
+    if (typeof window !== 'undefined') {
+      try {
+        window.close();
+      } catch (e) {
+        console.warn('window.close failed:', e);
+      }
+
+      // Secondary script-close workaround
+      setTimeout(() => {
+        try {
+          window.open('', '_self', '');
+          window.close();
+        } catch (e) {}
+
+        // Fallback if browser blocks script-initiated tab closing
+        setTimeout(() => {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = 'about:blank';
+          }
+        }, 150);
+      }, 50);
+    }
   };
 
   return (
@@ -246,14 +295,24 @@ export default function Header({
               <span>{lang === 'km' ? 'បញ្ជីភ្ញៀវ' : 'Guest List '}</span>
             </button>
 
-            {/* Exit to First Load */}
+            {/* Exit to First Load (Cover) */}
             <button
               onClick={handleExitApp}
-              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/40 text-rose-300 hover:text-white text-xs font-semibold transition active:scale-95 group shadow-sm"
-              title={lang === 'km' ? 'ចាកចេញទៅទំព័រដើម' : 'Exit to First Load'}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-stone-900/80 hover:bg-stone-800 border border-[#d4af37]/30 text-amber-200/90 hover:text-amber-100 text-xs font-semibold transition active:scale-95 group shadow-sm"
+              title={lang === 'km' ? 'ត្រឡប់ទៅទំព័រដើម' : 'Exit to First Load'}
             >
-              <LogOut className="w-4 h-4 group-hover:scale-110 transition-transform text-rose-400" />
-              <span>{lang === 'km' ? 'ចាកចេញទៅទំព័រដើម' : 'Exit to First Load'}</span>
+              <Home className="w-4 h-4 group-hover:scale-110 transition-transform text-[#fde047]" />
+              <span>{lang === 'km' ? 'ត្រឡប់ទៅទំព័រដើម' : 'Exit to First Load'}</span>
+            </button>
+
+            {/* Exit from App (Browser / Telegram Bot) */}
+            <button
+              onClick={handleCloseApp}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-rose-950/50 hover:bg-rose-900/70 border border-rose-500/50 text-rose-300 hover:text-white text-xs font-bold transition active:scale-95 group shadow-sm"
+              title={lang === 'km' ? 'ចាកចេញពីកម្មវិធី' : 'Exit from App'}
+            >
+              <Power className="w-4 h-4 group-hover:scale-110 transition-transform text-rose-400" />
+              <span>{lang === 'km' ? 'ចាកចេញពីកម្មវិធី' : 'Exit from App'}</span>
             </button>
           </div>
         </div>
