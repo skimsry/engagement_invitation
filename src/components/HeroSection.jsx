@@ -21,6 +21,26 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
   const eventDate = config?.eventDate;
   const cover = config?.cover;
 
+  // Check if link has a valid guest ID or custom guest name
+  const hasGuestId = Boolean(
+    (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+    (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+    (typeof window !== 'undefined' && Boolean(
+      new URLSearchParams(window.location.search).get('guest') ||
+      new URLSearchParams(window.location.search).get('to') ||
+      new URLSearchParams(window.location.search).get('name') ||
+      window.Telegram?.WebApp?.initDataUnsafe?.start_param
+    ))
+  );
+
+  const defaultHonoredText = lang === 'km'
+    ? 'ឯកឧត្តម លោកជំទាវ លោក លោកស្រី អ្នកនាង កញ្ញា និងភ្ញៀវកិត្តិយសទាំងអស់'
+    : 'Excellencies, Ladies, Gentlemen, and Distinguished Guests';
+
+  const guestDisplayName = (hasGuestId && guest?.name?.trim())
+    ? guest.name
+    : defaultHonoredText;
+
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 relative overflow-hidden text-center text-[#3d3126]">
       {/* Corner Traditional Ornaments */}
@@ -36,7 +56,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
         សិរីសួស្តី ជ័យមង្គល វិបុលសុខ
       </p>
       <p className="mb-2 font-moulpali text-sm sm:text-base text-[#78500c]">
-        ពិធីភ្ជាប់ពាក្យ
+        ពិធីចូលចែចូវ
       </p>
       <p className="text-xs uppercase tracking-[0.2em] text-[#8c7355] mt-1 font-serif">
         The Engagement Ceremony of
@@ -44,8 +64,81 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
 
       <KhmerDivider className="my-3" />
 
+      {/* Couple Individual Portraits Section (Man Top-Left, Woman Bottom-Right) */}
+      <div className="w-full max-w-sm mx-auto my-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-50/80 via-white to-amber-50/60 border border-[#d4af37]/40 shadow-sm relative overflow-hidden">
+        {/* Soft background ornament */}
+        <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#d4af37]/10 rounded-full blur-xl pointer-events-none" />
+        <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-rose-500/10 rounded-full blur-xl pointer-events-none" />
+
+        {/* Man Preview (Top Left) */}
+        <div className="flex items-center gap-3 sm:gap-4 mr-auto w-full max-w-[92%]">
+          <div className="relative shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-[#d4af37] shadow-[0_4px_12px_rgba(212,175,55,0.35)] p-0.5 bg-gradient-to-tr from-[#996515] via-[#ffd700] to-[#fbeea0]">
+              <img
+                src={couple?.groom?.image || "/images/groom-childhood.webp"}
+                alt={couple?.groom?.firstNameEn || 'Kimsan'}
+                className="w-full h-full object-cover rounded-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#12100e] border border-[#d4af37] flex items-center justify-center text-[10px] text-[#ffd700] shadow">
+              🤵
+            </div>
+          </div>
+          <div className="text-left flex-1 min-w-0">
+            <span className="inline-block font-kantumruy text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#d4af37]/15 text-[#854d0e] border border-[#d4af37]/35 tracking-wide">
+              {lang === 'km' ? 'កូនប្រុសនាម' : 'The Groom'}
+            </span>
+            <h3 className="font-moulpali text-sm sm:text-base text-[#78500c] mt-1.5 truncate">
+              {couple?.groom?.lastNameKm ? `${couple.groom.lastNameKm} ${couple.groom.firstNameKm}` : 'សន គឹមសាន្ត'}
+            </h3>
+            <p className="font-kantumruy text-xs text-[#8c7355] tracking-wider truncate">
+              {couple?.groom?.lastNameEn ? `${couple.groom.lastNameEn} ${couple.groom.firstNameEn}` : 'SORN KIMSAN'}
+            </p>
+          </div>
+        </div>
+
+        {/* Connecting Heart Motif */}
+        <div className="my-2.5 flex items-center justify-center gap-2">
+          <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/50 to-rose-300" />
+          <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-200/80 flex items-center justify-center shadow-sm">
+            <Heart className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
+          </div>
+          <div className="flex-1 h-[1px] bg-gradient-to-r from-rose-300 via-[#d4af37]/50 to-transparent" />
+        </div>
+
+        {/* Woman Preview (Bottom Right) */}
+        <div className="flex items-center justify-end gap-3 sm:gap-4 ml-auto w-full max-w-[92%] text-right">
+          <div className="text-right flex-1 min-w-0">
+            <span className="inline-block font-kantumruy text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-700 border border-rose-300/40 tracking-wide">
+              {lang === 'km' ? 'កូនស្រីនាម' : 'The Bride'}
+            </span>
+            <h3 className="font-moulpali text-sm sm:text-base text-[#78500c] mt-1.5 truncate">
+              {couple?.bride?.lastNameKm ? `${couple.bride.lastNameKm} ${couple.bride.firstNameKm}` : 'ង៉ោ អូយសាំង'}
+            </h3>
+            <p className="font-kantumruy text-xs text-[#8c7355] tracking-wider truncate">
+              {couple?.bride?.lastNameEn ? `${couple.bride.lastNameEn} ${couple.bride.firstNameEn}` : 'NGOV UYSANG'}
+            </p>
+          </div>
+          <div className="relative shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-rose-400 shadow-[0_4px_12px_rgba(244,63,94,0.3)] p-0.5 bg-gradient-to-tr from-rose-500 via-[#ffd700] to-rose-200">
+              <img
+                src={couple?.bride?.image || "/images/bride-childhood.webp"}
+                alt={couple?.bride?.firstNameEn || 'Uysang'}
+                className="w-full h-full object-cover rounded-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="absolute -bottom-1 -left-1 w-6 h-6 rounded-full bg-[#12100e] border border-rose-400 flex items-center justify-center text-[10px] text-rose-300 shadow">
+              👰
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Couple Hero Photo */}
-      <div className="w-full max-w-sm mx-auto my-4 rounded-2xl overflow-hidden border-2 border-[#d4af37] shadow-xl relative aspect-[3/4]">
+      {/* <div className="w-full max-w-sm mx-auto my-4 rounded-2xl overflow-hidden border-2 border-[#d4af37] shadow-xl relative aspect-[3/4]">
         <img
           src={cover?.heroImage || "/images/a1.webp"}
           alt={`${couple?.groom?.firstNameEn || 'Kimsan'} and ${couple?.bride?.firstNameEn || 'Uysang'}`}
@@ -66,20 +159,22 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
             <span>{couple?.bride?.lastNameKm ? `${couple.bride.lastNameKm} ${couple.bride.firstNameKm}` : 'ង៉ោ អូយសាំង'}</span>
           </p>
         </div>
-      </div>
+      </div> */}
+
+
 
       {/* Warm Invitation Statement with Guest Honorific */}
       <div className="my-6 space-y-2">
         <p className="text-xs sm:text-sm text-[#5c493a] leading-relaxed">
           យើងខ្ញុំមានសេចក្តីសោមនស្សរីករាយឥតឧបមា សូមគោរពអញ្ជើញ
         </p>
-        <div className="inline-block px-5 py-2.5">
-          <p className="font-moulpali text-base sm:text-lg text-[#996515]">
-            {guest.name}
+        <div className="inline-block px-4 py-2 max-w-lg">
+          <p className="font-moulpali text-sm sm:text-base md:text-lg text-[#996515] leading-relaxed">
+            {guestDisplayName}
           </p>
         </div>
         <p className="text-xs sm:text-sm text-[#5c493a] leading-relaxed pt-1">
-          ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ក្នុងពិធីភ្ជាប់ពាក្យកូនប្រុស-កូនស្រីរបស់យើងខ្ញុំ
+          ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ក្នុងពិធីចូលចែចូវកូនប្រុស-កូនស្រីរបស់យើងខ្ញុំ
           ដើម្បីប្រសិទ្ធពរជ័យ សិរីសួស្តី ជ័យមង្គល ដល់គូដណ្តឹងថ្មី។
         </p>
       </div>
@@ -127,15 +222,15 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
           {lang === 'km' ? 'កាលបរិច្ឆេទនៃពិធីមង្គល' : 'Auspicious Ceremony Date'}
         </p>
         <p className="font-moulpali text-base sm:text-lg text-[#3d3126]">
-          {eventDate?.dateTextKm || eventDate?.displayKm || 'ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦'}
+          {eventDate?.dateTextKm || eventDate?.displayKm || 'ថ្ងៃអាទិត្យ ទី២២ ខែវិច្ឆិកា ឆ្នាំ២០២៦'}
         </p>
         <p className="text-xs sm:text-sm text-[#78500c] font-medium">
-          {eventDate?.dateTextEn || eventDate?.displayEn || 'Saturday, November 28, 2026 • វេលាម៉ោង ០៧:៣០ ព្រឹក'}
+          {eventDate?.dateTextEn || eventDate?.displayEn || 'Sunday, November 22, 2026 • វេលាម៉ោង ០៧:៣០ ព្រឹក'}
         </p>
       </div>
 
       {/* Live Countdown Timer */}
-      <CountdownTimer targetDate={eventDate?.dateTime || "2026-11-28T07:30:00+07:00"} lang={lang} />
+      <CountdownTimer targetDate={eventDate?.dateTime || "2026-11-22T07:30:00+07:00"} lang={lang} />
 
       {/* Add to Calendar Button */}
       <div className="flex justify-center mt-3">

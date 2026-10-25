@@ -9,6 +9,7 @@ const HeroSection = lazy(() => import('./components/HeroSection'));
 const EventSchedule = lazy(() => import('./components/EventSchedule'));
 const VenueSection = lazy(() => import('./components/VenueSection'));
 const PhotoGallery = lazy(() => import('./components/PhotoGallery'));
+const VideoSection = lazy(() => import('./components/VideoSection'));
 const GiftBanner = lazy(() => import('./components/GiftBanner'));
 const RsvpSection = lazy(() => import('./components/RsvpSection'));
 const Footer = lazy(() => import('./components/Footer'));
@@ -32,6 +33,7 @@ const prefetchScreen2 = () => {
   import('./components/EventSchedule');
   import('./components/VenueSection');
   import('./components/PhotoGallery');
+  import('./components/VideoSection');
   import('./components/GiftBanner');
   import('./components/RsvpSection');
   import('./components/Footer');
@@ -290,50 +292,75 @@ export default function App() {
     }, 150);
   };
 
-  const handleSubmitRSVP = async (statusSelection) => {
-    setRsvpStatus(statusSelection);
+  const handleSubmitRSVP = async (statusSelection, customName) => {
+    setRsvpStatus(statusSelection || 'Attending');
     setSubmitting(true);
 
+    const hasId = Boolean(
+      (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+      (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+      (typeof window !== 'undefined' && Boolean(
+        new URLSearchParams(window.location.search).get('guest') ||
+        new URLSearchParams(window.location.search).get('to') ||
+        new URLSearchParams(window.location.search).get('name') ||
+        window.Telegram?.WebApp?.initDataUnsafe?.start_param
+      ))
+    );
+
+    const senderName = customName?.trim() || guest.name || (lang === 'km' ? 'ភ្ញៀវកិត្តិយស' : 'Honored Guest');
+
     try {
+      const payload = hasId
+        ? {
+          id: guest.id,
+          name: guest.name,
+          rsvp: statusSelection || 'Attending',
+          guestCount: guestCount,
+          message: message
+        }
+        : {
+          action: 'create',
+          name: senderName,
+          rsvp: statusSelection || 'Wishes',
+          guestCount: '1',
+          message: message
+        };
+
       await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          id: guest.id,
-          name: guest.name,
-          rsvp: statusSelection,
-          guestCount: guestCount,
-          message: message
-        }),
+        body: JSON.stringify(payload),
       });
 
       setSubmitted(true);
-      if (statusSelection === 'Attending') {
-        fireConfetti({
-          particleCount: 120,
-          spread: 90,
-          origin: { y: 0.6 },
-          colors: ['#ffd700', '#d4af37', '#10b981', '#fef08a']
-        });
-      }
+      fireConfetti({
+        particleCount: 120,
+        spread: 90,
+        origin: { y: 0.6 },
+        colors: ['#ffd700', '#d4af37', '#10b981', '#fef08a']
+      });
       window.Telegram?.WebApp?.HapticFeedback?.notificationOccurred('success');
+      return { success: true, name: senderName, message: message };
     } catch (err) {
       alert(lang === 'km' ? 'មានបញ្ហាតភ្ជាប់បណ្តាញ សូមព្យាយាមម្តងទៀត!' : 'Network error. Please try again.');
+      return { success: false };
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleCopyAddress = () => {
-    navigator.clipboard.writeText("The Premier Centre Sen Sok, Phnom Penh, Cambodia");
+    const venue = getStoredWeddingConfig().venue;
+    const addressToCopy = (lang === 'km' ? venue?.addressKm : venue?.addressEn) || "ភូមិផ្សារឃ្លាំង ឃុំកំពង់ឃ្លាំង ស្រុកសូទ្រនិគម ខេត្តសៀមរាប";
+    navigator.clipboard.writeText(addressToCopy);
     setCopiedAddress(true);
     setTimeout(() => setCopiedAddress(false), 2500);
   };
 
   const handleNativeShare = async () => {
     const shareData = {
-      title: 'សិរីមង្គល ពិធីភ្ជាប់ពាក្យ • Kimsan & Ussa',
-      text: `សូមគោរពអញ្ជើញ ${guest.name} ចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីភ្ជាប់ពាក្យ`,
+      title: 'សិរីមង្គល ពិធីចូលចែចូវ • Kimsan & Ussa',
+      text: `សូមគោរពអញ្ជើញ ${guest.name} ចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីចូលចែចូវ`,
       url: window.location.href
     };
 
@@ -350,11 +377,11 @@ export default function App() {
   };
 
   const handleAddToCalendar = () => {
-    const title = encodeURIComponent("Engagement Ceremony: Kimsan & Uysang | សិរីមង្គល ពិធីភ្ជាប់ពាក្យ");
-    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីភ្ជាប់ពាក្យ សន គឹមសាន្ត & ង៉ោ អូយសាំង (SORN KIMSAN & Ngov Uysang)");
-    const location = encodeURIComponent("The Premier Centre Sen Sok, Phnom Penh, Cambodia");
-    const start = "20261128T003000Z";
-    const end = "20261128T060000Z";
+    const title = encodeURIComponent("Engagement Ceremony: Kimsan & Uysang | សិរីមង្គល ពិធីចូលចែចូវ");
+    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីចូលចែចូវ សន គឹមសាន្ត & ង៉ោ អូយសាំង (SORN KIMSAN & Ngov Uysang)");
+    const location = encodeURIComponent("Phsar Khlang Village, Kampong Khleang Commune, Sot Nikum District, Siem Reap Province");
+    const start = "20261122T003000Z";
+    const end = "20261122T060000Z";
 
     const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`;
     window.open(googleCalUrl, '_blank');
@@ -409,6 +436,17 @@ export default function App() {
           lang={lang}
           onComplete={handleOpeningComplete}
           onHideHeader={setIsHeaderHidden}
+          isOpened={isOpened}
+          hasGuestId={Boolean(
+            (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+            (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+            (typeof window !== 'undefined' && Boolean(
+              new URLSearchParams(window.location.search).get('guest') ||
+              new URLSearchParams(window.location.search).get('to') ||
+              new URLSearchParams(window.location.search).get('name') ||
+              window.Telegram?.WebApp?.initDataUnsafe?.start_param
+            ))
+          )}
         />
       )}
 
@@ -421,6 +459,17 @@ export default function App() {
             isOpened={isOpened}
             lang={lang}
             onOpenCard={handleOpenCard}
+            guest={guest}
+            hasGuestId={Boolean(
+              (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+              (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+              (typeof window !== 'undefined' && Boolean(
+                new URLSearchParams(window.location.search).get('guest') ||
+                new URLSearchParams(window.location.search).get('to') ||
+                new URLSearchParams(window.location.search).get('name') ||
+                window.Telegram?.WebApp?.initDataUnsafe?.start_param
+              ))
+            )}
           />
         ) : (
           /* SCREEN 2: Full Modern Cambodian Luxury Invitation */
@@ -455,16 +504,32 @@ export default function App() {
                 <PhotoGallery lang={lang} />
               </div>
 
+              {/* Pre-wedding Video Section */}
+              <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
+                <VideoSection lang={lang} />
+              </div>
+
               {/* Digital Angpao / Gift via KHQR Card Banner */}
-              <GiftBanner
+              {/* <GiftBanner
                 lang={lang}
                 onOpenGiftModal={() => setShowGiftModal(true)}
-              />
+              /> */}
 
               {/* Enhanced RSVP Form Section */}
               <RsvpSection
                 ref={rsvpSectionRef}
                 lang={lang}
+                guest={guest}
+                hasGuestId={Boolean(
+                  (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+                  (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+                  (typeof window !== 'undefined' && Boolean(
+                    new URLSearchParams(window.location.search).get('guest') ||
+                    new URLSearchParams(window.location.search).get('to') ||
+                    new URLSearchParams(window.location.search).get('name') ||
+                    window.Telegram?.WebApp?.initDataUnsafe?.start_param
+                  ))
+                )}
                 submitted={submitted}
                 setSubmitted={setSubmitted}
                 rsvpStatus={rsvpStatus}
@@ -475,6 +540,7 @@ export default function App() {
                 quickWishes={quickWishes}
                 submitting={submitting}
                 onSubmitRSVP={handleSubmitRSVP}
+                scriptUrl={SCRIPT_URL}
               />
 
               {/* Footer Blessing & Credits */}

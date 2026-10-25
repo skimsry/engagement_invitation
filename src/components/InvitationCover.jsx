@@ -3,7 +3,7 @@ import { KhmerCorner } from './KhmerOrnaments';
 import NatureAudio from './NatureAudio';
 import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
-export default function InvitationCover({ isOpened, lang, onOpenCard }) {
+export default function InvitationCover({ isOpened, lang, onOpenCard, guest, hasGuestId: propHasGuestId }) {
   const [config, setConfig] = useState(() => getStoredWeddingConfig());
 
   useEffect(() => {
@@ -15,6 +15,18 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
     window.addEventListener('wedding_config_updated', handleUpdate);
     return () => window.removeEventListener('wedding_config_updated', handleUpdate);
   }, []);
+
+  // Check if link has a valid guest ID or custom guest name
+  const hasGuestId = propHasGuestId ?? Boolean(
+    (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+    (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+    (typeof window !== 'undefined' && Boolean(
+      new URLSearchParams(window.location.search).get('guest') ||
+      new URLSearchParams(window.location.search).get('to') ||
+      new URLSearchParams(window.location.search).get('name') ||
+      window.Telegram?.WebApp?.initDataUnsafe?.start_param
+    ))
+  );
 
   const cover = config?.cover;
   const posterUrl = cover?.homeCoverPoster || "/images/home-page-poster.webp";
@@ -50,6 +62,34 @@ export default function InvitationCover({ isOpened, lang, onOpenCard }) {
 
           {/* Warm natural temple ambiance gradient overlay for perfect contrast */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#140e08]/85 via-[#140e08]/25 to-transparent pointer-events-none" />
+
+          {/* CENTER INVITATION STATEMENT (When link has no guest id) */}
+          {!hasGuestId && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center -translate-y-16 sm:-translate-y-24 px-4 pointer-events-none z-20">
+              <div className="relative flex flex-col items-center justify-center text-center animate-float">
+                {/* Soft dark ambient shadow aura behind text for maximum contrast */}
+                <div className="absolute -inset-x-8 -inset-y-4 bg-black/45 rounded-full blur-xl pointer-events-none -z-10" />
+
+                <p
+                  style={{
+                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,1)) drop-shadow(0 4px 10px rgba(0,0,0,1)) drop-shadow(0 8px 20px rgba(0,0,0,0.95)) drop-shadow(0 0 25px rgba(0,0,0,0.9))'
+                  }}
+                  className={`select-none text-center font-bold bg-gradient-to-r from-[#fff59d] via-[#ffd700] to-[#f59e0b] bg-clip-text text-transparent transition-all duration-500 ${
+                    lang === 'km'
+                      ? 'font-moulpali text-base sm:text-lg md:text-xl leading-relaxed tracking-wider'
+                      : 'font-vibes text-2xl sm:text-3xl md:text-4xl tracking-widest'
+                  }`}
+                >
+                  {lang === 'km' ? 'សូមគោរពអញ្ជើញ' : 'Cordially Invites'}
+                </p>
+                {/* Subtle royal golden glowing divider underline */}
+                <div
+                  style={{ filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.95))' }}
+                  className="w-16 sm:w-24 h-[1.5px] bg-gradient-to-r from-transparent via-[#ffd700]/90 to-transparent mt-2 shadow-[0_0_10px_rgba(255,215,0,0.9)] animate-pulse"
+                />
+              </div>
+            </div>
+          )}
 
           {/* ROYAL GOLDEN FRAME OPEN BUTTON */}
           <div className="absolute bottom-16 sm:bottom-14 left-0 right-0 flex flex-col items-center justify-center px-4 z-30">

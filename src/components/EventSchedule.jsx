@@ -10,27 +10,15 @@ const DEFAULT_SCHEDULE_ITEMS = [
     descKm: 'ជួបជុំភ្ញៀវកិត្តិយស ពិសាតែ កាហ្វេ និងរៀបចំជំនូន',
     descEn: 'Welcoming honored guests and preparing gift trays'
   },
-  {
-    time: '07:30 AM',
-    titleKm: 'ពិធីហែជំនូនចូលគេហដ្ឋាន',
-    titleEn: 'Traditional Groom Gift Procession',
-    descKm: 'ក្បួនហែជំនូនចូលគេហដ្ឋាន និងរាប់ផ្លែឈើជំនូន',
-    descEn: 'Traditional procession presenting engagement offerings'
-  },
+
   {
     time: '08:30 AM',
-    titleKm: 'ពិធីបំពាក់ចិញ្ចៀនភ្ជាប់ពាក្យ',
-    titleEn: 'Engagement Ring Exchange Ceremony',
-    descKm: 'គូដណ្តឹងទាំងពីរបំពាក់ចិញ្ចៀនជាសក្ខីភាពនៃក្តីស្រលាញ់',
-    descEn: 'Exchange of engagement rings and formal blessings'
+    titleKm: 'ពិធីចូលចែចូវ',
+    titleEn: 'Traditional Engagement Negotiation',
+    descKm: 'ចាស់ទុំទាំងសងខាងជួបជុំគ្នា ជជែកពិភាក្សាតាមប្រពៃណីខ្មែរ អំពីការរៀបចំពិធីមង្គលការ',
+    descEn: 'Elders from both families discuss the wedding arrangements according to Khmer traditions.'
   },
-  {
-    time: '09:30 AM',
-    titleKm: 'ពិធីសំពះផ្ទឹម និងចងដៃប្រសិទ្ធពរជ័យ',
-    titleEn: 'Blessing & Hand-Tying Ceremony',
-    descKm: 'មាតាបិតា និងភ្ញៀវកិត្តិយសចងអំបោះក្រហមប្រសិទ្ធពរជ័យ',
-    descEn: 'Traditional thread-tying blessings by elders & guests'
-  },
+
   {
     time: '11:30 AM',
     titleKm: 'ពិធីទទួលទានអាហារថ្ងៃត្រង់',

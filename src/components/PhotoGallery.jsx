@@ -17,6 +17,48 @@ const DEFAULT_PHOTOS = [
     titleEn: 'Cherished Memories',
     captionKm: 'ក្តីស្រលាញ់ និងភាពកក់ក្តៅរួមដំណើរជីវិត',
     captionEn: 'Walking hand in hand through life'
+  },
+  {
+    url: '/images/gallery-3.webp',
+    titleKm: 'ដំណើរកម្សាន្តនៃក្តីស្រលាញ់',
+    titleEn: 'Romantic Getaways',
+    captionKm: 'ស្នាមញញឹម និងដំណើរកម្សាន្តរួមគ្នាពោរពេញដោយក្តីសុខ',
+    captionEn: 'Sweet travel memories and shared happiness'
+  },
+  {
+    url: '/images/gallery-4.webp',
+    titleKm: 'ពេលវេលាដ៏ស្រស់បំព្រង',
+    titleEn: 'Beautiful Horizons',
+    captionKm: 'មើលទៅអនាគតដ៏ភ្លឺស្វាងជាមួយគ្នា',
+    captionEn: 'Looking towards a bright and loving future together'
+  },
+  {
+    url: '/images/gallery-5.webp',
+    titleKm: 'ភាពស្រស់បំព្រងនៃធម្មជាតិ',
+    titleEn: 'Serene Nature & Love',
+    captionKm: 'ក្តីស្រលាញ់ដ៏បរិសុទ្ធ និងភាពកក់ក្តៅកណ្តាលធម្មជាតិ',
+    captionEn: 'Pure love and tranquility surrounded by nature'
+  },
+  {
+    url: '/images/gallery-6.webp',
+    titleKm: 'ស្នាមញញឹមនាពេលថ្ងៃលិច',
+    titleEn: 'Golden Hour Smiles',
+    captionKm: 'ភាពរីករាយ និងក្តីស្រលាញ់នាពេលរៀបលិច',
+    captionEn: 'Joyful smiles under the golden sunset sky'
+  },
+  {
+    url: '/images/gallery-7.webp',
+    titleKm: 'និស្ស័យស្នេហ៍នៅដែនដីអង្គរ',
+    titleEn: 'Destined at Angkor',
+    captionKm: 'សេចក្តីស្នេហាដ៏រឹងមាំ និងស្ថិតស្ថេរជារៀងរហូត',
+    captionEn: 'Timeless love rooted in history and beauty'
+  },
+  {
+    url: '/images/gallery-8.webp',
+    titleKm: 'ស្នាមញញឹមលើទូកនៃក្តីស្រលាញ់',
+    titleEn: 'Kampong Khleang Boat Ride',
+    captionKm: 'ស្នាមញញឹមដ៏កក់ក្តៅ និងដំណើរកម្សាន្តរួមគ្នាពោរពេញដោយក្តីសុខ',
+    captionEn: 'Warm smiles and sweet adventures on the water'
   }
 ];
 
@@ -99,7 +141,7 @@ export default function PhotoGallery({ lang = "km", photos: customPhotos }) {
 
             <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
               <span className="text-[10px] tracking-widest uppercase text-amber-300 font-semibold">
-                Photo 0{idx + 1}
+                Photo {String(idx + 1).padStart(2, '0')}
               </span>
               <h4 className="text-sm sm:text-base font-semibold text-white drop-shadow">
                 {lang === 'km' ? photo.titleKm : photo.titleEn}
@@ -138,9 +180,14 @@ export default function PhotoGallery({ lang = "km", photos: customPhotos }) {
 
           <div
             onClick={(e) => e.stopPropagation()}
-            className="max-w-md w-full max-h-[85vh] flex flex-col items-center relative"
+            className="max-w-xl sm:max-w-2xl w-full max-h-[85vh] flex flex-col items-center relative"
           >
             <div className="relative rounded-2xl overflow-hidden border-2 border-amber-400/60 shadow-2xl">
+              {/* Photo Index Counter */}
+              <span className="absolute top-3 left-3 z-20 px-3 py-1 rounded-full bg-black/60 text-amber-300 text-xs font-semibold backdrop-blur-md border border-white/20">
+                {selectedPhotoIndex + 1} / {photos.length}
+              </span>
+
               {/* Close Button on Edge of Image */}
               <button
                 onClick={() => setSelectedPhotoIndex(null)}

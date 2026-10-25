@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function CountdownTimer({ targetDate = "2026-11-28T07:30:00+07:00", lang = "km" }) {
+export default function CountdownTimer({ targetDate = "2026-11-22T07:30:00+07:00", lang = "km" }) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,

@@ -8,12 +8,14 @@ export const DEFAULT_WEDDING_CONFIG = {
       firstNameKm: 'គឹមសាន្ត',
       lastNameEn: 'SORN',
       firstNameEn: 'KIMSAN',
+      image: '/images/groom-childhood.webp'
     },
     bride: {
       lastNameKm: 'ង៉ោ',
       firstNameKm: 'អូយសាំង',
       lastNameEn: 'NGOV',
       firstNameEn: 'UYSANG',
+      image: '/images/bride-childhood.webp'
     }
   },
 
@@ -30,9 +32,9 @@ export const DEFAULT_WEDDING_CONFIG = {
 
   // 3. Date of Engagement day with related countdown
   eventDate: {
-    dateTime: '2026-11-28T07:30:00+07:00',
-    dateTextKm: 'ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦',
-    dateTextEn: 'Saturday, November 28, 2026'
+    dateTime: '2026-11-22T07:30:00+07:00',
+    dateTextKm: 'ថ្ងៃអាទិត្យ ទី២២ ខែវិច្ឆិកា ឆ្នាំ២០២៦',
+    dateTextEn: 'Sunday, November 22, 2026'
   },
 
   // 4. កម្មវិធីមង្គលភ្ជាប់ពាក្យ (Event Schedule)
@@ -47,30 +49,14 @@ export const DEFAULT_WEDDING_CONFIG = {
     },
     {
       id: '2',
-      time: '07:30 AM',
-      titleKm: 'ពិធីហែជំនូនចូលគេហដ្ឋាន',
-      titleEn: 'Traditional Groom Gift Procession',
-      descKm: 'ក្បួនហែជំនូនចូលគេហដ្ឋាន និងរាប់ផ្លែឈើជំនូន',
-      descEn: 'Traditional procession presenting engagement offerings'
+      time: '08:30 AM',
+      titleKm: 'ពិធីចូលចែចូវ',
+      titleEn: 'Traditional Engagement Negotiation',
+      descKm: 'ចាស់ទុំទាំងសងខាងជួបជុំគ្នា ជជែកពិភាក្សាតាមប្រពៃណីខ្មែរ អំពីការរៀបចំពិធីមង្គលការ',
+      descEn: 'Elders from both families discuss the wedding arrangements according to Khmer traditions.'
     },
     {
       id: '3',
-      time: '08:30 AM',
-      titleKm: 'ពិធីបំពាក់ចិញ្ចៀនភ្ជាប់ពាក្យ',
-      titleEn: 'Engagement Ring Exchange Ceremony',
-      descKm: 'គូដណ្តឹងទាំងពីរបំពាក់ចិញ្ចៀនជាសក្ខីភាពនៃក្តីស្រលាញ់',
-      descEn: 'Exchange of engagement rings and formal blessings'
-    },
-    {
-      id: '4',
-      time: '09:30 AM',
-      titleKm: 'ពិធីសំពះផ្ទឹម និងចងដៃប្រសិទ្ធពរជ័យ',
-      titleEn: 'Blessing & Hand-Tying Ceremony',
-      descKm: 'មាតាបិតា និងភ្ញៀវកិត្តិយសចងអំបោះក្រហមប្រសិទ្ធពរជ័យ',
-      descEn: 'Traditional thread-tying blessings by elders & guests'
-    },
-    {
-      id: '5',
       time: '11:30 AM',
       titleKm: 'ពិធីទទួលទានអាហារថ្ងៃត្រង់',
       titleEn: 'Celebration Luncheon & Banquet',
@@ -81,11 +67,11 @@ export const DEFAULT_WEDDING_CONFIG = {
 
   // 5. Google Maps & Location
   venue: {
-    venueNameKm: 'The Premier Centre Sen Sok (ដឹ ព្រេមៀ សែនសុខ)',
-    venueNameEn: 'The Premier Centre Sen Sok',
-    addressKm: 'The Premier Centre Sen Sok, រាជធានីភ្នំពេញ, ព្រះរាជាណាចក្រកម្ពុជា',
-    addressEn: 'The Premier Centre Sen Sok, Phnom Penh, Cambodia',
-    googleMapsUrl: 'https://maps.google.com/?q=The+Premier+Centre+Sen+Sok+Phnom+Penh'
+    venueNameKm: 'គេហដ្ឋានខាងស្រី',
+    venueNameEn: 'Bride’s House',
+    addressKm: 'ភូមិផ្សារឃ្លាំង ឃុំកំពង់ឃ្លាំង ស្រុកសូទ្រនិគម ខេត្តសៀមរាប',
+    addressEn: 'Phsar Khlang Village, Kampong Khleang Commune, Sot Nikum District, Siem Reap Province',
+    googleMapsUrl: 'https://maps.app.goo.gl/is1RjP4f2pYupsgT8?g_st=it'
   },
 
   // 6. Love Gallery
@@ -105,6 +91,54 @@ export const DEFAULT_WEDDING_CONFIG = {
       titleEn: 'Cherished Memories',
       captionKm: 'ក្តីស្រលាញ់ និងភាពកក់ក្តៅរួមដំណើរជីវិត',
       captionEn: 'Walking hand in hand through life'
+    },
+    {
+      id: '3',
+      url: '/images/gallery-3.webp',
+      titleKm: 'ដំណើរកម្សាន្តនៃក្តីស្រលាញ់',
+      titleEn: 'Romantic Getaways',
+      captionKm: 'ស្នាមញញឹម និងដំណើរកម្សាន្តរួមគ្នាពោរពេញដោយក្តីសុខ',
+      captionEn: 'Sweet travel memories and shared happiness'
+    },
+    {
+      id: '4',
+      url: '/images/gallery-4.webp',
+      titleKm: 'ពេលវេលាដ៏ស្រស់បំព្រង',
+      titleEn: 'Beautiful Horizons',
+      captionKm: 'មើលទៅអនាគតដ៏ភ្លឺស្វាងជាមួយគ្នា',
+      captionEn: 'Looking towards a bright and loving future together'
+    },
+    {
+      id: '5',
+      url: '/images/gallery-5.webp',
+      titleKm: 'ភាពស្រស់បំព្រងនៃធម្មជាតិ',
+      titleEn: 'Serene Nature & Love',
+      captionKm: 'ក្តីស្រលាញ់ដ៏បរិសុទ្ធ និងភាពកក់ក្តៅកណ្តាលធម្មជាតិ',
+      captionEn: 'Pure love and tranquility surrounded by nature'
+    },
+    {
+      id: '6',
+      url: '/images/gallery-6.webp',
+      titleKm: 'ស្នាមញញឹមនាពេលថ្ងៃលិច',
+      titleEn: 'Golden Hour Smiles',
+      captionKm: 'ភាពរីករាយ និងក្តីស្រលាញ់នាពេលរៀបលិច',
+      captionEn: 'Joyful smiles under the golden sunset sky'
+    },
+    {
+      id: '7',
+      url: '/images/gallery-7.webp',
+      titleKm: 'និស្ស័យស្នេហ៍នៅដែនដីអង្គរ',
+      titleEn: 'Destined at Angkor',
+      captionKm: 'សេចក្តីស្នេហាដ៏រឹងមាំ និងស្ថិតស្ថេរជារៀងរហូត',
+      captionEn: 'Timeless love rooted in history and beauty'
+    },
+    {
+      id: '8',
+      url: '/images/gallery-8.webp',
+      titleKm: 'ស្នាមញញឹមលើទូកនៃក្តីស្រលាញ់',
+      titleEn: 'Kampong Khleang Boat Ride',
+      captionKm: 'ស្នាមញញឹមដ៏កក់ក្តៅ និងដំណើរកម្សាន្តរួមគ្នាពោរពេញដោយក្តីសុខ',
+      captionEn: 'Warm smiles and sweet adventures on the water'
     }
   ],
 
@@ -134,22 +168,102 @@ export const getStoredWeddingConfig = () => {
       ...parsed,
       couple: {
         ...DEFAULT_WEDDING_CONFIG.couple,
-        ...(parsed.couple || {})
+        ...(parsed.couple || {}),
+        groom: {
+          ...DEFAULT_WEDDING_CONFIG.couple.groom,
+          ...(parsed.couple?.groom || {}),
+          image: (parsed.couple?.groom?.image && !parsed.couple.groom.image.includes('/images/groom.webp'))
+            ? parsed.couple.groom.image
+            : DEFAULT_WEDDING_CONFIG.couple.groom.image
+        },
+        bride: {
+          ...DEFAULT_WEDDING_CONFIG.couple.bride,
+          ...(parsed.couple?.bride || {}),
+          image: (parsed.couple?.bride?.image && !parsed.couple.bride.image.includes('/images/bride.webp'))
+            ? parsed.couple.bride.image
+            : DEFAULT_WEDDING_CONFIG.couple.bride.image
+        }
       },
       cover: {
         ...DEFAULT_WEDDING_CONFIG.cover,
         ...(parsed.cover || {})
       },
-      eventDate: {
-        ...DEFAULT_WEDDING_CONFIG.eventDate,
-        ...(parsed.eventDate || {})
-      },
-      schedule: Array.isArray(parsed.schedule) ? parsed.schedule : DEFAULT_WEDDING_CONFIG.schedule,
-      venue: {
-        ...DEFAULT_WEDDING_CONFIG.venue,
-        ...(parsed.venue || {})
-      },
-      gallery: (Array.isArray(parsed.gallery) && parsed.gallery.length > 0 ? parsed.gallery : DEFAULT_WEDDING_CONFIG.gallery).map((item, idx) => ({
+      eventDate: (() => {
+        const storedDate = parsed.eventDate || {};
+        if (!storedDate.dateTime || storedDate.dateTime.includes('2026-11-28')) {
+          return {
+            ...DEFAULT_WEDDING_CONFIG.eventDate,
+            ...storedDate,
+            dateTime: DEFAULT_WEDDING_CONFIG.eventDate.dateTime,
+            dateTextKm: DEFAULT_WEDDING_CONFIG.eventDate.dateTextKm,
+            dateTextEn: DEFAULT_WEDDING_CONFIG.eventDate.dateTextEn
+          };
+        }
+        return {
+          ...DEFAULT_WEDDING_CONFIG.eventDate,
+          ...storedDate
+        };
+      })(),
+      schedule: (() => {
+        if (!Array.isArray(parsed.schedule) || parsed.schedule.length === 0) {
+          return DEFAULT_WEDDING_CONFIG.schedule;
+        }
+        // If stored schedule still has the old 5 default items, upgrade to the current 3 items
+        if (
+          parsed.schedule.length > DEFAULT_WEDDING_CONFIG.schedule.length ||
+          parsed.schedule.some((it) => it.titleKm?.includes('ហែជំនូន') || it.titleKm?.includes('បំពាក់ចិញ្ចៀន'))
+        ) {
+          return DEFAULT_WEDDING_CONFIG.schedule;
+        }
+        return parsed.schedule;
+      })(),
+      venue: (() => {
+        const storedVenue = parsed.venue || {};
+        if (
+          !storedVenue.googleMapsUrl ||
+          storedVenue.googleMapsUrl.includes('The+Premier+Centre') ||
+          storedVenue.addressKm?.includes('រាជធានីភ្នំពេញ') ||
+          storedVenue.addressKm?.includes('Bride’s House') ||
+          storedVenue.venueNameKm?.includes('The Premier Centre')
+        ) {
+          return {
+            ...DEFAULT_WEDDING_CONFIG.venue,
+            ...storedVenue,
+            venueNameKm: (storedVenue.venueNameKm && !storedVenue.venueNameKm.includes('The Premier Centre'))
+              ? storedVenue.venueNameKm
+              : DEFAULT_WEDDING_CONFIG.venue.venueNameKm,
+            venueNameEn: (storedVenue.venueNameEn && !storedVenue.venueNameEn.includes('The Premier Centre'))
+              ? storedVenue.venueNameEn
+              : DEFAULT_WEDDING_CONFIG.venue.venueNameEn,
+            addressKm: (storedVenue.addressKm && !storedVenue.addressKm.includes('រាជធានីភ្នំពេញ') && !storedVenue.addressKm.includes('Bride’s House'))
+              ? storedVenue.addressKm
+              : DEFAULT_WEDDING_CONFIG.venue.addressKm,
+            addressEn: (storedVenue.addressEn && !storedVenue.addressEn.includes('Phnom Penh'))
+              ? storedVenue.addressEn
+              : DEFAULT_WEDDING_CONFIG.venue.addressEn,
+            googleMapsUrl: (storedVenue.googleMapsUrl && !storedVenue.googleMapsUrl.includes('The+Premier+Centre'))
+              ? storedVenue.googleMapsUrl
+              : DEFAULT_WEDDING_CONFIG.venue.googleMapsUrl
+          };
+        }
+        return {
+          ...DEFAULT_WEDDING_CONFIG.venue,
+          ...storedVenue
+        };
+      })(),
+      gallery: (() => {
+        if (!Array.isArray(parsed.gallery) || parsed.gallery.length === 0) {
+          return DEFAULT_WEDDING_CONFIG.gallery;
+        }
+        // If stored config only had fewer default sample photos, upgrade to latest full gallery
+        if (
+          parsed.gallery.length < DEFAULT_WEDDING_CONFIG.gallery.length &&
+          parsed.gallery[0]?.url === '/images/gallery-1.webp'
+        ) {
+          return DEFAULT_WEDDING_CONFIG.gallery;
+        }
+        return parsed.gallery;
+      })().map((item, idx) => ({
         id: item.id ? String(item.id) : String(idx + 1),
         url: item.url || '/images/gallery-1.webp',
         titleKm: item.titleKm || '',
@@ -184,8 +298,8 @@ export const saveStoredWeddingConfig = (newConfig) => {
     try {
       // If saving hit QuotaExceededError, try pruning excess gallery items
       const fallbackConfig = JSON.parse(JSON.stringify(newConfig));
-      if (Array.isArray(fallbackConfig.gallery) && fallbackConfig.gallery.length > 8) {
-        fallbackConfig.gallery = fallbackConfig.gallery.slice(0, 8);
+      if (Array.isArray(fallbackConfig.gallery) && fallbackConfig.gallery.length > 12) {
+        fallbackConfig.gallery = fallbackConfig.gallery.slice(0, 12);
       }
       localStorage.setItem(STORAGE_KEY_WEDDING_CONFIG, JSON.stringify(fallbackConfig));
       window.dispatchEvent(new CustomEvent('wedding_config_updated', { detail: fallbackConfig }));

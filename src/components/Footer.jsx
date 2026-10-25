@@ -16,7 +16,7 @@ export default function Footer({ lang = 'km' }) {
         ? 'font-dangrek text-sm sm:text-base tracking-wide text-amber-100/70'
         : 'font-serif text-[15px] sm:text-[16px] tracking-wider'
         }`}>
-        {lang === 'km' ? 'ពិធីភ្ជាប់ពាក្យ គឹមសាន្ត & អូយសាំង' : 'Kimsan & Uysang Engagement'}
+        {lang === 'km' ? 'ពិធីចូលចែចូវ គឹមសាន្ត & អូយសាំង' : 'Kimsan & Uysang Engagement'}
       </p>
     </footer>
   );

@@ -19,7 +19,13 @@ export default function RomanticAudio({
 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
+  const wasPlayingBeforeVideoRef = useRef(false);
+  const isPlayingRef = useRef(isPlaying);
   const [currentConfig, setCurrentConfig] = useState(() => audioConfig || getStoredWeddingConfig().audio);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
 
   useEffect(() => {
     if (audioConfig) {
@@ -40,6 +46,57 @@ export default function RomanticAudio({
   const songTitle = currentConfig?.songTitle || "ភ្ជាប់និស្ស័យ (NISAI) - OLICA ft. KZ";
   const audioUrl = currentConfig?.audioUrl || "/audio/wedding-song.mp3";
   const youtubeId = extractYouTubeId(audioUrl);
+
+  // Broadcast wedding music playing state globally
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__isWeddingMusicPlaying = isPlaying;
+      window.dispatchEvent(new CustomEvent('wedding_music_state', { detail: { isPlaying } }));
+    }
+  }, [isPlaying]);
+
+  // Listen for audio control requests (e.g. from VideoSection when video plays with sound)
+  useEffect(() => {
+    const handleAudioControl = (e) => {
+      const { action } = e.detail || {};
+
+      if (action === 'pause') {
+        if (youtubeId) {
+          if (isPlayingRef.current) {
+            wasPlayingBeforeVideoRef.current = true;
+            setIsPlaying(false);
+          }
+        } else {
+          const audio = audioRef.current;
+          if (audio && !audio.paused) {
+            wasPlayingBeforeVideoRef.current = true;
+            audio.pause();
+            setIsPlaying(false);
+          }
+        }
+      } else if (action === 'resume') {
+        if (wasPlayingBeforeVideoRef.current) {
+          wasPlayingBeforeVideoRef.current = false;
+          if (youtubeId) {
+            setIsPlaying(true);
+          } else {
+            const audio = audioRef.current;
+            if (audio) {
+              const playPromise = audio.play();
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => setIsPlaying(true))
+                  .catch((err) => console.warn('Unable to resume romantic audio:', err));
+              }
+            }
+          }
+        }
+      }
+    };
+
+    window.addEventListener('wedding_audio_control', handleAudioControl);
+    return () => window.removeEventListener('wedding_audio_control', handleAudioControl);
+  }, [youtubeId]);
 
   useEffect(() => {
     // If not YouTube, configure HTML5 Audio
@@ -94,8 +151,20 @@ export default function RomanticAudio({
 
   const toggleAudio = (e) => {
     e.stopPropagation();
+    // User manually toggled audio, reset any auto-resume flag
+    wasPlayingBeforeVideoRef.current = false;
     if (youtubeId) {
-      setIsPlaying(prev => !prev);
+      const next = !isPlaying;
+      setIsPlaying(next);
+      if (next) {
+        // Instantly mute and pause nature background sound
+        document.querySelectorAll('audio[src*="nature-sound"]').forEach((el) => {
+          try {
+            el.pause();
+            el.muted = true;
+          } catch { }
+        });
+      }
       return;
     }
 
@@ -105,6 +174,13 @@ export default function RomanticAudio({
     if (isPlaying) {
       audio.pause();
     } else {
+      // Instantly mute and pause nature background sound
+      document.querySelectorAll('audio[src*="nature-sound"]').forEach((el) => {
+        try {
+          el.pause();
+          el.muted = true;
+        } catch { }
+      });
       audio.play().then(() => setIsPlaying(true)).catch(console.warn);
     }
   };

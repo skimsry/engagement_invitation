@@ -23,7 +23,7 @@ export default function VenueSection({ lang, venue, copiedAddress, onCopyAddress
 
   const venueName = lang === 'km' ? venueData.venueNameKm : venueData.venueNameEn;
   const address = lang === 'km' ? venueData.addressKm : venueData.addressEn;
-  const mapsUrl = venueData.googleMapsUrl || "https://maps.google.com/?q=The+Premier+Centre+Sen+Sok+Phnom+Penh";
+  const mapsUrl = venueData.googleMapsUrl || "https://maps.app.goo.gl/is1RjP4f2pYupsgT8?g_st=it";
 
   return (
     <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 text-[#3d3126]">

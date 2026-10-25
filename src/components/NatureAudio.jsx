@@ -6,41 +6,91 @@ import { useEffect, useRef, useState } from 'react';
  * automatically 1 second after first load, and triggers on mouse move / touch.
  * Has no visual UI as requested by user.
  */
-export default function NatureAudio({ isOpened, onStarted }) {
+export default function NatureAudio({ isOpened, onStarted, volume = 0.05 }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
   const hasStartedRef = useRef(false);
+  const isMusicActiveRef = useRef(Boolean(typeof window !== 'undefined' && window.__isWeddingMusicPlaying));
 
   // Stop background sound immediately when invitation card is opened
   useEffect(() => {
     if (isOpened && audioRef.current) {
       audioRef.current.pause();
+      audioRef.current.muted = true;
       setIsPlaying(false);
     }
   }, [isOpened]);
 
-  // Handle 1-second auto-play on first load with gesture fallback
+  // Listen to wedding music play/pause states (e.g. from Header music button)
   useEffect(() => {
-    if (isOpened) return;
+    const handleMusicState = (e) => {
+      const musicPlaying = Boolean(e.detail?.isPlaying);
+      isMusicActiveRef.current = musicPlaying;
+      if (musicPlaying) {
+        if (audioRef.current) {
+          audioRef.current.pause();
+          audioRef.current.muted = true;
+        }
+        setIsPlaying(false);
+      } else {
+        if (audioRef.current) {
+          audioRef.current.muted = false;
+        }
+        if (!isOpened) {
+          // If Romantic music paused and invitation is still on cover/opening, resume nature sound
+          hasStartedRef.current = false;
+          audioRef.current?.play().then(() => setIsPlaying(true)).catch(() => { });
+        }
+      }
+    };
+
+    window.addEventListener('wedding_music_state', handleMusicState);
+    return () => window.removeEventListener('wedding_music_state', handleMusicState);
+  }, [isOpened]);
+
+  // Handle auto-play on first load / gesture fallback
+  useEffect(() => {
+    if (isOpened || isMusicActiveRef.current || (typeof window !== 'undefined' && window.__isWeddingMusicPlaying)) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.muted = true;
+      }
+      return;
+    }
 
     const audio = audioRef.current;
     if (!audio) return;
 
-    audio.volume = 0.03; // Ultra-soft ambient whisper (3% volume)
+    audio.volume = volume;
     audio.loop = true;
 
     let cleanupListeners = () => { };
 
     const attemptPlay = () => {
-      if (hasStartedRef.current || isOpened) return;
+      if (
+        hasStartedRef.current ||
+        isOpened ||
+        isMusicActiveRef.current ||
+        (typeof window !== 'undefined' && window.__isWeddingMusicPlaying)
+      ) {
+        return;
+      }
       const el = audioRef.current;
       if (!el) return;
 
-      el.volume = 0.03;
+      el.volume = volume;
       const promise = el.play();
       if (promise !== undefined) {
         promise
           .then(() => {
+            if (
+              isMusicActiveRef.current ||
+              (typeof window !== 'undefined' && window.__isWeddingMusicPlaying)
+            ) {
+              el.pause();
+              el.muted = true;
+              return;
+            }
             setIsPlaying(true);
             hasStartedRef.current = true;
             cleanupListeners();
@@ -52,12 +102,15 @@ export default function NatureAudio({ isOpened, onStarted }) {
       }
     };
 
-    // 1. One-second timer after first loading to turn on sound automatically
+    // 1. Immediate play attempt (works instantly after user interaction, like clicking "Open Invitation")
+    attemptPlay();
+
+    // 2. One-second timer after first loading to turn on sound automatically
     const autoPlayTimer = setTimeout(() => {
       attemptPlay();
     }, 1000);
 
-    // 2. Telegram WebApp Integration: attempt play on Telegram events & viewport setup
+    // 3. Telegram WebApp Integration: attempt play on Telegram events & viewport setup
     const tg = window.Telegram?.WebApp;
     const handleTgViewport = () => {
       attemptPlay();
@@ -71,7 +124,7 @@ export default function NatureAudio({ isOpened, onStarted }) {
       }
     }
 
-    // 3. Autoplay triggers across mouse movement, touch, scroll, and tap gestures
+    // 4. Autoplay triggers across mouse movement, touch, scroll, and tap gestures
     const interactionEvents = [
       'mousemove',
       'pointermove',
@@ -119,8 +172,11 @@ export default function NatureAudio({ isOpened, onStarted }) {
 
     return () => {
       cleanupListeners();
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
     };
-  }, [isOpened, onStarted]);
+  }, [isOpened, onStarted, volume]);
 
   if (isOpened) return null;
 

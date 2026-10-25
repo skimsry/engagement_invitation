@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Heart, ChevronsRight, Check } from 'lucide-react';
 import { KhmerCorner, KhmerDivider } from './KhmerOrnaments';
+import NatureAudio from './NatureAudio';
 import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
 /**
@@ -157,12 +158,33 @@ function SlideButton({ onSlideComplete, lang = 'km', className = '' }) {
  *    and displays the regal invitation box with the guest's name and ceremony details.
  * 3. Guest can click the button to proceed to the full invitation, or skip directly.
  */
-export default function InvitationOpening({ guest, lang = 'km', onComplete, onHideHeader }) {
+export default function InvitationOpening({
+  guest,
+  lang = 'km',
+  onComplete,
+  onHideHeader,
+  isOpened = false,
+  hasGuestId: hasGuestIdProp
+}) {
   const [config, setConfig] = useState(() => getStoredWeddingConfig());
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const videoRef = useRef(null);
   const completedRef = useRef(false);
+
+  // Check if link has a valid guest ID or custom name
+  const hasGuestId = hasGuestIdProp !== undefined
+    ? Boolean(hasGuestIdProp)
+    : Boolean(
+      (guest?.id && guest.id !== 'demo' && guest.id !== '') ||
+      (guest?.name && guest.name.trim() !== '' && guest.name !== 'ឯកឧត្តម / លោកជំទាវ / លោក / លោកស្រី' && guest.name !== 'ភ្ញៀវកិត្តិយស / Honored Guest') ||
+      (typeof window !== 'undefined' && Boolean(
+        new URLSearchParams(window.location.search).get('guest') ||
+        new URLSearchParams(window.location.search).get('to') ||
+        new URLSearchParams(window.location.search).get('name') ||
+        window.Telegram?.WebApp?.initDataUnsafe?.start_param
+      ))
+    );
 
   useEffect(() => {
     const handleUpdate = (e) => {
@@ -219,6 +241,9 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
       className={`fixed inset-0 z-50 bg-[#12100e] flex items-center justify-center overflow-hidden select-none transition-opacity duration-500 ${isFadingOut ? 'opacity-0 pointer-events-none' : 'opacity-100'
         }`}
     >
+      {/* Ambient Nature Sound Controller (Plays during gate opening animation & invitation plaque) */}
+      <NatureAudio isOpened={isOpened} />
+
       {/* Container maintaining card/portrait frame */}
       <div className="relative w-full h-[100dvh] sm:h-auto sm:max-w-md sm:aspect-[9/16] overflow-hidden sm:rounded-3xl sm:border-2 sm:border-[#d4af37]/60 sm:shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col justify-between items-center bg-[#14100c]">
 
@@ -294,7 +319,7 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
               {/* Ceremony Header */}
               {/* Ceremony Header */}
               <h2 className="font-moulpali text-xl sm:text-2xl leading-[1.7] py-2.5 min-h-[56px] flex items-center justify-center text-gold-bright drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
-                {lang === 'km' ? 'សិរីមង្គល ពិធីភ្ជាប់ពាក្យ' : 'Engagement Ceremony'}
+                {lang === 'km' ? 'សិរីមង្គល ពិធីចូលចែចូវ' : 'Engagement Ceremony'}
               </h2>
 
               {/* <p className="text-[10px] uppercase tracking-[0.2em] text-[#d4af37]/80 font-serif mt-0.5">
@@ -312,41 +337,44 @@ export default function InvitationOpening({ guest, lang = 'km', onComplete, onHi
 
               <KhmerDivider className="my-2.5 w-full max-w-[240px]" />
 
-              {/* Invitation Statement */}
-              <p className="font-kantumruy text-sm text-[#faf5ea]/85">
-                {lang === 'km' ? 'សូមគោរពអញ្ជើញ' : 'Cordially Invites'}
-              </p>
+              {/* Invitation Statement & Guest Honorific Plaque Box (Maintains exact same position whether guest ID exists or not) */}
+              <div className={`w-full flex flex-col items-center select-none ${hasGuestId ? 'opacity-100' : 'invisible pointer-events-none'}`}>
+                {/* Invitation Statement */}
+                <p className="font-kantumruy text-sm text-[#faf5ea]/85">
+                  {lang === 'km' ? 'សូមគោរពអញ្ជើញ' : 'Cordially Invites'}
+                </p>
 
-              {/* BOX NAME OF INVITATION (Highlighted Guest Honorific with Portrait Plaque) */}
-              <div
-                className="my-1.5 w-full max-w-[410px] min-[420px]:max-w-[440px] sm:max-w-[475px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
-                style={{ backgroundImage: `url('${cover?.portraitPlaqueImage || '/images/wedding-portrait-plaque.webp'}')` }}
-              >
-                {/* Guest name positioned inside the right-hand rectangular frame */}
+                {/* BOX NAME OF INVITATION (Highlighted Guest Honorific with Portrait Plaque) */}
                 <div
-                  className="absolute flex items-center justify-center px-2 sm:px-3 text-center"
-                  style={{
-                    left: '40.5%',
-                    top: '31%',
-                    width: '53%',
-                    height: '26%',
-                  }}
+                  className="my-1.5 w-full max-w-[410px] min-[420px]:max-w-[440px] sm:max-w-[475px] aspect-[596/419] bg-contain bg-center bg-no-repeat relative drop-shadow-[0_6px_20px_rgba(0,0,0,0.8)] select-none"
+                  style={{ backgroundImage: `url('${cover?.portraitPlaqueImage || '/images/wedding-portrait-plaque.webp'}')` }}
                 >
-                  <p className="font-dangrek text-sm sm:text-base md:text-lg font-bold tracking-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] break-words text-center bg-gradient-to-b from-[#fff59d] via-[#ffd700] to-[#ca8a04] bg-clip-text text-transparent line-clamp-2">
-                    {guest?.name}
-                  </p>
+                  {/* Guest name positioned inside the right-hand rectangular frame */}
+                  <div
+                    className="absolute flex items-center justify-center px-2 sm:px-3 text-center"
+                    style={{
+                      left: '40.5%',
+                      top: '31%',
+                      width: '53%',
+                      height: '26%',
+                    }}
+                  >
+                    <p className="font-dangrek text-sm sm:text-base md:text-lg font-bold tracking-normal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] break-words text-center bg-gradient-to-b from-[#fff59d] via-[#ffd700] to-[#ca8a04] bg-clip-text text-transparent line-clamp-2">
+                      {guest?.name}
+                    </p>
+                  </div>
                 </div>
               </div>
 
               {/* Date & Location Badges */}
               {/* <p className="font-kantumruy text-xs text-[#faf5ea]/90 leading-tight">
-                {lang === 'km' ? 'សៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦' : 'Saturday, November 28, 2026'}
+                {lang === 'km' ? 'អាទិត្យ ទី២២ ខែវិច្ឆិកា ឆ្នាំ២០២៦' : 'Sunday, November 22, 2026'}
               </p>
               <p className="font-kantumruy text-[11px] text-[#d4af37] mt-0.5">
-                The Premier Centre Sen Sok, Phnom Penh
+                Bride’s House, Phnom Penh
               </p> */}
 
-              {/* Primary Action: Slide to View Full Invitation */}
+              {/* Primary Action: Slide to View Full Invitation (Fixed identical position in both modes) */}
               <SlideButton
                 onSlideComplete={handleFinish}
                 lang={lang}

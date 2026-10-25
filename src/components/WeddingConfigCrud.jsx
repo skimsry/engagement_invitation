@@ -34,7 +34,7 @@ import CountdownTimer from './CountdownTimer';
 // Custom YouTube Icon
 const Youtube = ({ className = 'w-4 h-4' }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
   </svg>
 );
 
@@ -118,21 +118,21 @@ const formatEnglishDate = (d) => {
 const getGoogleMapsEmbedUrl = (url, fallbackQuery = '') => {
   const raw = (url || '').trim();
   if (!raw && !fallbackQuery) return null;
-  
+
   if (raw.includes('output=embed')) {
     return raw;
   }
-  
+
   try {
     if (raw.startsWith('http://') || raw.startsWith('https://')) {
       const parsed = new URL(raw);
-      
+
       // If query param q or query exists
       const q = parsed.searchParams.get('q') || parsed.searchParams.get('query');
       if (q) {
         return `https://maps.google.com/maps?q=${encodeURIComponent(q)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
       }
-      
+
       // If path has /place/Name/@lat,lng
       const placeMatch = parsed.pathname.match(/\/place\/([^\/@]+)/);
       if (placeMatch && placeMatch[1]) {
@@ -140,10 +140,9 @@ const getGoogleMapsEmbedUrl = (url, fallbackQuery = '') => {
         return `https://maps.google.com/maps?q=${encodeURIComponent(placeName)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
       }
 
-      // If path has @lat,lng
-      const coordMatch = parsed.pathname.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
-      if (coordMatch && coordMatch[1] && coordMatch[2]) {
-        return `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+      // If short link maps.app.goo.gl/is1RjP4f2pYupsgT8 or coordinates
+      if (raw.includes('is1RjP4f2pYupsgT8')) {
+        return `https://maps.google.com/maps?q=13.1067451,104.1262930&t=&z=16&ie=UTF8&iwloc=&output=embed`;
       }
     }
   } catch {
@@ -188,7 +187,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
     if (!newVal) return;
     const isoString = `${newVal}:00+07:00`;
     const d = new Date(isoString);
-    
+
     setFormData(prev => ({
       ...prev,
       eventDate: {
@@ -640,11 +639,10 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer active:scale-95 border ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#996515]/40 to-[#d4af37]/30 border-[#d4af37] text-[#fde047] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
-                    : 'bg-[#181512] border-stone-800 text-stone-400 hover:text-stone-200 hover:border-stone-700'
-                }`}
+                className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition cursor-pointer active:scale-95 border ${isActive
+                  ? 'bg-gradient-to-r from-[#996515]/40 to-[#d4af37]/30 border-[#d4af37] text-[#fde047] shadow-[0_0_15px_rgba(212,175,55,0.2)]'
+                  : 'bg-[#181512] border-stone-800 text-stone-400 hover:text-stone-200 hover:border-stone-700'
+                  }`}
               >
                 <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#fde047]' : 'text-stone-400'}`} />
                 <span>{lang === 'km' ? tab.labelKm : tab.labelEn}</span>
@@ -1430,7 +1428,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                     onClick={(e) => {
                       try {
                         e.target.showPicker?.();
-                      } catch (err) {}
+                      } catch (err) { }
                     }}
                     className="w-full bg-[#181512] border-2 border-[#d4af37]/60 hover:border-[#ffd700] focus:border-[#ffd700] rounded-xl px-4 py-3 text-sm text-[#fde047] font-semibold cursor-pointer focus:outline-none transition shadow-inner [color-scheme:dark]"
                   />
@@ -1470,7 +1468,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                       eventDate: { ...prev.eventDate, dateTextKm: e.target.value }
                     }))}
                     className="w-full bg-[#181512] border border-stone-700 focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none font-moulpali"
-                    placeholder="ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦"
+                    placeholder="ថ្ងៃអាទិត្យ ទី២២ ខែវិច្ឆិកា ឆ្នាំ២០២៦"
                   />
                 </div>
 
@@ -1501,7 +1499,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                       eventDate: { ...prev.eventDate, dateTextEn: e.target.value }
                     }))}
                     className="w-full bg-[#181512] border border-stone-700 focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none"
-                    placeholder="Saturday, November 28, 2026 • 07:30 AM"
+                    placeholder="Sunday, November 22, 2026 • 07:30 AM"
                   />
                 </div>
 
@@ -1538,7 +1536,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                 {/* Countdown Component Preview */}
                 <div className="p-3 rounded-2xl bg-black/40 border border-[#d4af37]/20">
                   <CountdownTimer
-                    targetDate={formData.eventDate?.dateTime || "2026-11-28T07:30:00+07:00"}
+                    targetDate={formData.eventDate?.dateTime || "2026-11-22T07:30:00+07:00"}
                     lang={lang}
                   />
                 </div>
@@ -1550,10 +1548,10 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                   {lang === 'km' ? 'កាលបរិច្ឆេទបង្ហាញលើធៀប' : 'Displayed on Invitation'}
                 </span>
                 <p className="font-moulpali text-sm text-[#fde047]">
-                  {formData.eventDate.dateTextKm || 'ថ្ងៃសៅរ៍ ទី២៨ ខែវិច្ឆិកា ឆ្នាំ២០២៦'}
+                  {formData.eventDate.dateTextKm || 'ថ្ងៃអាទិត្យ ទី២២ ខែវិច្ឆិកា ឆ្នាំ២០២៦'}
                 </p>
                 <p className="text-xs text-stone-300">
-                  {formData.eventDate.dateTextEn || 'Saturday, November 28, 2026'}
+                  {formData.eventDate.dateTextEn || 'Sunday, November 22, 2026'}
                 </p>
               </div>
             </div>
@@ -1641,10 +1639,11 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
 
         const venuePresets = [
           {
-            nameKm: 'The Premier Centre Sen Sok (ដឹ ព្រេមៀ សែនសុខ)',
-            nameEn: 'The Premier Centre Sen Sok',
-            address: 'The Premier Centre Sen Sok, Phnom Penh, Cambodia',
-            url: 'https://maps.google.com/?q=The+Premier+Centre+Sen+Sok+Phnom+Penh'
+            nameKm: 'គេហដ្ឋានខាងស្រី',
+            nameEn: 'Bride’s House',
+            addressKm: 'ភូមិផ្សារឃ្លាំង ឃុំកំពង់ឃ្លាំង ស្រុកសូទ្រនិគម ខេត្តសៀមរាប',
+            addressEn: 'Phsar Khlang Village, Kampong Khleang Commune, Sot Nikum District, Siem Reap Province',
+            url: 'https://maps.app.goo.gl/is1RjP4f2pYupsgT8?g_st=it'
           },
           {
             nameKm: 'សណ្ឋាគារ សុខា ភ្នំពេញ (Sokha Hotel)',
@@ -1709,15 +1708,15 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                             ...prev.venue,
                             venueNameKm: vp.nameKm,
                             venueNameEn: vp.nameEn,
-                            addressEn: vp.address,
+                            addressKm: vp.addressKm || prev.venue.addressKm,
+                            addressEn: vp.addressEn || vp.address,
                             googleMapsUrl: vp.url
                           }
                         }))}
-                        className={`text-[10px] px-2.5 py-1 rounded-lg border transition cursor-pointer ${
-                          formData.venue.googleMapsUrl === vp.url
-                            ? 'bg-[#d4af37]/25 text-[#fde047] border-[#d4af37]/60 font-bold'
-                            : 'bg-[#12100e] hover:bg-white/10 text-stone-300 border-stone-700'
-                        }`}
+                        className={`text-[10px] px-2.5 py-1 rounded-lg border transition cursor-pointer ${formData.venue.googleMapsUrl === vp.url
+                          ? 'bg-[#d4af37]/25 text-[#fde047] border-[#d4af37]/60 font-bold'
+                          : 'bg-[#12100e] hover:bg-white/10 text-stone-300 border-stone-700'
+                          }`}
                       >
                         {vp.nameEn.split(' ')[0]} {vp.nameEn.split(' ')[1] || ''}
                       </button>
@@ -1738,7 +1737,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                       venue: { ...prev.venue, venueNameKm: e.target.value }
                     }))}
                     className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none"
-                    placeholder="The Premier Centre Sen Sok (ដឹ ព្រេមៀ សែនសុខ)"
+                    placeholder="គេហដ្ឋានខាងស្រី"
                   />
                 </div>
 
@@ -1755,14 +1754,31 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                       venue: { ...prev.venue, venueNameEn: e.target.value }
                     }))}
                     className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none"
-                    placeholder="The Premier Centre Sen Sok"
+                    placeholder="Bride’s House"
                   />
                 </div>
 
-                {/* Address for Copying */}
+                {/* Address KM */}
                 <div>
                   <label className="block text-xs font-semibold text-stone-300 mb-1">
-                    {lang === 'km' ? 'អាសយដ្ឋានសម្រាប់ចម្លង (Address for Copying)' : 'Address for Copy Button'}
+                    {lang === 'km' ? 'អាសយដ្ឋាន (ភាសាខ្មែរ)' : 'Address (Khmer)'}
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.venue.addressKm || ''}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      venue: { ...prev.venue, addressKm: e.target.value }
+                    }))}
+                    className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none"
+                    placeholder="ភូមិផ្សារឃ្លាំង ឃុំកំពង់ឃ្លាំង ស្រុកសូទ្រនិគម ខេត្តសៀមរាប"
+                  />
+                </div>
+
+                {/* Address EN */}
+                <div>
+                  <label className="block text-xs font-semibold text-stone-300 mb-1">
+                    {lang === 'km' ? 'អាសយដ្ឋាន (English)' : 'Address (English)'}
                   </label>
                   <input
                     type="text"
@@ -1772,7 +1788,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                       venue: { ...prev.venue, addressEn: e.target.value }
                     }))}
                     className="w-full bg-[#12100e] border border-stone-700 focus:border-[#d4af37] rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none"
-                    placeholder="The Premier Centre Sen Sok, Phnom Penh, Cambodia"
+                    placeholder="Phsar Khlang Village, Kampong Khleang Commune, Sot Nikum District, Siem Reap Province"
                   />
                 </div>
 
@@ -1883,11 +1899,11 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                   </h4>
                   <p className="text-xs sm:text-sm font-bold text-[#996515]">
                     {lang === 'km'
-                      ? (formData.venue.venueNameKm || formData.venue.venueNameEn || 'The Premier Centre Sen Sok')
-                      : (formData.venue.venueNameEn || formData.venue.venueNameKm || 'The Premier Centre Sen Sok')}
+                      ? (formData.venue.venueNameKm || formData.venue.venueNameEn || 'Bride’s House')
+                      : (formData.venue.venueNameEn || formData.venue.venueNameKm || 'Bride’s House')}
                   </p>
                   <p className="text-[11px] text-stone-500 px-2 line-clamp-2">
-                    {formData.venue.addressEn || formData.venue.addressKm || 'The Premier Centre Sen Sok, Phnom Penh, Cambodia'}
+                    {formData.venue.addressEn || formData.venue.addressKm || 'Phsar Khlang Village, Kampong Khleang Commune, Sot Nikum District, Siem Reap Province'}
                   </p>
 
                   <div className="pt-2 max-w-xs mx-auto">
@@ -2032,11 +2048,10 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
             </div>
 
             <div className="flex items-center gap-2">
-              <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border flex items-center gap-1.5 ${
-                formData.angpao.qrCodeImage
-                  ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
-                  : 'bg-amber-950/60 border-amber-500/40 text-amber-300'
-              }`}>
+              <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold border flex items-center gap-1.5 ${formData.angpao.qrCodeImage
+                ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-300'
+                : 'bg-amber-950/60 border-amber-500/40 text-amber-300'
+                }`}>
                 {formData.angpao.qrCodeImage ? (
                   <>
                     <Check className="w-3 h-3 text-emerald-400" />
@@ -2081,11 +2096,10 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                         ...prev,
                         angpao: { ...prev.angpao, bankName: bName }
                       }))}
-                      className={`text-[10px] px-2 py-0.5 rounded-md transition cursor-pointer ${
-                        formData.angpao.bankName === bName
-                          ? 'bg-[#d4af37]/25 text-[#fde047] border border-[#d4af37]/50 font-bold'
-                          : 'bg-white/5 hover:bg-white/10 text-stone-300'
-                      }`}
+                      className={`text-[10px] px-2 py-0.5 rounded-md transition cursor-pointer ${formData.angpao.bankName === bName
+                        ? 'bg-[#d4af37]/25 text-[#fde047] border border-[#d4af37]/50 font-bold'
+                        : 'bg-white/5 hover:bg-white/10 text-stone-300'
+                        }`}
                     >
                       {bName.split(' ')[0]}
                     </button>
@@ -2612,9 +2626,8 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                     {[1, 2, 3, 4, 5].map((bar) => (
                       <span
                         key={bar}
-                        className={`w-1 rounded-full bg-[#fde047] transition-all duration-300 ${
-                          audioTesting ? 'animate-pulse h-5' : 'h-1.5 opacity-40'
-                        }`}
+                        className={`w-1 rounded-full bg-[#fde047] transition-all duration-300 ${audioTesting ? 'animate-pulse h-5' : 'h-1.5 opacity-40'
+                          }`}
                         style={{
                           animationDelay: `${bar * 120}ms`,
                           height: audioTesting ? `${Math.max(6, (bar % 3 + 1) * 7)}px` : '6px'
@@ -2689,11 +2702,10 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                         <button
                           type="button"
                           onClick={toggleTestAudio}
-                          className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg cursor-pointer ${
-                            audioTesting
-                              ? 'bg-amber-500 text-stone-950 border border-amber-400 animate-pulse'
-                              : 'bg-gradient-to-r from-[#996515] to-[#d4af37] text-stone-950 hover:brightness-110'
-                          }`}
+                          className={`flex-1 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 shadow-lg cursor-pointer ${audioTesting
+                            ? 'bg-amber-500 text-stone-950 border border-amber-400 animate-pulse'
+                            : 'bg-gradient-to-r from-[#996515] to-[#d4af37] text-stone-950 hover:brightness-110'
+                            }`}
                         >
                           {audioTesting ? (
                             <>
@@ -2970,7 +2982,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                 />
                 <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
                   <span className="text-[10px] text-stone-500">{lang === 'km' ? 'រូបគំរូ:' : 'Presets:'}</span>
-                  {['/images/gallery-1.webp', '/images/gallery-2.webp', '/images/a1.webp', '/images/a2.webp', '/images/a3.webp'].map((preset) => (
+                  {['/images/gallery-1.webp', '/images/gallery-2.webp', '/images/gallery-8.webp', '/images/a1.webp', '/images/a2.webp', '/images/a3.webp'].map((preset) => (
                     <button
                       key={preset}
                       type="button"
