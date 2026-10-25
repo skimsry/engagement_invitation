@@ -18,6 +18,7 @@ export default function Header({
   isHidden = false
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showExitOverlay, setShowExitOverlay] = useState(false);
 
   // Close menu if hidden externally
   useEffect(() => {
@@ -108,30 +109,35 @@ export default function Header({
       }
     }
 
-    // 2. If running in regular Web Browser
+    // 2. Stop all audio and video immediately so app is quiet
     if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('wedding_audio_control', {
+        detail: { action: 'pause', source: 'exit' }
+      }));
+      document.querySelectorAll('audio').forEach((el) => {
+        try {
+          el.pause();
+          el.muted = true;
+        } catch {}
+      });
+      document.querySelectorAll('video').forEach((el) => {
+        try {
+          el.pause();
+        } catch {}
+      });
+
+      // 3. Attempt native window.close in browser
       try {
+        window.close();
+        window.open('', '_self', '');
         window.close();
       } catch (e) {
         console.warn('window.close failed:', e);
       }
 
-      // Secondary script-close workaround
-      setTimeout(() => {
-        try {
-          window.open('', '_self', '');
-          window.close();
-        } catch (e) {}
-
-        // Fallback if browser blocks script-initiated tab closing
-        setTimeout(() => {
-          if (window.history.length > 1) {
-            window.history.back();
-          } else {
-            window.location.href = 'about:blank';
-          }
-        }, 150);
-      }, 50);
+      // 4. In browsers where script-initiated window.close() is prevented by security policy,
+      // display the elegant Exit Screen overlay with clear close instructions and home link.
+      setShowExitOverlay(true);
     }
   };
 
@@ -349,6 +355,78 @@ export default function Header({
           </div>
         </button>
       </div>
+
+      {/* 
+        BROWSER EXIT OVERLAY MODAL:
+        Provides an elegant exit experience when browser security restricts automatic window.close()
+      */}
+      {showExitOverlay && (
+        <div className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in select-none">
+          <div className="w-full max-w-sm rounded-3xl bg-[#161310] border-2 border-[#d4af37]/60 shadow-[0_20px_60px_rgba(0,0,0,0.9),0_0_30px_rgba(212,175,55,0.25)] p-6 sm:p-7 flex flex-col items-center text-center gap-4 relative">
+            {/* Close button on top right */}
+            <button
+              onClick={() => setShowExitOverlay(false)}
+              className="absolute top-3.5 right-3.5 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 text-stone-300 hover:text-white flex items-center justify-center transition"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* Glowing Exit Icon */}
+            <div className="w-16 h-16 rounded-full bg-gradient-to-tr from-rose-900 via-rose-700 to-amber-500 p-0.5 shadow-[0_0_25px_rgba(225,29,72,0.4)] flex items-center justify-center">
+              <div className="w-full h-full rounded-full bg-stone-950 flex items-center justify-center text-rose-400">
+                <Power className="w-7 h-7" />
+              </div>
+            </div>
+
+            {/* Title & Blessing */}
+            <div className="space-y-1">
+              <h3 className="font-moulpali text-lg sm:text-xl text-amber-300">
+                {lang === 'km' ? 'សូមអរគុណ!' : 'Thank You!'}
+              </h3>
+              <p className="font-kantumruy text-xs sm:text-sm text-stone-300">
+                {lang === 'km'
+                  ? 'អ្នកបានចាកចេញពីសំបុត្រអញ្ជើញដោយជោគជ័យ'
+                  : 'You have exited the wedding invitation'}
+              </p>
+            </div>
+
+            {/* Browser Note */}
+            <div className="py-2.5 px-3.5 rounded-xl bg-black/50 border border-amber-500/20 text-[11px] sm:text-xs text-stone-400 leading-relaxed">
+              {lang === 'km'
+                ? 'ដោយសារគោលការណ៍សុវត្ថិភាពរបស់ Browser ផ្ទាំងនេះមិនអាចបិទដោយស្វ័យប្រវត្តិបានទេ។ សូមចុច ✕ នៅលើ Browser ឬប៊ូតុងខាងក្រោម'
+                : 'Due to browser security policies, please close this tab using the button below or tap (✕) on your browser.'}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="w-full flex flex-col gap-2 pt-1">
+              <button
+                onClick={() => {
+                  try {
+                    window.close();
+                    window.open('', '_self', '');
+                    window.close();
+                  } catch (e) {}
+                }}
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-700 via-red-600 to-rose-700 hover:brightness-110 text-white text-xs sm:text-sm font-bold shadow-lg active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+                <span>{lang === 'km' ? 'បិទផ្ទាំង Browser (Close Tab)' : 'Close Browser Tab'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowExitOverlay(false);
+                }}
+                className="w-full py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-stone-700 text-stone-300 hover:text-white text-xs font-semibold active:scale-95 transition flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Home className="w-3.5 h-3.5 text-amber-400" />
+                <span>{lang === 'km' ? 'ត្រឡប់ទៅកម្មវិធីវិញ' : 'Return to Invitation'}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
