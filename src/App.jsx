@@ -378,7 +378,7 @@ export default function App() {
 
   const handleAddToCalendar = () => {
     const title = encodeURIComponent("Engagement Ceremony: Kimsan & Uysang | សិរីមង្គល ពិធីចូលចែចូវ");
-    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីចូលចែចូវ សន គឹមសាន្ត & ង៉ោ អូយសាំង (SORN KIMSAN & Ngov Uysang)");
+    const details = encodeURIComponent("សូមគោរពអញ្ជើញចូលរួមជាអធិបតី និងភ្ញៀវកិត្តិយសក្នុងពិធីចូលចែចូវ សន គឹមសាន្ត & ង៉ោ អូយសាំង (SORN KIMSAN & NGO Uysang)");
     const location = encodeURIComponent("Phsar Khlang Village, Kampong Khleang Commune, Sot Nikum District, Siem Reap Province");
     const start = "20261122T003000Z";
     const end = "20261122T060000Z";

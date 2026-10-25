@@ -783,7 +783,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
                       couple: { ...prev.couple, bride: { ...prev.couple.bride, lastNameEn: e.target.value } }
                     }))}
                     className="w-full bg-[#181512] border border-stone-700 focus:border-rose-400 rounded-xl px-3 py-2 text-xs text-stone-100 focus:outline-none uppercase"
-                    placeholder="NGOV"
+                    placeholder="NGO"
                   />
                 </div>
                 <div>
@@ -1566,7 +1566,7 @@ export default function WeddingConfigCrud({ config: propConfig, onUpdateConfig, 
             <div>
               <h3 className="font-moulpali text-sm sm:text-base text-[#f3e5ab] flex items-center gap-2">
                 <Clock className="w-4 h-4 text-amber-400" />
-                <span>{lang === 'km' ? 'កម្មវិធីមង្គលភ្ជាប់ពាក្យ (Event Schedule CRUD)' : 'Event Schedule Items'}</span>
+                <span>{lang === 'km' ? 'កម្មវិធីមង្គល ពិធីចូលចែចូវ (Event Schedule CRUD)' : 'Event Schedule Items'}</span>
               </h3>
               <p className="text-xs text-stone-400 mt-1">
                 {lang === 'km' ? 'បន្ថែម កែប្រែ ឬលុបកម្មវិធីនីមួយៗក្នុងពិធីមង្គល' : 'Add, edit, or remove timeline agenda items'}

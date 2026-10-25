@@ -114,7 +114,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
               {couple?.bride?.lastNameKm ? `${couple.bride.lastNameKm} ${couple.bride.firstNameKm}` : 'ង៉ោ អូយសាំង'}
             </h3>
             <p className="font-kantumruy text-xs sm:text-sm md:text-base text-[#8c7355] tracking-wider mt-1 font-medium break-words">
-              {couple?.bride?.lastNameEn ? `${couple.bride.lastNameEn} ${couple.bride.firstNameEn}` : 'NGOV UYSANG'}
+              {couple?.bride?.lastNameEn ? `${couple.bride.lastNameEn} ${couple.bride.firstNameEn}` : 'NGO UYSANG'}
             </p>
           </div>
           <div className="relative shrink-0">

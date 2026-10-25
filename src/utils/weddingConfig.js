@@ -13,7 +13,7 @@ export const DEFAULT_WEDDING_CONFIG = {
     bride: {
       lastNameKm: 'ង៉ោ',
       firstNameKm: 'អូយសាំង',
-      lastNameEn: 'NGOV',
+      lastNameEn: 'NGO',
       firstNameEn: 'UYSANG',
       image: '/images/bride-childhood.webp'
     }
@@ -37,7 +37,7 @@ export const DEFAULT_WEDDING_CONFIG = {
     dateTextEn: 'Sunday, November 22, 2026'
   },
 
-  // 4. កម្មវិធីមង្គលភ្ជាប់ពាក្យ (Event Schedule)
+  // 4. កម្មវិធីមង្គល ពិធីចូលចែចូវ (Event Schedule)
   schedule: [
     {
       id: '1',
