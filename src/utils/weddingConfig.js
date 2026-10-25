@@ -41,27 +41,43 @@ export const DEFAULT_WEDDING_CONFIG = {
   schedule: [
     {
       id: '1',
-      time: '07:00 AM',
-      titleKm: 'ពិធីជួបជុំភ្ញៀវកិត្តិយស',
-      titleEn: 'Guest Welcome & Morning Refreshments',
-      descKm: 'ជួបជុំភ្ញៀវកិត្តិយស ពិសាតែ កាហ្វេ និងរៀបចំជំនូន',
-      descEn: 'Welcoming honored guests and preparing gift trays'
+      time: '08:00 AM',
+      titleKm: 'ការអញ្ជើញមកដល់របស់ភ្ញៀវ',
+      titleEn: 'Guest Arrival',
+      descKm: 'សូមស្វាគមន៍ការអញ្ជើញមកដល់របស់ភ្ញៀវកិត្តិយស ចាស់ទុំ និងសាច់ញាតិទាំងសងខាង។',
+      descEn: 'Welcoming honored guests, elders, and relatives from both families.'
     },
     {
       id: '2',
-      time: '08:30 AM',
+      time: '09:00 AM',
       titleKm: 'ពិធីចូលចែចូវ',
       titleEn: 'Traditional Engagement Negotiation',
-      descKm: 'ចាស់ទុំទាំងសងខាងជួបជុំគ្នា ជជែកពិភាក្សាតាមប្រពៃណីខ្មែរ អំពីការរៀបចំពិធីមង្គលការ',
-      descEn: 'Elders from both families discuss the wedding arrangements according to Khmer traditions.'
+      descKm: 'អ្នកផ្លូវទាំងសងខាងជួបជុំគ្នា ដើម្បីជជែកពិភាក្សាតាមប្រពៃណីខ្មែរ អំពីការភ្ជាប់ពាក្យ និងកិច្ចព្រមព្រៀងផ្សេងៗ។',
+      descEn: 'Representatives from both families discuss the engagement arrangements according to Khmer traditions.'
     },
     {
       id: '3',
-      time: '11:30 AM',
+      time: '09:30 AM',
+      titleKm: 'ពិធីព្រមព្រៀងថ្ងៃរៀបការ',
+      titleEn: 'Wedding Date Agreement',
+      descKm: 'ចាស់ទុំទាំងសងខាងពិភាក្សា និងព្រមព្រៀងកំណត់ថ្ងៃរៀបការដ៏សមស្របតាមប្រពៃណីខ្មែរ។',
+      descEn: 'Elders from both families discuss and agree on a suitable wedding date according to Khmer traditions.'
+    },
+    {
+      id: '4',
+      time: '10:00 AM',
+      titleKm: 'ពិធីថតរូបអនុស្សាវរីយ៍',
+      titleEn: 'Memorable Photo Session',
+      descKm: 'គូដណ្តឹងទាំងពីរ ថតរូបអនុស្សាវរីយ៍ជាមួយចាស់ទុំ ភ្ញៀវកិត្តិយស និងសាច់ញាតិទាំងសងខាង។',
+      descEn: 'The engaged couple takes memorable photos with elders, honored guests, and relatives from both families.'
+    },
+    {
+      id: '5',
+      time: '11:00 AM',
       titleKm: 'ពិធីទទួលទានអាហារថ្ងៃត្រង់',
-      titleEn: 'Celebration Luncheon & Banquet',
-      descKm: 'ពិធីជប់លៀងទទួលទានអាហារថ្ងៃត្រង់ និងថតរូបអនុស្សាវរីយ៍',
-      descEn: 'Festive dining, family photo sessions, and music'
+      titleEn: 'Wedding Luncheon',
+      descKm: 'សូមអញ្ជើញភ្ញៀវកិត្តិយស និងសាច់ញាតិទាំងអស់ទទួលទានអាហារថ្ងៃត្រង់ជាមួយគ្នា ប្រកបដោយភាពរីករាយ និងស្និទ្ធស្នាល។',
+      descEn: 'Guests and relatives are invited to enjoy lunch together in a warm and joyful atmosphere.'
     }
   ],
 
@@ -208,10 +224,10 @@ export const getStoredWeddingConfig = () => {
         if (!Array.isArray(parsed.schedule) || parsed.schedule.length === 0) {
           return DEFAULT_WEDDING_CONFIG.schedule;
         }
-        // If stored schedule still has the old 5 default items, upgrade to the current 3 items
+        // If stored schedule still has the previous 3 items or old schedules, upgrade to current 5 items
         if (
-          parsed.schedule.length > DEFAULT_WEDDING_CONFIG.schedule.length ||
-          parsed.schedule.some((it) => it.titleKm?.includes('ហែជំនូន') || it.titleKm?.includes('បំពាក់ចិញ្ចៀន'))
+          parsed.schedule.length !== DEFAULT_WEDDING_CONFIG.schedule.length ||
+          parsed.schedule.some((it) => it.titleKm?.includes('ពិធីជួបជុំភ្ញៀវកិត្តិយស') || it.titleKm?.includes('ហែជំនូន') || it.titleKm?.includes('បំពាក់ចិញ្ចៀន'))
         ) {
           return DEFAULT_WEDDING_CONFIG.schedule;
         }

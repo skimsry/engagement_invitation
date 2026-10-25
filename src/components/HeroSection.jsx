@@ -64,16 +64,12 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
 
       <KhmerDivider className="my-3" />
 
-      {/* Couple Individual Portraits Section (Man Top-Left, Woman Bottom-Right) */}
-      <div className="w-full max-w-sm mx-auto my-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-50/80 via-white to-amber-50/60 border border-[#d4af37]/40 shadow-sm relative overflow-hidden">
-        {/* Soft background ornament */}
-        <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#d4af37]/10 rounded-full blur-xl pointer-events-none" />
-        <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-rose-500/10 rounded-full blur-xl pointer-events-none" />
-
+      {/* Couple Individual Portraits Section (Man Top-Left, Woman Bottom-Right - Full Width & Enlarged) */}
+      <div className="w-full my-6 sm:my-8 px-1 sm:px-3 flex flex-col gap-3 sm:gap-6">
         {/* Man Preview (Top Left) */}
-        <div className="flex items-center gap-3 sm:gap-4 mr-auto w-full max-w-[92%]">
+        <div className="flex items-center gap-4 sm:gap-6 mr-auto w-full">
           <div className="relative shrink-0">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-[#d4af37] shadow-[0_4px_12px_rgba(212,175,55,0.35)] p-0.5 bg-gradient-to-tr from-[#996515] via-[#ffd700] to-[#fbeea0]">
+            <div className="w-36 h-36 min-[400px]:w-40 min-[400px]:h-40 sm:w-48 sm:h-48 md:w-52 md:h-52 rounded-full overflow-hidden border-[3.5px] sm:border-4 border-[#d4af37] shadow-[0_10px_30px_rgba(212,175,55,0.45)] p-1 sm:p-1.5 bg-gradient-to-tr from-[#996515] via-[#ffd700] to-[#fbeea0]">
               <img
                 src={couple?.groom?.image || "/images/groom-childhood.webp"}
                 alt={couple?.groom?.firstNameEn || 'Kimsan'}
@@ -82,47 +78,47 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
                 decoding="async"
               />
             </div>
-            <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#12100e] border border-[#d4af37] flex items-center justify-center text-[10px] text-[#ffd700] shadow">
+            <div className="absolute -bottom-1 -right-1 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#12100e] border-2 border-[#d4af37] flex items-center justify-center text-sm sm:text-base text-[#ffd700] shadow-md">
               🤵
             </div>
           </div>
           <div className="text-left flex-1 min-w-0">
-            <span className="inline-block font-kantumruy text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-[#d4af37]/15 text-[#854d0e] border border-[#d4af37]/35 tracking-wide">
+            <span className="mb-4 inline-block font-kantumruy text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full bg-[#d4af37]/15 text-[#854d0e] border border-[#d4af37]/35 tracking-wide shadow-sm">
               {lang === 'km' ? 'កូនប្រុសនាម' : 'The Groom'}
             </span>
-            <h3 className="font-moulpali text-sm sm:text-base text-[#78500c] mt-1.5 truncate">
+            <h3 className="font-moulpali text-lg sm:text-2xl md:text-3xl text-[#78500c] mt-2 leading-tight break-words">
               {couple?.groom?.lastNameKm ? `${couple.groom.lastNameKm} ${couple.groom.firstNameKm}` : 'សន គឹមសាន្ត'}
             </h3>
-            <p className="font-kantumruy text-xs text-[#8c7355] tracking-wider truncate">
+            <p className="font-kantumruy text-xs sm:text-sm md:text-base text-[#8c7355] tracking-wider mt-1 font-medium break-words">
               {couple?.groom?.lastNameEn ? `${couple.groom.lastNameEn} ${couple.groom.firstNameEn}` : 'SORN KIMSAN'}
             </p>
           </div>
         </div>
 
         {/* Connecting Heart Motif */}
-        <div className="my-2.5 flex items-center justify-center gap-2">
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/50 to-rose-300" />
-          <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-200/80 flex items-center justify-center shadow-sm">
-            <Heart className="w-4 h-4 text-rose-500 fill-rose-500 animate-pulse" />
+        <div className="my-1 sm:my-3 flex items-center justify-center gap-3">
+          <div className="flex-1 h-[1.5px] bg-gradient-to-r from-transparent via-[#d4af37]/60 to-rose-400" />
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-rose-50 border border-rose-300 flex items-center justify-center shadow-sm">
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 text-rose-500 fill-rose-500 animate-pulse" />
           </div>
-          <div className="flex-1 h-[1px] bg-gradient-to-r from-rose-300 via-[#d4af37]/50 to-transparent" />
+          <div className="flex-1 h-[1.5px] bg-gradient-to-r from-rose-400 via-[#d4af37]/60 to-transparent" />
         </div>
 
         {/* Woman Preview (Bottom Right) */}
-        <div className="flex items-center justify-end gap-3 sm:gap-4 ml-auto w-full max-w-[92%] text-right">
+        <div className="flex items-center justify-end gap-4 sm:gap-6 ml-auto w-full text-right">
           <div className="text-right flex-1 min-w-0">
-            <span className="inline-block font-kantumruy text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 rounded-full bg-rose-500/10 text-rose-700 border border-rose-300/40 tracking-wide">
+            <span className="mb-4 inline-block font-kantumruy text-xs sm:text-sm font-semibold px-3 sm:px-3.5 py-1 rounded-full bg-rose-500/10 text-rose-700 border border-rose-300/40 tracking-wide shadow-sm">
               {lang === 'km' ? 'កូនស្រីនាម' : 'The Bride'}
             </span>
-            <h3 className="font-moulpali text-sm sm:text-base text-[#78500c] mt-1.5 truncate">
+            <h3 className="font-moulpali text-lg sm:text-2xl md:text-3xl text-[#78500c] mt-2 leading-tight break-words">
               {couple?.bride?.lastNameKm ? `${couple.bride.lastNameKm} ${couple.bride.firstNameKm}` : 'ង៉ោ អូយសាំង'}
             </h3>
-            <p className="font-kantumruy text-xs text-[#8c7355] tracking-wider truncate">
+            <p className="font-kantumruy text-xs sm:text-sm md:text-base text-[#8c7355] tracking-wider mt-1 font-medium break-words">
               {couple?.bride?.lastNameEn ? `${couple.bride.lastNameEn} ${couple.bride.firstNameEn}` : 'NGOV UYSANG'}
             </p>
           </div>
           <div className="relative shrink-0">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden border-2 border-rose-400 shadow-[0_4px_12px_rgba(244,63,94,0.3)] p-0.5 bg-gradient-to-tr from-rose-500 via-[#ffd700] to-rose-200">
+            <div className="w-36 h-36 min-[400px]:w-40 min-[400px]:h-40 sm:w-48 sm:h-48 md:w-52 md:h-52 rounded-full overflow-hidden border-[3.5px] sm:border-4 border-rose-400 shadow-[0_10px_30px_rgba(244,63,94,0.4)] p-1 sm:p-1.5 bg-gradient-to-tr from-rose-500 via-[#ffd700] to-rose-200">
               <img
                 src={couple?.bride?.image || "/images/bride-childhood.webp"}
                 alt={couple?.bride?.firstNameEn || 'Uysang'}
@@ -131,7 +127,7 @@ export default function HeroSection({ guest, lang, onAddToCalendar }) {
                 decoding="async"
               />
             </div>
-            <div className="absolute -bottom-1 -left-1 w-6 h-6 rounded-full bg-[#12100e] border border-rose-400 flex items-center justify-center text-[10px] text-rose-300 shadow">
+            <div className="absolute -bottom-1 -left-1 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#12100e] border-2 border-rose-400 flex items-center justify-center text-sm sm:text-base text-rose-300 shadow-md">
               👰
             </div>
           </div>

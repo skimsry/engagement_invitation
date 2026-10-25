@@ -4,27 +4,39 @@ import { getStoredWeddingConfig } from '../utils/weddingConfig';
 
 const DEFAULT_SCHEDULE_ITEMS = [
   {
-    time: '07:00 AM',
-    titleKm: 'ពិធីជួបជុំភ្ញៀវកិត្តិយស',
-    titleEn: 'Guest Welcome & Morning Refreshments',
-    descKm: 'ជួបជុំភ្ញៀវកិត្តិយស ពិសាតែ កាហ្វេ និងរៀបចំជំនូន',
-    descEn: 'Welcoming honored guests and preparing gift trays'
+    time: '08:00 AM',
+    titleKm: 'ការអញ្ជើញមកដល់របស់ភ្ញៀវ',
+    titleEn: 'Guest Arrival',
+    descKm: 'សូមស្វាគមន៍ការអញ្ជើញមកដល់របស់ភ្ញៀវកិត្តិយស ចាស់ទុំ និងសាច់ញាតិទាំងសងខាង។',
+    descEn: 'Welcoming honored guests, elders, and relatives from both families.'
   },
-
   {
-    time: '08:30 AM',
+    time: '09:00 AM',
     titleKm: 'ពិធីចូលចែចូវ',
     titleEn: 'Traditional Engagement Negotiation',
-    descKm: 'ចាស់ទុំទាំងសងខាងជួបជុំគ្នា ជជែកពិភាក្សាតាមប្រពៃណីខ្មែរ អំពីការរៀបចំពិធីមង្គលការ',
-    descEn: 'Elders from both families discuss the wedding arrangements according to Khmer traditions.'
+    descKm: 'អ្នកផ្លូវទាំងសងខាងជួបជុំគ្នា ដើម្បីជជែកពិភាក្សាតាមប្រពៃណីខ្មែរ អំពីការភ្ជាប់ពាក្យ និងកិច្ចព្រមព្រៀងផ្សេងៗ។',
+    descEn: 'Representatives from both families discuss the engagement arrangements according to Khmer traditions.'
   },
-
   {
-    time: '11:30 AM',
+    time: '09:30 AM',
+    titleKm: 'ពិធីព្រមព្រៀងថ្ងៃរៀបការ',
+    titleEn: 'Wedding Date Agreement',
+    descKm: 'ចាស់ទុំទាំងសងខាងពិភាក្សា និងព្រមព្រៀងកំណត់ថ្ងៃរៀបការដ៏សមស្របតាមប្រពៃណីខ្មែរ។',
+    descEn: 'Elders from both families discuss and agree on a suitable wedding date according to Khmer traditions.'
+  },
+  {
+    time: '10:00 AM',
+    titleKm: 'ពិធីថតរូបអនុស្សាវរីយ៍',
+    titleEn: 'Memorable Photo Session',
+    descKm: 'គូដណ្តឹងទាំងពីរ ថតរូបអនុស្សាវរីយ៍ជាមួយចាស់ទុំ ភ្ញៀវកិត្តិយស និងសាច់ញាតិទាំងសងខាង។',
+    descEn: 'The engaged couple takes memorable photos with elders, honored guests, and relatives from both families.'
+  },
+  {
+    time: '11:00 AM',
     titleKm: 'ពិធីទទួលទានអាហារថ្ងៃត្រង់',
-    titleEn: 'Celebration Luncheon & Banquet',
-    descKm: 'ពិធីជប់លៀងទទួលទានអាហារថ្ងៃត្រង់ និងថតរូបអនុស្សាវរីយ៍',
-    descEn: 'Festive dining, family photo sessions, and music'
+    titleEn: 'Wedding Luncheon',
+    descKm: 'សូមអញ្ជើញភ្ញៀវកិត្តិយស និងសាច់ញាតិទាំងអស់ទទួលទានអាហារថ្ងៃត្រង់ជាមួយគ្នា ប្រកបដោយភាពរីករាយ និងស្និទ្ធស្នាល។',
+    descEn: 'Guests and relatives are invited to enjoy lunch together in a warm and joyful atmosphere.'
   }
 ];
 
