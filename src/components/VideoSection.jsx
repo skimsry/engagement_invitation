@@ -11,11 +11,12 @@ export default function VideoSection({
   const containerRef = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(46);
   const [showControls, setShowControls] = useState(true);
   const hideTimeoutRef = useRef(null);
+  const userManuallyPausedRef = useRef(false);
 
   const content = {
     km: {
@@ -45,12 +46,16 @@ export default function VideoSection({
     if (!video) return;
 
     if (video.paused) {
+      userManuallyPausedRef.current = false;
+      video.muted = false;
+      setIsMuted(false);
       video.play().then(() => {
         setIsPlaying(true);
       }).catch((err) => {
         console.warn('Playback error:', err);
       });
     } else {
+      userManuallyPausedRef.current = true;
       video.pause();
       setIsPlaying(false);
     }
@@ -65,6 +70,83 @@ export default function VideoSection({
     video.muted = newMuted;
     setIsMuted(newMuted);
   };
+
+  // IntersectionObserver: auto play with sound on scroll in, and unmute & pause on scroll out
+  useEffect(() => {
+    const container = containerRef.current;
+    const video = videoRef.current;
+    if (!container || !video) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Scrolled into view (at least 35% visible): auto play with sound
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.35) {
+            if (!userManuallyPausedRef.current) {
+              video.muted = false;
+              setIsMuted(false);
+
+              const playPromise = video.play();
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    setIsPlaying(true);
+                  })
+                  .catch((err) => {
+                    console.warn('Autoplay with sound prevented, falling back to muted autoplay:', err);
+                    video.muted = true;
+                    setIsMuted(true);
+                    video.play()
+                      .then(() => setIsPlaying(true))
+                      .catch((e) => console.warn('Muted autoplay also prevented:', e));
+                  });
+              }
+            }
+          }
+          // Scrolled out of view (less than 15% visible): unmute and pause video
+          else if (!entry.isIntersecting || entry.intersectionRatio < 0.15) {
+            userManuallyPausedRef.current = false;
+
+            if (!video.paused) {
+              video.pause();
+            }
+            setIsPlaying(false);
+            video.muted = false;
+            setIsMuted(false);
+
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new CustomEvent('wedding_audio_control', {
+                detail: { action: 'resume', source: 'video' }
+              }));
+            }
+          }
+        });
+      },
+      {
+        threshold: [0.15, 0.35]
+      }
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Pause video if browser tab is switched or minimized
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const video = videoRef.current;
+      if (!video) return;
+      if (document.hidden && !video.paused) {
+        video.pause();
+        setIsPlaying(false);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   // Synchronize audio with RomanticAudio:
   // When video plays with sound (isPlaying && !isMuted) -> mute/pause RomanticAudio.
@@ -83,9 +165,13 @@ export default function VideoSection({
     }
   }, [isPlaying, isMuted]);
 
-  // Clean up if VideoSection unmounts while video was playing with sound
+  // Clean up if VideoSection unmounts while video was playing
   useEffect(() => {
     return () => {
+      const video = videoRef.current;
+      if (video && !video.paused) {
+        video.pause();
+      }
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('wedding_audio_control', {
           detail: { action: 'resume', source: 'video' }
