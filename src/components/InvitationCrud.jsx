@@ -26,7 +26,9 @@ import {
   Eye,
   EyeOff,
   LogOut,
-  ShieldCheck
+  ShieldCheck,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { GOOGLE_APPS_SCRIPT_CODE } from './googleAppsScriptSource';
 import WeddingConfigCrud from './WeddingConfigCrud';
@@ -125,6 +127,19 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
   const [editingGuest, setEditingGuest] = useState(null);
   const [guestToDelete, setGuestToDelete] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const [isGeneralLinkOpen, setIsGeneralLinkOpen] = useState(true);
+
+  // General (No ID) invitation links
+  const publicWebLink = typeof window !== 'undefined' && window.location.origin && !window.location.origin.includes('localhost')
+    ? `${window.location.origin}/`
+    : 'https://engagement-invitation.sornkimsry96.workers.dev/';
+  const publicTgLink = 'https://t.me/engagement_invitation_bot/invite';
+
+  const enPublicTgText = formatEnglishCopyText(publicTgLink);
+  const khPublicTgText = formatKhmerCopyText(publicTgLink);
+  const enPublicWebText = formatEnglishCopyText(publicWebLink);
+  const khPublicWebText = formatKhmerCopyText(publicWebLink);
 
   const [formData, setFormData] = useState({
     id: '',
@@ -795,6 +810,202 @@ export default function InvitationCrud({ onBackToInvitation, lang = 'km' }) {
                 </div>
                 <div className="text-xl sm:text-2xl font-bold text-stone-300">{stats.pending}</div>
               </div>
+            </div>
+
+            {/* General Public Invitation Link (No Guest ID / សម្រាប់ភ្ញៀវទូទៅគ្មាន ID) */}
+            <div className="bg-gradient-to-br from-[#1d1915] via-[#161310] to-[#12100e] border-2 border-[#d4af37]/45 hover:border-[#d4af37]/75 rounded-2xl sm:rounded-3xl p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.6),0_0_20px_rgba(212,175,55,0.12)] space-y-4 relative overflow-hidden transition">
+              {/* Soft gold ambient backlight */}
+              <div className="absolute -top-12 -right-12 w-48 h-48 bg-[#d4af37]/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Card Header */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-stone-800 relative z-10">
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-xl bg-gradient-to-r from-[#996515]/40 via-[#d4af37]/25 to-transparent border border-[#d4af37]/50 text-[#fde047] shadow-sm">
+                    <Sparkles className="w-3.5 h-3.5 text-[#ffd700] animate-pulse" />
+                    <span>{lang === 'km' ? 'លិខិតអញ្ជើញទូទៅ (គ្មាន ID)' : 'General Public Link (No ID)'}</span>
+                  </span>
+                  <h3 className="font-moul text-sm sm:text-base text-[#f3e5ab]">
+                    {lang === 'km' ? 'សម្រាប់ភ្ញៀវទូទៅ' : 'For Guests Without ID'}
+                  </h3>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="hidden sm:inline-flex items-center text-[11px] text-amber-200/80 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+                    {lang === 'km' ? '✨ បង្ហាញ «សូមគោរពអញ្ជើញ» នៅលើក្របទំព័រ' : '✨ Displays "Cordially Invites" on cover'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsGeneralLinkOpen(!isGeneralLinkOpen)}
+                    className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-stone-400 hover:text-white transition"
+                    title={isGeneralLinkOpen ? 'Collapse' : 'Expand'}
+                  >
+                    {isGeneralLinkOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {isGeneralLinkOpen && (
+                <>
+                  <p className="text-xs text-stone-300 leading-relaxed relative z-10">
+                    {lang === 'km'
+                      ? 'ប្រើតំណភ្ជាប់ខាងក្រោមនេះដើម្បីចែករំលែកទៅកាន់ភ្ញៀវទូទៅ សាច់ញាតិ ឬមិត្តភក្តិ ដោយមិនបាច់បង្កើតលេខកូដ ID សំបុត្រភ្ញៀវម្នាក់ៗឡើយ (អ្នកទទួលអាចបើកមើល ស្ដាប់ភ្លេង និងឆ្លើយតប RSVP បានដូចគ្នា)។'
+                      : 'Use these general links to share with general guests, relatives, or friends without generating individual guest IDs (guests can still view ceremony info, enjoy music, and RSVP).'}
+                  </p>
+
+                  {/* LINKS & COPY ACTIONS SECTION */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1 relative z-10">
+
+                    {/* 1. TELEGRAM BOT GENERAL LINK CARD */}
+                    <div className="bg-[#12100e] border border-[#2AABEE]/30 rounded-2xl p-3.5 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-[#2AABEE]">
+                          <Send className="w-4 h-4" />
+                          <span>Telegram Mini App Link (General)</span>
+                        </div>
+                        <a
+                          href={publicTgLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[11px] text-stone-400 hover:text-[#2AABEE] flex items-center gap-1 underline"
+                        >
+                          <span>Open</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+
+                      {/* Raw Link Input with Copy button */}
+                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400">
+                        <span className="truncate flex-1">{publicTgLink}</span>
+                        <button
+                          onClick={() => handleCopy(publicTgLink, 'public_raw_tg')}
+                          className="p-1 rounded-md hover:bg-white/10 text-stone-300 hover:text-white"
+                          title="Copy raw link only"
+                        >
+                          {copiedKey === 'public_raw_tg' ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Copy Invitation Message Buttons */}
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <button
+                          onClick={() => handleCopy(enPublicTgText, 'public_tg_en')}
+                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-blue-950/40 hover:bg-blue-900/60 border border-blue-500/40 text-blue-200 text-xs font-semibold active:scale-95 transition"
+                          title="Copy English Invitation Text with Telegram Link"
+                        >
+                          {copiedKey === 'public_tg_en' ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-emerald-300">Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-blue-400" />
+                              <span>Copy EN (TG)</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={() => handleCopy(khPublicTgText, 'public_tg_kh')}
+                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 text-amber-200 text-xs font-semibold active:scale-95 transition"
+                          title="Copy Khmer Invitation Text with Telegram Link"
+                        >
+                          {copiedKey === 'public_tg_kh' ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-emerald-300">បានចម្លង!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-amber-400" />
+                              <span>ចម្លងខ្មែរ (TG)</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 2. DIRECT WEB GENERAL LINK CARD */}
+                    <div className="bg-[#12100e] border border-[#d4af37]/35 rounded-2xl p-3.5 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1.5 text-xs font-bold text-[#f3e5ab]">
+                          <Globe className="w-4 h-4 text-[#d4af37]" />
+                          <span>Direct Web Link (General / Browser)</span>
+                        </div>
+                        <a
+                          href={publicWebLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[11px] text-stone-400 hover:text-[#f3e5ab] flex items-center gap-1 underline"
+                        >
+                          <span>Preview</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+
+                      {/* Raw Link Input with Copy button */}
+                      <div className="flex items-center gap-1 bg-black/40 border border-stone-800 rounded-xl px-2.5 py-1.5 text-xs text-stone-400">
+                        <span className="truncate flex-1">{publicWebLink}</span>
+                        <button
+                          onClick={() => handleCopy(publicWebLink, 'public_raw_web')}
+                          className="p-1 rounded-md hover:bg-white/10 text-stone-300 hover:text-white"
+                          title="Copy raw link only"
+                        >
+                          {copiedKey === 'public_raw_web' ? (
+                            <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Copy Invitation Message Buttons */}
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <button
+                          onClick={() => handleCopy(enPublicWebText, 'public_web_en')}
+                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-stone-900 hover:bg-[#d4af37]/20 border border-[#d4af37]/40 text-[#fde047] text-xs font-semibold active:scale-95 transition"
+                          title="Copy English Invitation Text with Web Link"
+                        >
+                          {copiedKey === 'public_web_en' ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <span className="text-emerald-300">Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-[#fde047]" />
+                              <span>Copy EN (Web)</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button
+                          onClick={() => handleCopy(khPublicWebText, 'public_web_kh')}
+                          className="flex items-center justify-center gap-1.5 py-2 px-2 rounded-xl bg-gradient-to-r from-[#996515] to-[#d4af37] text-stone-950 text-xs font-bold shadow-md hover:brightness-110 active:scale-95 transition"
+                          title="Copy Khmer Invitation Text with Web Link"
+                        >
+                          {copiedKey === 'public_web_kh' ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-950" />
+                              <span>បានចម្លង!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-stone-950" />
+                              <span>ចម្លងខ្មែរ (Web)</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Search & Filter Toolbar */}
