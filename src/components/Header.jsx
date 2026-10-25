@@ -118,12 +118,12 @@ export default function Header({
         try {
           el.pause();
           el.muted = true;
-        } catch {}
+        } catch { }
       });
       document.querySelectorAll('video').forEach((el) => {
         try {
           el.pause();
-        } catch {}
+        } catch { }
       });
 
       // 3. Attempt native window.close in browser
@@ -312,14 +312,14 @@ export default function Header({
             </button>
 
             {/* Exit from App (Browser / Telegram Bot) */}
-            <button
+            {/* <button
               onClick={handleCloseApp}
               className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-rose-950/50 hover:bg-rose-900/70 border border-rose-500/50 text-rose-300 hover:text-white text-xs font-bold transition active:scale-95 group shadow-sm"
               title={lang === 'km' ? 'ចាកចេញពីកម្មវិធី' : 'Exit from App'}
             >
               <Power className="w-4 h-4 group-hover:scale-110 transition-transform text-rose-400" />
               <span>{lang === 'km' ? 'ចាកចេញពីកម្មវិធី' : 'Exit from App'}</span>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -406,7 +406,7 @@ export default function Header({
                     window.close();
                     window.open('', '_self', '');
                     window.close();
-                  } catch (e) {}
+                  } catch (e) { }
                 }}
                 className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-700 via-red-600 to-rose-700 hover:brightness-110 text-white text-xs sm:text-sm font-bold shadow-lg active:scale-95 transition flex items-center justify-center gap-2 cursor-pointer"
               >
