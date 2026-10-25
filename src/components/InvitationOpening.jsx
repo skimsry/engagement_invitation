@@ -264,6 +264,7 @@ export default function InvitationOpening({
             playsInline
             webkit-playsinline="true"
             poster="/images/open-poster.webp"
+            preload="metadata"
             className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
             onEnded={() => {
               setProgress(100);
@@ -271,10 +272,10 @@ export default function InvitationOpening({
             }}
           >
             <source src="/images/open.mp4" type="video/mp4" />
-            <source src="/images/open.webp" type="image/webp" />
             <img
               src="/images/open_final_frame.webp"
               alt="Angkor Gate Opening"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover pointer-events-none select-none"
             />
           </video>

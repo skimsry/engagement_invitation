@@ -184,7 +184,7 @@ export default function NatureAudio({ isOpened, onStarted, volume = 0.05 }) {
     <audio
       ref={audioRef}
       src="/audio/nature-sound.mp3"
-      preload="auto"
+      preload="none"
       playsInline
       loop
       onPlay={() => setIsPlaying(true)}

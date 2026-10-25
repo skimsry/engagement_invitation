@@ -208,3 +208,9 @@ body.hide-header-nav .header-radial-menu {
   pointer-events: none !important;
   transform: scale(0.75) !important;
 }
+
+/* Off-screen rendering optimization for smooth mobile scrolling and fast initial paint */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 450px;
+}

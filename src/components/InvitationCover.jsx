@@ -49,6 +49,7 @@ export default function InvitationCover({ isOpened, lang, onOpenCard, guest, has
             playsInline
             webkit-playsinline="true"
             poster={posterUrl}
+            preload="metadata"
             className="w-full h-full object-cover min-h-[100dvh] sm:min-h-[540px] transition-transform duration-700 ease-out group-hover:scale-105 pointer-events-none"
           >
             <source src={videoUrl} type="video/mp4" />
@@ -56,6 +57,8 @@ export default function InvitationCover({ isOpened, lang, onOpenCard, guest, has
             <img
               src={posterUrl}
               alt="Engagement Invitation Cover"
+              fetchpriority="high"
+              decoding="async"
               className="w-full h-full object-cover min-h-[100dvh] sm:min-h-[540px]"
             />
           </video>

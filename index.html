@@ -28,10 +28,14 @@
   <!-- Telegram Mini App SDK (Deferred to not block render) -->
   <script defer src="https://telegram.org/js/telegram-web-app.js"></script>
 
-  <!-- Preload Critical LCP Hero Poster & Video for Instant Rendering -->
-  <link rel="preload" as="image" href="/images/home-page-poster.webp" fetchpriority="high" />
+  <!-- Preconnect to Google Scripts for faster guest data fetching -->
+  <link rel="dns-prefetch" href="https://script.google.com" />
+  <link rel="dns-prefetch" href="https://script.googleusercontent.com" />
+  <link rel="preconnect" href="https://script.google.com" crossorigin />
+
+  <!-- Preload Critical LCP Hero Poster & Decorative Corner for Instant First Paint -->
+  <link rel="preload" as="image" href="/images/home-page-poster.webp" type="image/webp" fetchpriority="high" />
   <link rel="preload" as="image" href="/images/khmer-corner.webp" type="image/webp" />
-  <link rel="preload" as="video" href="/images/home-page.mp4" type="video/mp4" />
 
   <!-- Google Fonts Preconnect & Optimized Non-blocking Loading -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -500,12 +500,12 @@ export default function App() {
               />
 
               {/* Pre-wedding Photo Gallery */}
-              <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
+              <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 content-auto">
                 <PhotoGallery lang={lang} />
               </div>
 
               {/* Pre-wedding Video Section */}
-              <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8">
+              <div className="w-full rounded-none sm:rounded-3xl bg-[#faf7f2] border-y sm:border-2 border-[#d4af37]/50 shadow-2xl p-5 sm:p-8 content-auto">
                 <VideoSection lang={lang} />
               </div>
 
